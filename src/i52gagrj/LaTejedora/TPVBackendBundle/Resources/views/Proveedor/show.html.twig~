@@ -1,0 +1,67 @@
+{% extends '::base.html.twig' %}
+
+{% block contenido %}
+<div class="contenido">
+    <h1>Proveedor</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Nombre</th>
+                <td>{{ entity.nombre }}</td>
+            </tr>
+            <tr>
+                <th>NIF</th>
+                <td>{{ entity.nif }}</td>
+            </tr>
+            <tr>
+                <th>Dirección</th>
+                <td>{{ entity.direccion }}</td>
+            </tr>
+            <tr>
+                <th>Población</th>
+                <td>{{ entity.poblacion }}</td>
+            </tr>
+            <tr>
+                <th>Provincia</th>
+                <td>{{ entity.provincia }}</td>
+            </tr>
+            <tr>
+                <th>CP</th>
+                <td>{{ entity.cp }}</td>
+            </tr>
+            <tr>
+                <th>Telefono fijo</th>
+                <td>{{ entity.telefijo }}</td>
+            </tr>
+            <tr>
+                <th>Telefono movil</th>
+                <td>{{ entity.telemovil }}</td>
+            </tr>
+            <tr>
+                <th>E-mail</th>
+                <td>{{ entity.email }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('proveedor') }}">
+            Volver al listado
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('proveedor_edit', { 'id': entity.id }) }}">
+            Editar
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+
+</div>
+{% endblock %}

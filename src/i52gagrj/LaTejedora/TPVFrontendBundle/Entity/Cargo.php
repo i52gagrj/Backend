@@ -1,0 +1,142 @@
+<?php
+
+namespace i52gagrj\LaTejedora\TPVFrontendBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Cargo
+ *
+ * @ORM\Table()
+ * @ORM\Entity(repositoryClass="i52gagrj\LaTejedora\TPVFrontendBundle\Entity\CargoRepository")
+ */
+class Cargo
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nombre", type="string", length=20)
+     */
+    private $nombre;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="rol", type="string", length=25)
+     */
+    private $rol;
+
+
+ ////ASOCIACIONES////
+
+ /**
+  * @ORM\ManyToMany(targetEntity="Usuario", mappedBy="grupos")
+  */
+ private $usuarios;
+
+ ////FIN ASOCIACIONES////
+
+ public function __construct()
+ {
+     $this->usuarios = new ArrayCollection();
+ }
+
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set nombre
+     *
+     * @param string $nombre
+     * @return Cargo
+     */
+    public function setNombre($nombre)
+    {
+        $this->nombre = $nombre;
+
+        return $this;
+    }
+
+    /**
+     * Get nombre
+     *
+     * @return string 
+     */
+    public function getNombre()
+    {
+        return $this->nombre;
+    }
+
+    /**
+     * Set rol
+     *
+     * @param string $rol
+     * @return Cargo
+     */
+    public function setRol($rol)
+    {
+        $this->rol = $rol;
+
+        return $this;
+    }
+
+    /**
+     * Get rol
+     *
+     * @return string 
+     */
+    public function getRol()
+    {
+        return $this->rol;
+    }
+
+    /**
+     * Add usuarios
+     *
+     * @param \i52gagrj\LaTejedora\TPVFrontendBundle\Entity\Usuario $usuarios
+     * @return Cargo
+     */
+    public function addUsuario(\i52gagrj\LaTejedora\TPVFrontendBundle\Entity\Usuario $usuarios)
+    {
+        $this->usuarios[] = $usuarios;
+
+        return $this;
+    }
+
+    /**
+     * Remove usuarios
+     *
+     * @param \i52gagrj\LaTejedora\TPVFrontendBundle\Entity\Usuario $usuarios
+     */
+    public function removeUsuario(\i52gagrj\LaTejedora\TPVFrontendBundle\Entity\Usuario $usuarios)
+    {
+        $this->usuarios->removeElement($usuarios);
+    }
+
+    /**
+     * Get usuarios
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getUsuarios()
+    {
+        return $this->usuarios;
+    }
+}

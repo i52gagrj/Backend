@@ -1,0 +1,78 @@
+{% extends '::base.html.twig' %}
+
+{% block contenido %}
+<div class="contenido"> 
+    <h1>Socio</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th align = "left">Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th align = "left">Nombre</th>
+                <td>{{ entity.nombre }}</td>
+            </tr>
+            <tr>
+                <th align = "left">Direccion</th>
+                <td>{{ entity.direccion }}</td>
+            </tr>
+            <tr>
+                <th align = "left">Poblacion</th>
+                <td>{{ entity.poblacion }}</td>
+            </tr>
+            <tr>
+                <th align = "left">Código Postal</th>
+                <td>{{ entity.cp }}</td>
+            </tr>
+            <tr>
+                <th align = "left">Provincia</th>
+                <td>{{ entity.provincia }}</td>
+            </tr>
+            <tr>
+                <th align = "left">DNI</th>
+                <td>{{ entity.dni }}</td>
+            </tr>
+            <tr>
+                <th align = "left">E-mail</th>
+                <td>{{ entity.email }}</td>
+            </tr>
+            <tr>
+                <th align = "left">Telefono fijo</th>
+                <td>{{ entity.telefijo }}</td>
+            </tr>
+            <tr>
+                <th align = "left">Telefono movil</th>
+                <td>{{ entity.telemovil }}</td>
+            </tr>
+            <tr>
+                <th align = "left">Saldo</th>
+                <td>{{ entity.saldo }}</td>
+            </tr>
+            <tr>
+                <th align = "left">Activo</th>
+                <td>{% if entity.activo %} Si {% else %} No {% endif %}</td>
+            </tr>
+            <tr>
+                <th align = "left">Fecha de baja</th>
+                <td>{{ entity.fechainactivo|date('Y-m-d') }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('socio') }}">
+            Volver al listado
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('socio_edit', { 'id': entity.id }) }}">
+            Editar
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+</div>
+{% endblock %}

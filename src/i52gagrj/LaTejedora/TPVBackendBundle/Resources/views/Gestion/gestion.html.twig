@@ -1,0 +1,12 @@
+{% extends '::base.html.twig' %}
+
+{% block contenido %}
+<div class="contenido" id="opciones">
+  <p><a href="{{ path('socio_menu')}}">Socios</a></p>
+  <p><a href="{{ path('proveedor_menu')}}">Proveedores</a></p>
+  <p><a href="{{ path('producto_menu')}}">Productos</a></p>
+  <p><a href="{{ path('usuario_menu')}}">Usuarios</a></p>
+  <p><a href="{{ path('venta')}}">Ventas</a></p>
+  <p><a href="{{ path('diario')}}">Diario</a></p>
+</div>
+{% endblock %}

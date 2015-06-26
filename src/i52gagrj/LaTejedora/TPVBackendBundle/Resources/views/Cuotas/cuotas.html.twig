@@ -1,0 +1,40 @@
+{% extends 'i52LTPVBackendBundle:Cuotas:layout.html.twig' %}
+
+  {% block cuotas %} 
+    <div class="contenido" >
+      <strong>Listado de cuotas a cargar</strong>
+      <table>
+        <tr>
+          <th align=center> Id 
+          <th align=center> Nombre
+          <th align=center> Saldo
+          <th align=center> Cuota
+        </tr>
+    	{% for x in listado %} 
+        {% if x.id != 1 %}    
+	<tr> 
+          <td align=center >{{ x.id }}
+          <td align=center >{{ x.nombre }}
+          <td align=center >{{ x.saldo }}  
+          {% if finalizado == false %} 
+          <td align=center >
+            <form id="form_cantidad" action="{{ path("i52_ltpv_backend_cambiacuota") }}" method="post">
+              <input size="3" name="cuota" id="cuota" value= "{{ x.cuota }}" />
+              <input type="hidden" name="idsocio" id="idsocio" value= "{{ x.id }}" />
+              <button type="submit" class="btn_cantidad"> Cambiar</button> 
+            </form>           
+          {% else %}              
+            <td align=center > --
+          {% endif %}   
+        {% endif %}                         
+        {% endfor %}
+      </table>  
+      {% if finalizado==false %}
+        <br><br>
+        <form id="finalizarcuota" action="{{ path("i52_ltpv_backend_finalizacuotas") }}" method="post">       
+          <button type="submit" class="btn_finalizar"> Finalizar </button> 
+        </form>  
+      {% endif %}
+    </div>
+
+  {% endblock %}

@@ -1,0 +1,83 @@
+<div class="ventascaja" >
+
+  {%if venta%}   
+    {% set base21 = 0 %}
+    {% set base10 = 0 %}
+    {% set base4 = 0 %}
+    {% set iva21 = 0 %}
+    {% set iva10 = 0 %}
+    {% set iva4 = 0 %}
+    {% set total = 0 %}
+    <strong>Cliente</strong><br>
+    <strong> Nombre: </strong> {{ venta.socio.nombre }}<br> 
+    <strong> DNI: </strong> {{ venta.socio.dni }}<br>
+    <strong> Vendedor: </strong> {{ venta.usuario.nombre }}<br><br> 
+
+    <strong>Venta original</strong><br>
+    <strong> Fecha de venta: </strong> {{ venta.fechaventa | date('Y-m-d') }}
+    <strong> Hora de venta: </strong> {{ venta.horaventa | date('H:i:s') }}
+    <table>
+      <tr>
+        <th align=left > Producto 
+        <th align=center > Precio 
+        <th align=center > IVA
+        <th align=center > Cantidad
+        <th align=center > Precio total
+        <th align=center > IVA total
+      </tr> 
+      {% for linea in listaventa%}
+        <tr>
+          <td align=center >{{ linea.producto.nombre }}  
+          <td align=center >{{ linea.precio }}  
+          <td align=center >{{ linea.iva }}
+          {% if linea.iva==21 %}             
+            {% set base21 = base21 + (linea.precio * linea.cantidad) %}  
+          {% endif %}
+          {% if linea.iva==10 %}             
+            {% set base10 = base10 + (linea.precio * linea.cantidad) %}  
+          {% endif %}  
+          {% if linea.iva==4 %}             
+            {% set base4 = base4 + (linea.precio * linea.cantidad) %}  
+          {% endif %} 
+          <td align=center >{{ linea.cantidad }}  
+          <td align=center >{{ linea.precio * linea.cantidad | number_format(2, '.', ',') }}
+          <td align=center >{{ linea.precio * (1 + (linea.iva/100)) | number_format(2, '.', ',') }} 
+        </tr> 
+      {% endfor %}
+    </table> 
+    {% set iva21 = ( base21 * (21/100)| number_format(2, '.', ','))  %}
+    {% set iva10 = ( base10 * (10/100)| number_format(2, '.', ','))  %}
+    {% set iva4 = ( base4 * (4/100)| number_format(2, '.', ','))  %}
+    <br> 
+    <strong>Desglose</strong>  
+    <br>
+    <strong>Base Imponible 21%: </strong>
+    {{ base21 }} 
+    <strong>IVA 21%: </strong>
+    {{ base21 * (21/100) | number_format(2, '.', ',') }}
+    <br>
+    <strong>Base Imponible 10%: </strong>
+    {{ base10 }}
+    <strong>IVA 10%: </strong>
+    {{ base10 * (10/100) | number_format(2, '.', ',') }}
+    <br> 
+    <strong>Base Imponible 4%: </strong>
+    {{ base4 }}
+    <strong>IVA 21%: </strong>
+    {{ base4 * (4/100) | number_format(2, '.', ',') }}
+    <br>
+    <strong>TOTAL: </strong>
+    {{ totaloriginal }}  
+
+  {% else %}
+  <strong>Id de la venta:</strong>
+  <form id="form_buscar" action="{{ path("i52_ltpv_frontend_buscaventa") }}" method="post">
+    <input size="2" name="id-venta" id="id-venta"/>
+    <button type="submit" class="btn_buscar"> Buscar </button>
+  </form>
+
+  {% endif %}   
+ 
+</div>     
+
+

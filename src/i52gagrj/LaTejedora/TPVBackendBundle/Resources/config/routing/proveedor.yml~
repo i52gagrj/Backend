@@ -1,0 +1,34 @@
+proveedor_menu:
+    path:     /menu
+    defaults: { _controller: "i52LTPVBackendBundle:Proveedor:menu" }
+
+proveedor:
+    path:     /index
+    defaults: { _controller: "i52LTPVBackendBundle:Proveedor:index" }
+
+proveedor_show:
+    path:     /{id}/show
+    defaults: { _controller: "i52LTPVBackendBundle:Proveedor:show" }
+
+proveedor_new:
+    path:     /new
+    defaults: { _controller: "i52LTPVBackendBundle:Proveedor:new" }
+
+proveedor_create:
+    path:     /create
+    defaults: { _controller: "i52LTPVBackendBundle:Proveedor:create" }
+    requirements: { _method: post }
+
+proveedor_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "i52LTPVBackendBundle:Proveedor:edit" }
+
+proveedor_update:
+    path:     /{id}/update
+    defaults: { _controller: "i52LTPVBackendBundle:Proveedor:update" }
+    requirements: { _method: post|put }
+
+proveedor_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "i52LTPVBackendBundle:Proveedor:delete" }
+    requirements: { _method: post|delete }

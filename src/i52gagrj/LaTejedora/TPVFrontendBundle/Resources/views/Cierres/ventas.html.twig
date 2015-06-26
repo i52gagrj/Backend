@@ -1,0 +1,62 @@
+<div class="ventascaja">  
+  <strong>Ventas del dia</strong>
+  <table>
+    <tr>
+      <th align=center > Nº de Venta 
+      <th align=center > Fecha de venta
+      <th align=center > Fecha de venta 
+      <th align=center > Cliente
+      <th align=center > Contado
+    </tr>
+    {% for venta in ventas %}
+      <tr>
+        <td align=center >
+        <a href="{{ path("i52_ltpv_frontend_muestraventa", {"num-venta": venta.id}) }}">
+          {{ venta.id }} 
+        </a>
+	<td align=center >{{ venta.fechaventa | date('Y-m-d') }}
+        <td align=center >{{ venta.horaventa | date('H:i:s') }}
+	<td align=center >{{ venta.socio.nombre }}  
+	<td align=center >
+        {% if venta.contado %} Si
+        {% else %} No
+        {% endif %}
+        <br>
+      </tr>
+      {% if listaventa %} 
+        {% if numventa == venta.id%}
+          <tr>           
+            <table>
+              <tr>
+                <th align=left > Producto 
+                <th align=center > Precio 
+                <th align=center > IVA
+                <th align=center > Cantidad
+                <th align=center > Precio total
+                <th align=center > IVA total
+              </tr> 
+              {% for linea in listaventa%}
+                <tr>
+                  <td align=center >{{ linea.producto.nombre }}  
+                  <td align=center >{{ linea.precio }}  
+                  <td align=center >{{ linea.iva }}
+                  <td align=center >{{ linea.cantidad }}  
+                  <td align=center >{{ linea.precio * linea.cantidad | number_format(2, '.', ',') }}
+                  <td align=center >{{ linea.precio * (1 + (linea.iva/100)) | number_format(2, '.', ',') }} 
+                </tr> 
+              {% endfor %}
+            </table>
+          </tr>
+          {% endif %}
+        {% endif %}
+    {% endfor %}
+  </table>  
+
+  <div>
+    <div ng-repeat="alumno in alumnos">
+      <div> {%verbatim%}{{alumno.nombre}} - {{alumno.telefono}}{%endverbatim%}</div>
+      <span>{%verbatim%}{{alumno.curso}}{%endverbatim%}</span>
+    </div>
+  </div> 
+
+</div>

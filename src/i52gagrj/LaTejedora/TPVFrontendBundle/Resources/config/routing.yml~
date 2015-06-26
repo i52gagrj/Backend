@@ -1,0 +1,210 @@
+i52_ltpv_frontend_homepage:
+    path: /index
+    defaults: { _controller: i52LTPVFrontendBundle:Default:index }  
+
+i52_ltpv_frontend_ventas:
+    path: /venta
+    defaults: { _controller: i52LTPVFrontendBundle:Ventas:venta }
+    requirements:
+       _method: GET
+
+i52_ltpv_frontend_aniadearticulo:
+    path: /aniadearticulo/{id-articulo}
+    defaults: { _controller: i52LTPVFrontendBundle:Ventas:venta }
+    requirements:
+         id:  \d+
+         _method: GET
+
+i52_ltpv_frontend_aniadecliente:
+    path: /aniadecliente
+    defaults: { _controller: i52LTPVFrontendBundle:Ventas:venta  }
+    requirements:
+       _method: POST
+
+i52_ltpv_frontend_cierraventa:
+    path: /cierraventa
+    defaults: { _controller: i52LTPVFrontendBundle:Ventas:venta }
+    requirements:
+       _method: POST
+
+i52_ltpv_frontend_borraarticulo:
+    path: /borraarticulo/{id-articulo}
+    defaults: { _controller: i52LTPVFrontendBundle:Ventas:venta }
+    requirements:
+         id:  \d+
+         _method: GET
+
+i52_ltpv_frontend_cantidadarticulo:
+    path: /cantidadarticulo
+    defaults: { _controller: i52LTPVFrontendBundle:Ventas:venta }
+    requirements:
+         _method: POST
+
+i52_ltpv_frontend_cierre:
+    path: /cierre
+    defaults: { _controller: i52LTPVFrontendBundle:Cierre:cierre }
+
+i52_ltpv_frontend_ejecutacierre:
+    path: /ejecutacierre
+    defaults: { _controller: i52LTPVFrontendBundle:Cierre:cierre }
+    requirements:
+       _method: POST
+
+i52_ltpv_frontend_muestraventa:
+    path: /muestraventa/{id-venta}
+    defaults: { _controller: i52LTPVFrontendBundle:Cierre:cierre }
+    requirements:
+         id:  \d+
+         _method: GET
+
+
+i52_ltpv_frontend_devolucion:
+    path: /devolucion
+    defaults: { _controller: i52LTPVFrontendBundle:Devolucion:devolucion }
+
+i52_ltpv_frontend_buscaventa:
+    path: /buscaventa
+    defaults: { _controller: i52LTPVFrontendBundle:Devolucion:devolucion }
+    requirements:
+         id:  \d+
+         _method: POST
+
+i52_ltpv_frontend_cambiarproducto:
+    path: /cambiarproducto
+    defaults: { _controller: i52LTPVFrontendBundle:Devolucion:devolucion }
+    requirements:
+         id:  \d+
+         _method: POST
+
+i52_ltpv_frontend_cambiarcantidad:
+    path: /cambiarcantidad
+    defaults: { _controller: i52LTPVFrontendBundle:Devolucion:devolucion }
+    requirements:
+         _method: POST
+
+i52_ltpv_frontend_eliminaarticulo:
+    path: /eliminaarticulo/{id-articulo}
+    defaults: { _controller: i52LTPVFrontendBundle:Devolucion:devolucion }
+    requirements:
+         id:  \d+
+         _method: GET
+
+i52_ltpv_frontend_ejecutadevolucion:
+    path: /ejecutadevolucion
+    defaults: { _controller: i52LTPVFrontendBundle:Devolucion:devolucion }
+    requirements:
+       _method: POST
+
+
+
+
+
+
+i52_ltpv_frontend_apiTodosProductos:
+    path: /datos/todosProductos.json
+    defaults: { _controller: i52LTPVFrontendBundle:Datos:todosproductos }
+    requirements:
+         _format: (xml|json)
+         _method: GET
+
+i52_ltpv_frontend_apiTodosClientes:
+    path: /datos/todosClientes.json
+    defaults: { _controller: i52LTPVFrontendBundle:Datos:todosclientes }
+    requirements:
+         _format: (xml|json)
+         _method: GET 
+
+i52_ltpv_frontend_apiRecibirVenta:
+    path: /datos/recibirVenta
+    defaults: { _controller: i52LTPVFrontendBundle:Datos:recibirventa }
+    requirements:
+         _format: (xml|json)
+         _method: POST
+
+i52_ltpv_frontend_apiCierreVentas:
+    path: /datos/cierreVentas.json
+    defaults: { _controller: i52LTPVFrontendBundle:Datos:cierreventas }
+    requirements:
+         _format: (xml|json)
+         _method: GET
+
+i52_ltpv_frontend_apiCierreLineas:
+    path: /datos/cierreLineas.json
+    defaults: { _controller: i52LTPVFrontendBundle:Datos:cierrelineas }
+    requirements:
+         _format: (xml|json)
+         _method: GET
+
+i52_ltpv_frontend_apiUltimoCierre:
+    path: /datos/ultimoCierre.json
+    defaults: { _controller: i52LTPVFrontendBundle:Datos:ultimocierre }
+    requirements:
+         _format: (xml|json)
+         _method: GET
+
+i52_ltpv_frontend_apiRecibirCierre:
+    path: /datos/recibirCierre
+    defaults: { _controller: i52LTPVFrontendBundle:Datos:recibircierre }
+    requirements:
+         _format: (xml|json)
+         _method: POST
+
+i52_ltpv_frontend_apiBuscaVenta:
+    path: /datos/buscaVenta.json/{idventa}
+    defaults: { _controller: i52LTPVFrontendBundle:Datos:buscaventa }
+    requirements:
+         _format: (xml|json)
+         _method: GET
+
+i52_ltpv_frontend_apiBuscaListaVenta:
+    path: /datos/buscaListaVenta.json/{idventa}
+    defaults: { _controller: i52LTPVFrontendBundle:Datos:buscalistaventa }
+    requirements:
+         _format: (xml|json)
+         _method: GET
+
+i52_ltpv_frontend_apiRecibirModificada:
+    path: /datos/recibirModificada
+    defaults: { _controller: i52LTPVFrontendBundle:Datos:recibirmodificada }
+    requirements:
+         _format: (xml|json)
+         _method: POST
+
+i52_ltpv_frontend_apiTodosClientesCuotas:
+    path: /datos/todosClientesCuotas.json
+    defaults: { _controller: i52LTPVFrontendBundle:Datos:todosclientescuotas }
+    requirements:
+         _format: (xml|json)
+         _method: GET
+
+i52_ltpv_frontend_apiRecibirCuotas:
+    path: /datos/recibirCuotas
+    defaults: { _controller: i52LTPVFrontendBundle:Datos:recibircuotas }
+    requirements:
+         _format: (xml|json)
+         _method: POST
+
+i52_ltpv_frontend_apiLogin:
+    path: /datos/login/{username}/{password}
+    defaults: { _controller: i52LTPVFrontendBundle:Datos:login }
+    requirements:
+         _format: (xml|json)
+         _method: GET
+
+
+api_login_check:
+   path: /datos/login_check
+
+
+
+login_route:
+    path: /login
+    defaults: { _controller: i52LTPVFrontendBundle:Security:login }
+
+login_check:
+    path: /login_check
+    # no controller is bound to this route
+    # as it's handled by the Security system
+
+logout:
+    path: /logout

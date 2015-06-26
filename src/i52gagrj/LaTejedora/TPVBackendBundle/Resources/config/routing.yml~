@@ -1,0 +1,59 @@
+i52_ltpv_backend_socio:
+    resource: "@i52LTPVBackendBundle/Resources/config/routing/socio.yml"
+    prefix:   /socio
+
+i52_ltpv_backend_producto:
+    resource: "@i52LTPVBackendBundle/Resources/config/routing/producto.yml"
+    prefix:   /producto
+
+i52_ltpv_backend_proveedor:
+    resource: "@i52LTPVBackendBundle/Resources/config/routing/proveedor.yml"
+    prefix:   /proveedor
+
+i52_ltpv_frontend_usuario:
+    resource: "@i52LTPVBackendBundle/Resources/config/routing/usuario.yml"
+    prefix:   /usuario
+
+i52_ltpv_frontend_diario:
+    resource: "@i52LTPVBackendBundle/Resources/config/routing/diario.yml"
+    prefix:   /diario
+
+i52_ltpv_frontend_venta:
+    resource: "@i52LTPVBackendBundle/Resources/config/routing/venta.yml"
+    prefix:   /venta
+
+i52_ltpv_backend_homepage:
+    path:     /
+    defaults: { _controller: i52LTPVBackendBundle:Administracion:index }
+
+i52_ltpv_backend_gestion:
+    path:     /gestion
+    defaults: { _controller: i52LTPVBackendBundle:Administracion:gestion }
+
+i52_ltpv_backend_usuarios:
+    path:     /gestion/usuarios/form_usuario
+    defaults: { _controller: i52LTPVBackendBundle:Usuarios:menu }
+
+i52_ltpv_backend_usuarios_alta:
+    path:     /gestion/usuarios/form_usuario
+    defaults: { _controller: i52LTPVBackendBundle:Usuarios:formUsuario }
+
+i52_ltpv_backend_informes:
+    path:     /informes
+    defaults: { _controller: i52LTPVBackendBundle:Administracion:informes }
+
+i52_ltpv_backend_cuotas:
+    path:     /cuotas
+    defaults: { _controller: i52LTPVBackendBundle:Cuotas:cuotas }
+
+i52_ltpv_backend_cambiacuota:
+    path:     /cambiacuota
+    defaults: { _controller: i52LTPVBackendBundle:Cuotas:cuotas }
+    requirements:
+       _method: POST
+
+i52_ltpv_backend_finalizacuotas:
+    path:     /finalizacuotas
+    defaults: { _controller: i52LTPVBackendBundle:Cuotas:cuotas }
+    requirements:
+       _method: POST

@@ -1,0 +1,40 @@
+{% extends 'i52LTPVFrontendBundle:Cierres:layout.html.twig' %}
+
+  {% block cierre %} 
+    <div class="cierrecaja" >
+      <strong>Cantidad en caja: </strong>
+      {% if anterior %}
+        {{ (contado + anterior.dejado) | number_format(2, '.', ',') }}
+      {% else %} 
+        {{ contado | number_format(2, '.', ',') }}
+      {% endif %}
+      <p>
+      <strong>Cierre</strong>
+      <br> 
+      {% if hoy %}
+        <strong>Dia cerrado</strong>
+        <br>
+        <strong>Fecha:</strong>
+        {{ hoy.fecha | date('Y-m-d')  }}
+        <br>
+        <strong>Resto:</strong>
+        {{ hoy.dejado }}      
+      {% else %}        
+        <form id="mandarresto" action="{{ path("i52_ltpv_frontend_ejecutacierre") }}" method="post">
+          <strong>Cantidad a dejar en caja:</strong>
+          <input type="text" size="6" name="resto" >          
+          <button type="submit" class="btn_borrar"> Finalizar </button> 
+        </form>  
+      {% endif %}   
+    </div>     
+
+  {% endblock %}
+
+  
+
+
+
+
+
+
+

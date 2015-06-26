@@ -1,0 +1,10 @@
+venta:
+    path:     /index
+    defaults: { _controller: "i52LTPVBackendBundle:Venta:index" }
+
+venta_show:
+    path:     /{id}/show
+    defaults: { _controller: "i52LTPVBackendBundle:Venta:show" }
+
+
+

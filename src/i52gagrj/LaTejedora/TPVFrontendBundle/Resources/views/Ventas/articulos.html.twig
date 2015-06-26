@@ -1,0 +1,22 @@
+<div class="articuloscaja">  
+  <strong>Artículos</strong>
+  <table>
+    <tr>
+      <th align=center > Nombre 
+      <th align=center > Base Imponible
+      <th align=center > Tipo IVA
+      <th align=center > IVA 
+      <th align=center > Precio 
+      {% for producto in productos %}
+        <tr>
+          <td align=left >
+          <a href="{{ path("i52_ltpv_frontend_aniadearticulo", {"id-articulo": producto.id}) }}">
+            {{ producto.nombre }} 
+          </a>
+	  <td align=center >{{ producto.precio }}
+	  <td align=center >{{ producto.iva }}  
+	  <td align=center >{{ (producto.precio * producto.iva/100)  | number_format(2, '.', ',')}} 
+	  <td align=center >{{ producto.precio + (producto.precio * producto.iva /100) | number_format(2, '.', ',')}}
+      {% endfor %}
+  </table>  
+</div>

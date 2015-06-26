@@ -1,0 +1,59 @@
+{% extends '::base.html.twig' %}
+
+{% block contenido %}
+<div class="contenido">
+    <h3>Lista de Proveedores</h3>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>NIF</th>
+                <th>Direccion</th>
+                <th>Poblacion</th>
+                <th>Provincia</th>
+                <th>CP</th>
+                <th>Telefono fijo</th>
+                <th>Telefono movil</th>
+                <th>E-mail</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('proveedor_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.nombre }}</td>
+                <td>{{ entity.nif }}</td>
+                <td>{{ entity.direccion }}</td>
+                <td>{{ entity.poblacion }}</td>
+                <td>{{ entity.provincia }}</td>
+                <td>{{ entity.cp }}</td>
+                <td>{{ entity.telefijo }}</td>
+                <td>{{ entity.telemovil }}</td>
+                <td>{{ entity.email }}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('proveedor_show', { 'id': entity.id }) }}">Mostrar</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('proveedor_edit', { 'id': entity.id }) }}">Editar</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('proveedor_new') }}">
+                Añadir un nuevo proveedor
+            </a>
+        </li>
+    </ul>
+    </div>
+    {% endblock %}

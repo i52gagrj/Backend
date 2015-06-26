@@ -1,0 +1,18 @@
+{% extends '::base.html.twig' %}
+
+{% block contenido %}
+  <div ng-app="App">
+  {% if concluido==false %}
+    {% include 'i52LTPVFrontendBundle:Ventas:articulos.html.twig' %}
+  {%else %} 
+    <div class="articuloscaja">
+      <h2> Venta realizada Correctamente </h2>
+    </div>
+  {% endif %}
+
+  {% block venta %}{% endblock %}
+
+  {% include 'i52LTPVFrontendBundle:Ventas:socio.html.twig' %}
+  </div>
+{% endblock %}
+

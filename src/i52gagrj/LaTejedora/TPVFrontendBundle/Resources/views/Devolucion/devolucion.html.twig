@@ -1,0 +1,95 @@
+{% extends 'i52LTPVFrontendBundle:Devolucion:layout.html.twig' %}
+
+  {% block devolucion %} 
+
+    {% if cesta %}
+    <div class="cestacaja" >
+      <strong>Venta corregida</strong>
+      {% set base21 = 0 %}
+      {% set base10 = 0 %}
+      {% set base4 = 0 %}
+      {% set iva21 = 0 %}
+      {% set iva10 = 0 %}
+      {% set iva4 = 0 %}
+      {% set total = 0 %}
+      <table>
+        <tr>
+        {% if finalizado == false %} 
+          <th align=left> Id 
+        {% endif %}
+        <th align=left> Artículo
+        <th align=right> Base 
+        <th align=right> Tipo IVA
+        <th align=right> IVA 
+        <th align=right> Total
+        <th align=right> Cantidad
+	{% for x in cesta %}
+          {% if x.cantidad != 0 %}          
+	  <tr> 
+            {% if finalizado == false %}
+              <td align=center >
+              <form id="form_cantidad" action="{{ path("i52_ltpv_frontend_cambiarproducto") }}" method="post">
+                <input size="2" name="id-producto" id="id-producto" value= "{{ x.producto.id }}" />
+                <input type="hidden" name="id-linea" id="id-linea" value= "{{ x.id }}" />
+                <button type="submit" class="btn_producto">Cambiar</button> 
+              </form>            
+            {% endif %}
+              <td align=left >{{ x.producto.nombre }}
+              <td align=right >{{ x.precio }}
+              <td align=right >{{ x.iva }}  
+	      <td align=right >{{ (x.precio * x.iva /100)  | number_format(2, '.', ',')}} 
+	      <td align=right >{{ (x.precio + (x.precio * x.iva /100) | number_format(2, '.', ',')) * x.cantidad}}
+              <td align=right >
+              {% if finalizado == false %} 
+            <form id="form_cantidad" action="{{ path("i52_ltpv_frontend_cambiarcantidad") }}" method="post">
+              <input size="3" name="cantidad" id="cantidad" size="2" value= "{{ x.cantidad }}" />
+              <input type="hidden" name="id-linea" id="id-linea" value= "{{ x.id }}" />
+              <button type="submit" class="btn_cantidad"> Cambiar</button> 
+            </form>           
+            <td align=right >
+            <a href="{{ path("i52_ltpv_frontend_eliminaarticulo", {"id-linea": x.id}) }}">
+              <button type="submit" class="btn_borrar"> Borrar</button>
+            </a>     
+            {% else %}              
+            <td align=right >{{ x.cantidad }}
+            {% endif %}
+          {% if x.iva==21 %}             
+            {% set base21 = base21 + (x.precio * x.cantidad) %}  
+          {% endif %}
+          {% if x.iva==10 %}             
+            {% set base10 = base10 + (x.precio * x.cantidad) %}  
+          {% endif %}  
+          {% if x.iva==4 %}             
+            {% set base4 = base4 + (x.precio * x.cantidad) %}  
+          {% endif %}           
+          {% endif %}                
+        {% endfor %}
+      </table>  
+    </div>
+
+    <div class="totalescaja">
+      {% set iva21 = ( base21 * (21/100)| number_format(2, '.', ','))  %}
+      {% set iva10 = ( base10 * (10/100)| number_format(2, '.', ','))  %}
+      {% set iva4 = ( base4 * (4/100)| number_format(2, '.', ','))  %}
+      <strong>TOTALES</strong>
+      <br> 
+      <strong>BASE 21: </strong>{{ base21 }} -
+      <strong>BASE 10: </strong>{{ base10 }} -
+      <strong>BASE 4: </strong>{{ base4 }}      
+      <br>
+      <strong>IVA 21: </strong>{{ iva21 }} -
+      <strong>IVA 10: </strong>{{ iva10 }} -
+      <strong>IVA 4: </strong>{{ iva4 }}
+      <br><strong>TOTAL: </strong>{{ (base21 + base10 + base4 + iva21 + iva10 + iva4) }}
+      <strong>DIFERENCIA: </strong>{{ ( totaloriginal - totalnuevo ) | abs }}
+      {% if (totaloriginal - totalnuevo) > 0 %} a devolver {% endif %}
+      {% if (totaloriginal - totalnuevo) < 0 %} a pagar {% endif %}
+      {% if finalizado==false %}
+        <form id="pago" action="{{ path("i52_ltpv_frontend_ejecutadevolucion") }}" method="post">       
+          <button type="submit" class="btn_finalizar"> Finalizar </button> 
+        </form>  
+      {% endif %}
+    </div>
+    {% endif %}
+
+  {% endblock %}

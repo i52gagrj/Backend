@@ -1,0 +1,77 @@
+# you can read more about security in the related section of the documentation
+# http://symfony.com/doc/current/book/security.html
+security:
+    encoders:
+        Symfony\Component\Security\Core\User\User:
+            algorithm: bcrypt
+            cost: 12
+        i52gagrj\LaTejedora\TPVFrontendBundle\Entity\Usuario:
+            algorithm: bcrypt
+            cost: 12
+
+    # http://symfony.com/doc/current/book/security.html#hierarchical-roles
+    role_hierarchy:
+        ROLE_SUPERVISOR: [ROLE_USUARIO, ROLE_ADMINISTRADOR]
+
+    # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
+    providers:
+        in_memory:
+            memory:
+                users:
+                    alberto:  { password: $2a$12$fU.jXZO4vIAb7pKz77j7I.R5Aal09OrR9YR6TOwVs0bn0HLqIyirm, roles:  [ 'ROLE_USUARIO' ] }
+                    maria:  { password: $2a$12$fU.jXZO4vIAb7pKz77j7I.R5Aal09OrR9YR6TOwVs0bn0HLqIyirm, roles: [ 'ROLE_SUPERVISOR' ] }
+                    miguel:  { password: $2a$12$fU.jXZO4vIAb7pKz77j7I.R5Aal09OrR9YR6TOwVs0bn0HLqIyirm, roles: [ 'ROLE_ADMINISTRADOR' ] }
+
+        base_datos:
+            entity: { class: i52LTPVFrontendBundle:Usuario, property: username } 
+
+    # the main part of the security, where you can set up firewalls
+    # for specific sections of your app
+    firewalls:
+        # disables authentication for assets and the profiler, adapt it according to your needs
+        dev:
+            pattern:  ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+  
+        i52LTPV_publico:
+            pattern:  ^/caja/(index|login$|datos)
+            security: false
+
+        i52LTPV_protegido:
+            pattern:  ^/(caja|administracion)
+            provider: base_datos
+            form_login:
+                login_path:  /caja/login
+                check_path:  /caja/login_check
+            logout:
+                path:   /caja/logout
+                target: /caja/index
+
+        login:
+            pattern:  ^/caja/datos/login
+            stateless: true
+            anonymous: true
+            form_login:
+                check_path:               /datos/login_check
+                success_handler:          lexik_jwt_authentication.handler.authentication_success
+                failure_handler:          lexik_jwt_authentication.handler.authentication_failure
+                require_previous_session: false
+
+        api:
+            pattern:   ^/caja/datos
+            stateless: true
+            lexik_jwt: ~
+
+
+
+    # with these settings you can restrict or allow access for different parts
+    # of your application based on roles, ip, host or methods
+    # http://symfony.com/doc/current/cookbook/security/access_control.html
+    access_control:
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/index, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/administracion, roles: ROLE_ADMINISTRADOR }
+        - { path: ^/caja, roles: ROLE_USUARIO }
+        - { path: ^/caja/datos/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/caja/datos,       roles: IS_AUTHENTICATED_FULLY }
+

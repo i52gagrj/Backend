@@ -1,0 +1,19 @@
+<div class="clientecaja">
+<strong>Cliente</strong>
+{%if concluido==false%}   
+<form id="form_buscar" action="{{ path("i52_ltpv_frontend_aniadecliente") }}" method="post">
+  <strong>Código:</strong>
+  <input size="2" name="id-socio" id="id-socio"/>
+  <button type="submit" class="btn_buscar"> Buscar</button>
+</form>
+{% endif %}
+
+<strong> Nombre: </strong> {{ socio.nombre }} 
+<strong> DNI: </strong> {{ socio.dni }}
+<br><strong> Dirección: </strong> {{ socio.direccion }} 
+<strong> Población: </strong> {{ socio.poblacion }} 
+ 
+<br><strong> Saldo:  </strong> {{ socio.saldo }}
+
+</div>
+

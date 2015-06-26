@@ -1,0 +1,17 @@
+{% extends '::base.html.twig' %}
+
+{% block contenido %}
+<div class="contenido">
+    <h1>Añadir Producto</h1>
+
+    {{ form(form) }}
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('producto') }}">
+            Volver al listado
+        </a>
+    </li>
+</ul>
+</div>
+{% endblock %}

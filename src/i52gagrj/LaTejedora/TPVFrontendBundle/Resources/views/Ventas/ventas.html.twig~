@@ -1,0 +1,102 @@
+{% extends 'i52LTPVFrontendBundle:Ventas:layout.html.twig' %}
+
+  {% block venta %}
+
+    <div class="cestacaja" ng-init=" Creadores = 'Misko Hevery y Adam Abrons' ">
+      <strong>Cesta</strong>
+      {% set base21 = 0 %}
+      {% set base10 = 0 %}
+      {% set base4 = 0 %}
+      {% set iva21 = 0 %}
+      {% set iva10 = 0 %}
+      {% set iva4 = 0 %}
+      {% set total = 0 %}
+      <table>
+        <tr>
+        <th align=left> Artículo
+        <th align=right> Base 
+        <th align=right> Tipo IVA
+        <th align=right> IVA 
+        <th align=right> Total
+        <th align=right> Cantidad
+	{% for x in cesta %}
+	  <tr> 
+          {% for producto in productos %} 
+            {% if x.articulo==producto.id %}  
+	      <td align=left >{{ producto.nombre  }}
+	      <td align=right >{{ producto.precio }}
+	      <td align=right >{{ producto.iva }}  
+	      <td align=right >{{ (producto.precio * producto.iva /100)  | number_format(2, '.', ',')}} 
+	      <td align=right >{{ (producto.precio + (producto.precio * producto.iva /100) | number_format(2, '.', ',')) * x.cantidad}}
+              <td align=right >
+              {%if concluido==true%}
+                {{ x.cantidad }}
+              {% else %}
+                <form id="form_cantidad" action="{{ path("i52_ltpv_frontend_cantidadarticulo") }}" method="post">
+                  <input size="2" name="cantidad" id="cantidad" value= "{{ x.cantidad }}" />
+                  <input type="hidden" name="id-articulo" id="id-articulo" value= "{{ producto.id }}" />
+                  <button type="submit" class="btn_cantidad"> Cambiar</button> 
+                </form>           
+                <td align=right >
+                <a href="{{ path("i52_ltpv_frontend_borraarticulo", {"id-articulo": producto.id}) }}">
+                  <button type="submit" class="btn_borrar"> Borrar</button>
+                </a>     
+              {% endif %}                         
+              {% if producto.iva==21 %}             
+                {% set base21 = base21 + producto.precio %}  
+              {% endif %}
+              {% if producto.iva==10 %}             
+                {% set base10 = base10 + producto.precio %}  
+              {% endif %}  
+              {% if producto.iva==4 %}             
+                {% set base4 = base4 + producto.precio %}  
+              {% endif %}                  
+            {% endif %}
+          {% endfor %}    
+        {% endfor %}
+      </table>  
+
+      AngularJS fue creado por {%verbatim%}{{Creadores}}{%endverbatim%} hace sólo {%verbatim%}{{2015-2009}}{%endverbatim%} años. 
+
+      Hola {%verbatim%}{{nombre}}{% endverbatim%}
+      <form action="">
+        ¿Cómo te llamas? <input type="text" ng-model="nombre">
+      </form>
+
+    </div>
+
+    <div class="totalescaja">
+      {% set iva21 =  base21 * (21/100) %}
+      {% set iva10 =  base10 * (10/100) %}
+      {% set iva4 =  base4 * (4/100) %}
+      <strong>TOTALES</strong>
+      <br> 
+      <strong>BASE 21: </strong>{{ base21| number_format(2, '.', ',') }} -
+      <strong>BASE 10: </strong>{{ base10| number_format(2, '.', ',') }} -
+      <strong>BASE 4: </strong>{{ base4| number_format(2, '.', ',') }}      
+      <br>
+      <strong>IVA 21: </strong>{{ iva21| number_format(2, '.', ',') }} -
+      <strong>IVA 10: </strong>{{ iva10| number_format(2, '.', ',') }} -
+      <strong>IVA 4: </strong>{{ iva4| number_format(2, '.', ',') }}
+      <br><strong>TOTAL: </strong>{{ (base21 + base10 + base4 + iva21 + iva10 + iva4)| number_format(2, '.', ',') }}
+      {%if concluido==false%}
+        <form id="pago" action="{{ path("i52_ltpv_frontend_cierraventa") }}" method="post">
+          {% if socio.id != '1' %}
+            <input type="radio" name="tipo-pago" value="prepago"> Prepago
+          {% endif %}
+          <input type="radio" name="tipo-pago" value="contado" checked> Contado          
+          <button type="submit" class="btn_borrar"> Finalizar </button> 
+        </form>  
+      {% endif %}   
+    </div>     
+
+  {% endblock %}
+
+  
+
+
+
+
+
+
+

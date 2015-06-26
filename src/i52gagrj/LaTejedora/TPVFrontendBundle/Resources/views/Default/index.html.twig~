@@ -1,0 +1,10 @@
+{% extends '::base.html.twig' %}
+
+{% block contenido %}
+  <div class="contenido">
+     <h1>Caja</h1>
+     <h3> Fecha: {{fecha}}  </h3>
+     {{mensaje}}
+  </div>
+
+{% endblock %}

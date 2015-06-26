@@ -1,0 +1,58 @@
+{% extends '::base.html.twig' %}
+
+{% block contenido -%}
+
+    <h1>Proveedor list</h1>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Nif</th>
+                <th>Direccion</th>
+                <th>Poblacion</th>
+                <th>Provincia</th>
+                <th>Cp</th>
+                <th>Telefijo</th>
+                <th>Telemovil</th>
+                <th>Email</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('proveedor_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.nombre }}</td>
+                <td>{{ entity.nif }}</td>
+                <td>{{ entity.direccion }}</td>
+                <td>{{ entity.poblacion }}</td>
+                <td>{{ entity.provincia }}</td>
+                <td>{{ entity.cp }}</td>
+                <td>{{ entity.telefijo }}</td>
+                <td>{{ entity.telemovil }}</td>
+                <td>{{ entity.email }}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('proveedor_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('proveedor_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('proveedor_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>
+    {% endblock %}

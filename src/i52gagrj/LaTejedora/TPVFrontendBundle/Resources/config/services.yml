@@ -1,0 +1,19 @@
+services:
+#    i52_ltpv_frontend.example:
+#        class: i52gagrj\LaTejedora\TPVFrontendBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]
+parameters:
+  i52_ltpv_frontend.database_name: TPVCJ
+  i52_ltpv_frontend.database_user: root
+  i52_ltpv_frontend.database_password: rolling
+  i52_ltpv_frontend.database_host: localhost
+  i52_ltpv_frontend.model.class: i52gagrj\LaTejedora\TPVFrontendBundle\Model\Model
+
+services:
+  i52_ltpv_frontend.model:
+     class: %i52_ltpv_frontend.model.class%
+     arguments:
+       - %i52_ltpv_frontend.database_name%
+       - %i52_ltpv_frontend.database_user%
+       - %i52_ltpv_frontend.database_password%
+       - %i52_ltpv_frontend.database_host%

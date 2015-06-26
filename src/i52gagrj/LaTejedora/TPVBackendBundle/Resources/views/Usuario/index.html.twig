@@ -1,0 +1,51 @@
+{% extends '::base.html.twig' %}
+
+{% block contenido %}
+<div class="contenido">
+    <h3>Lista de Usuarios</h3>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>DNI</th>
+                <th>Nombre de usuario</th>
+                <th>Activo</th>
+                <th>Fecha de baja</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('usuario_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.nombre }}</td>
+                <td>{{ entity.dni }}</td>
+                <td>{{ entity.username }}</td>
+                <td>{{ entity.isActive }}</td>
+                <td>{% if entity.fechainactivo %}{{ entity.fechainactivo|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('usuario_show', { 'id': entity.id }) }}">Mostrar</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('usuario_edit', { 'id': entity.id }) }}">Editar</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('usuario_new') }}">
+                Añadir un nuevo usuario
+            </a>
+        </li>
+    </ul>
+    </div>
+    {% endblock %}

@@ -1,0 +1,9 @@
+{% extends '::base.html.twig' %}
+
+{% block contenido %}
+
+     <h2>{{mensaje}}</h2>
+     <p><a href="{{ path(rutaCrear)}}">Creación</a></p>	
+     <p><a href="{{ path(rutaListado)}}">Listado</a></p>	
+
+{% endblock %}

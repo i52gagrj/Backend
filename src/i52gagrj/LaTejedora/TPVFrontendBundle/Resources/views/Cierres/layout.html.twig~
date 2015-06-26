@@ -1,0 +1,18 @@
+{% extends '::base.html.twig' %}
+
+{% block contenido %}
+  <div ng-app="App" ng-controller="AlumnosController">
+  {% include 'i52LTPVFrontendBundle:Cierres:ventas.html.twig' %}  
+
+  {% include 'i52LTPVFrontendBundle:Cierres:desglose.html.twig' %}
+
+  {% block cierre %}{% endblock %}  
+  </div>
+{% endblock %}
+
+
+{#{% block javascripts %}
+  {{ parent() }}
+
+  <script src="{{ asset('bundles/i52ltpvfrontend/js/scriptrepeat1.js') }}" type="text/javascript"></script>
+{% endblock %}#}

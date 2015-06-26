@@ -1,0 +1,34 @@
+usuario_menu:
+    path:     /menu
+    defaults: { _controller: "i52LTPVBackendBundle:Usuario:menu" }
+
+usuario:
+    path:     /index
+    defaults: { _controller: "i52LTPVBackendBundle:Usuario:index" }
+
+usuario_show:
+    path:     /{id}/show
+    defaults: { _controller: "i52LTPVBackendBundle:Usuario:show" }
+
+usuario_new:
+    path:     /new
+    defaults: { _controller: "i52LTPVBackendBundle:Usuario:new" }
+
+usuario_create:
+    path:     /create
+    defaults: { _controller: "i52LTPVBackendBundle:Usuario:create" }
+    methods:  POST
+
+usuario_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "i52LTPVBackendBundle:Usuario:edit" }
+
+usuario_update:
+    path:     /{id}/update
+    defaults: { _controller: "i52LTPVBackendBundle:Usuario:update" }
+    methods:  [POST, PUT]
+
+usuario_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "i52LTPVBackendBundle:Usuario:delete" }
+    methods:  [POST, DELETE]

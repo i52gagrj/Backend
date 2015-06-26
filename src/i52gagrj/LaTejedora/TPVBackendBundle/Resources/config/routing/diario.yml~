@@ -1,0 +1,10 @@
+diario:
+    path:     /index
+    defaults: { _controller: "i52LTPVFrontendBundle:Diario:index" }
+
+diario_show:
+    path:     /{id}/show
+    defaults: { _controller: "i52LTPVFrontendBundle:Diario:show" }
+
+
+

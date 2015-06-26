@@ -1,0 +1,36 @@
+{% extends '::base.html.twig' %}
+
+{% block contenido %}
+<div class="contenido">
+    <h3>Lista de Ventas</h3>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Fecha de Venta</th>
+                <th>Hora de Venta</th>
+                <th>Contado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('venta_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{% if entity.fechaventa %}{{ entity.fechaventa|date('Y-m-d') }}{% endif %}</td>
+                <td>{{ entity.horaventa|date('H:i:s') }}</td>
+                <td>{{ entity.contado }}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('venta_show', { 'id': entity.id }) }}">Mostrar</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    {% endblock %}

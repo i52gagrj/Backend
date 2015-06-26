@@ -1,0 +1,34 @@
+socio_menu:
+    path:     /menu
+    defaults: { _controller: "i52LTPVBackendBundle:Socio:menu" }
+
+socio:
+    path:     /index
+    defaults: { _controller: "i52LTPVBackendBundle:Socio:index" }
+
+socio_show:
+    path:     /{id}/show
+    defaults: { _controller: "i52LTPVBackendBundle:Socio:show" }
+
+socio_new:
+    path:     /new
+    defaults: { _controller: "i52LTPVBackendBundle:Socio:new" }
+
+socio_create:
+    path:     /create
+    defaults: { _controller: "i52LTPVBackendBundle:Socio:create" }
+    requirements: { _method: post }
+
+socio_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "i52LTPVBackendBundle:Socio:edit" }
+
+socio_update:
+    path:     /{id}/update
+    defaults: { _controller: "i52LTPVBackendBundle:Socio:update" }
+    requirements: { _method: post|put }
+
+socio_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "i52LTPVBackendBundle:Socio:delete" }
+    requirements: { _method: post|delete }

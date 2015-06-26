@@ -1,0 +1,28 @@
+<div class="desglosecaja">
+  <strong>INGRESOS</strong>
+  <br>
+  <strong>En efectivo: </strong>
+  {{ contado  | number_format(2, '.', ',') }}
+  <strong>En prepago: </strong>
+  {{ prepago  | number_format(2, '.', ',') }}
+  <br><br>
+  <strong>DESGLOSE DEL IVA</strong>
+  <br> 
+  <strong>Base Imponible 21%: </strong>
+  {{ base21 | number_format(2, '.', ',')  }} 
+  <strong>IVA 21%: </strong>
+  {{ base21 * (21/100) | number_format(2, '.', ',') }}
+  <br>
+  <strong>Base Imponible 10%: </strong>
+  {{ base10 | number_format(2, '.', ',')  }}
+  <strong>IVA 10%: </strong>
+  {{ base10 * (10/100) | number_format(2, '.', ',') }}
+  <br> 
+  <strong>Base Imponible 4%: </strong>
+  {{ base4 | number_format(2, '.', ',')  }}
+  <strong>IVA 21%: </strong>
+  {{ base4 * (4/100) | number_format(2, '.', ',') }}
+  
+</div>
+
+
