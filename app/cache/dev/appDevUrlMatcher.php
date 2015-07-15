@@ -767,13 +767,13 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
 
                 if (0 === strpos($pathinfo, '/caja/datos/login')) {
                     // i52_ltpv_frontend_apiLogin
-                    if (0 === strpos($pathinfo, '/caja/datos/login.json') && preg_match('#^/caja/datos/login\\.json/(?P<username>[^/]++)/(?P<password>[^/]++)$#s', $pathinfo, $matches)) {
-                        if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
-                            $allow = array_merge($allow, array('GET', 'HEAD'));
+                    if ($pathinfo === '/caja/datos/login') {
+                        if ($this->context->getMethod() != 'POST') {
+                            $allow[] = 'POST';
                             goto not_i52_ltpv_frontend_apiLogin;
                         }
 
-                        return $this->mergeDefaults(array_replace($matches, array('_route' => 'i52_ltpv_frontend_apiLogin')), array (  '_controller' => 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Controller\\DatosController::loginAction',));
+                        return array (  '_controller' => 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Controller\\DatosController::loginAction',  '_route' => 'i52_ltpv_frontend_apiLogin',);
                     }
                     not_i52_ltpv_frontend_apiLogin:
 

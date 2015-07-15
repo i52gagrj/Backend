@@ -96,7 +96,7 @@ i52_ltpv_frontend_ejecutadevolucion:
        _method: POST
 
 
-
+#############################################################################
 
 
 
@@ -185,11 +185,15 @@ i52_ltpv_frontend_apiRecibirCuotas:
          _method: POST
 
 i52_ltpv_frontend_apiLogin:
-    path: /datos/login.json/{username}/{password}
+    path: /datos/login
     defaults: { _controller: i52LTPVFrontendBundle:Datos:login }
     requirements:
          _format: (xml|json)
-         _method: GET
+         _method: POST
+
+
+
+#############################################################################
 
 
 api_login_check:

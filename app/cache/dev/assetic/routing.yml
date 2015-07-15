@@ -2,4 +2,4 @@ _assetic:
     resource: .
     type: assetic
 _app:
-    resource: /var/www/html/proyecto/TPVCJ1.2/app/config/routing_dev.yml
+    resource: /var/www/html/TPVCJ1.2/app/config/routing_dev.yml
