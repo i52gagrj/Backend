@@ -647,6 +647,17 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
                     }
                     not_i52_ltpv_frontend_apiTodosClientes:
 
+                    // i52_ltpv_frontend_apiTodosTipos
+                    if ($pathinfo === '/caja/datos/todosTipos.json') {
+                        if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                            $allow = array_merge($allow, array('GET', 'HEAD'));
+                            goto not_i52_ltpv_frontend_apiTodosTipos;
+                        }
+
+                        return array (  '_controller' => 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Controller\\DatosController::todostiposAction',  '_route' => 'i52_ltpv_frontend_apiTodosTipos',);
+                    }
+                    not_i52_ltpv_frontend_apiTodosTipos:
+
                 }
 
                 // i52_ltpv_frontend_apiRecibirVenta

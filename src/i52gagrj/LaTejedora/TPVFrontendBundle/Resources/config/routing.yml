@@ -114,6 +114,13 @@ i52_ltpv_frontend_apiTodosClientes:
          _format: (xml|json)
          _method: GET 
 
+i52_ltpv_frontend_apiTodosTipos:
+    path: /datos/todosTipos.json
+    defaults: { _controller: i52LTPVFrontendBundle:Datos:todostipos }
+    requirements:
+         _format: (xml|json)
+         _method: GET 
+
 i52_ltpv_frontend_apiRecibirVenta:
     path: /datos/recibirVenta
     defaults: { _controller: i52LTPVFrontendBundle:Datos:recibirventa }

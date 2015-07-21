@@ -64,10 +64,10 @@ class Producto extends \i52gagrj\LaTejedora\TPVFrontendBundle\Entity\Producto im
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Producto' . "\0" . 'id', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Producto' . "\0" . 'nombre', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Producto' . "\0" . 'descripcion', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Producto' . "\0" . 'precio', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Producto' . "\0" . 'iva', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Producto' . "\0" . 'stock', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Producto' . "\0" . 'activo', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Producto' . "\0" . 'fechainactivo', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Producto' . "\0" . 'proveedor', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Producto' . "\0" . 'lineaventas');
+            return array('__isInitialized__', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Producto' . "\0" . 'id', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Producto' . "\0" . 'nombre', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Producto' . "\0" . 'descripcion', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Producto' . "\0" . 'precio', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Producto' . "\0" . 'iva', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Producto' . "\0" . 'stock', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Producto' . "\0" . 'activo', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Producto' . "\0" . 'fechainactivo', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Producto' . "\0" . 'proveedor', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Producto' . "\0" . 'tipo', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Producto' . "\0" . 'lineaventas');
         }
 
-        return array('__isInitialized__', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Producto' . "\0" . 'id', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Producto' . "\0" . 'nombre', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Producto' . "\0" . 'descripcion', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Producto' . "\0" . 'precio', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Producto' . "\0" . 'iva', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Producto' . "\0" . 'stock', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Producto' . "\0" . 'activo', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Producto' . "\0" . 'fechainactivo', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Producto' . "\0" . 'proveedor', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Producto' . "\0" . 'lineaventas');
+        return array('__isInitialized__', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Producto' . "\0" . 'id', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Producto' . "\0" . 'nombre', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Producto' . "\0" . 'descripcion', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Producto' . "\0" . 'precio', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Producto' . "\0" . 'iva', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Producto' . "\0" . 'stock', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Producto' . "\0" . 'activo', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Producto' . "\0" . 'fechainactivo', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Producto' . "\0" . 'proveedor', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Producto' . "\0" . 'tipo', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Producto' . "\0" . 'lineaventas');
     }
 
     /**
@@ -362,6 +362,28 @@ class Producto extends \i52gagrj\LaTejedora\TPVFrontendBundle\Entity\Producto im
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getProveedor', array());
 
         return parent::getProveedor();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setTipo(\i52gagrj\LaTejedora\TPVFrontendBundle\Entity\Tipo $tipo = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTipo', array($tipo));
+
+        return parent::setTipo($tipo);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTipo()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTipo', array());
+
+        return parent::getTipo();
     }
 
     /**

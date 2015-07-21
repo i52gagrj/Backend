@@ -106,4 +106,37 @@ class Cargo
     {
         return $this->rol;
     }
+
+    /**
+     * Add usuarios
+     *
+     * @param \i52gagrj\LaTejedora\TPVFrontendBundle\Entity\Usuario $usuarios
+     * @return Cargo
+     */
+    public function addUsuario(\i52gagrj\LaTejedora\TPVFrontendBundle\Entity\Usuario $usuarios)
+    {
+        $this->usuarios[] = $usuarios;
+
+        return $this;
+    }
+
+    /**
+     * Remove usuarios
+     *
+     * @param \i52gagrj\LaTejedora\TPVFrontendBundle\Entity\Usuario $usuarios
+     */
+    public function removeUsuario(\i52gagrj\LaTejedora\TPVFrontendBundle\Entity\Usuario $usuarios)
+    {
+        $this->usuarios->removeElement($usuarios);
+    }
+
+    /**
+     * Get usuarios
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getUsuarios()
+    {
+        return $this->usuarios;
+    }
 }

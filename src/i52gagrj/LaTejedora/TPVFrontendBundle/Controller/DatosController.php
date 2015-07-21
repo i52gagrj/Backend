@@ -38,12 +38,16 @@ class DatosController extends Controller
           findAll();
         foreach($productos as $producto)
         {
-          $elemento = array(
-            'id' => $producto->getId(),
-            'nombre' => $producto->getNombre(),
-            'precio' => $producto->getPrecio(),
-            'iva' => $producto->getIva());
-          array_push($respuesta, $elemento);    
+          if($producto->getActivo())
+          { 
+            $elemento = array(
+              'id' => $producto->getId(),
+              'nombre' => $producto->getNombre(),
+              'precio' => $producto->getPrecio(),
+              'iva' => $producto->getIva(),
+              'tipo' => $producto->getTipo()->getNombre());
+            array_push($respuesta, $elemento);    
+          }
         }     
         $tokend->iat = time();
 	$tokend->exp = time() + 900;
@@ -141,6 +145,64 @@ class DatosController extends Controller
     }
   }
 
+  public function todostiposAction()
+  {
+    //Extraer la cabecera de la petición
+    $headers=apache_request_headers();
+    //Si contiene el token, en la sección Authorization
+    if(isset($headers["Authorization"]))
+    {
+      $token=explode(" ", $headers["Authorization"]);
+      $tokend=JWT::decode(trim($token[1],'"'));
+      $respuesta = array();
+      //Si los datos del token son correctos, se cargan los tipos
+      if($this->comprobarToken($tokend->id, $tokend->username))
+      {  
+        $em = $this->getDoctrine()->getEntityManager();
+        $tipos = $em->getRepository('i52LTPVFrontendBundle:Tipo')->
+          findAll();
+        foreach($tipos as $tipo)
+        {
+          $elemento = array(
+            'id' => $tipo->getId(),
+            'nombre' => $tipo->getNombre(),
+            'padre' => $tipo->getPadre());
+          array_push($respuesta, $elemento);    
+        }     
+        $tokend->iat = time();
+	$tokend->exp = time() + 900;
+	$jwt = JWT::encode($tokend, '');
+        $mandar = new Response(json_encode(array(
+          'code' => 0,
+          'response'=> array(
+          'token' => $jwt, 
+          'tipos' => $respuesta))));
+        $mandar->headers->set('Content-Type', 'application/json');
+        return $mandar;
+      }  
+      //Si los datos del token no son correctos, se manda un codigo de error 1 y un mensaje
+      else
+      {
+        $mandar = new Response(json_encode(array(
+          'code' => 1,
+          'response'=> array( 
+            'respuesta' => "El usuario no se ha identificado correctamente"))));      
+        $mandar->headers->set('Content-Type', 'application/json');
+        return $mandar;        
+      }      
+    }
+    //Si la petición no contiene el token, se manda un codigo de error 2 y un mensaje
+    else
+    {
+      $mandar = new Response(json_encode(array(
+        'code' => 2,
+        'response'=> array( 
+          'respuesta' => "No está autorizado para realizar la consulta"))));      
+      $mandar->headers->set('Content-Type', 'application/json');
+      return $mandar;
+    }
+  }
+
   public function recibirventaAction()
   {
     //Extraer la cabecera de la petición
@@ -205,17 +267,12 @@ class DatosController extends Controller
     $venta->setHoraventa($hora);    
     $venta->setUsuario($usuario);    
     $venta->setSocio($socio);  
-    if($contado){
-      $venta->setContado(true); 
-    } else {
-      $venta->setContado(false); 
-    }  
+    $venta->setContado($contado);
 
     $em->persist($venta);
 
     foreach($cesta as $linea)
-    {
-      
+    {      
       $lineaventa = new Lineaventa();
       $producto = $this->devuelveProducto($linea['id']);  
       $lineaventa->setPrecio($producto->getPrecio()); 
@@ -223,7 +280,7 @@ class DatosController extends Controller
       $lineaventa->setCantidad($linea['cantidad']);
       $lineaventa->setVenta($venta);
       $lineaventa->setProducto($producto);
-      if(!$contado){        
+      if($venta->getContado()==0){        
         $socio->setSaldo( $socio->getSaldo()-
           ( ( $producto->getPrecio() * (1 + ($producto->getIva()/100) ) ) 
           * $linea['cantidad'] )
@@ -261,10 +318,14 @@ class DatosController extends Controller
       $token=explode(" ", $headers["Authorization"]);
       $tokend=JWT::decode(trim($token[1],'"'));
       $respuesta = array();
+      $fechac; 
       //Si los datos del token son correctos, se cargan los productos
       if($this->comprobarToken($tokend->id, $tokend->username))
       { 
-        $ventas = $this->devuelveVentasHoy();  	    
+        //Primero buscar la fecha del último cierre
+        //Después pedir las ventas desde esa fecha   
+        $ultimoDiario=$this->devuelveUltimaFecha();    
+        $ventas = $this->devuelveVentas($ultimoDiario);
         foreach($ventas as $venta)
         {
           if($venta->getContado()) 
@@ -296,8 +357,7 @@ class DatosController extends Controller
         $mandar = new Response(json_encode(array(
           'code' => 1,
           'response'=> array( 
-            'respuesta' => "El usuario no se ha identificado correctamente",
-            'cabecera' => $tokend))));      
+            'respuesta' => "El usuario no se ha identificado correctamente"))));      
         $mandar->headers->set('Content-Type', 'application/json');
         return $mandar;        
       }      
@@ -327,7 +387,8 @@ class DatosController extends Controller
       if($this->comprobarToken($tokend->id, $tokend->username))
       {  
         $em = $this->getDoctrine()->getEntityManager();
-        $ventas = $this->devuelveVentasHoy(); 
+        $ultimoDiario=$this->devuelveUltimaFecha();         
+        $ventas = $this->devuelveVentas($ultimoDiario); 
         foreach($ventas as $venta)
         {
           $lineas = $em->getRepository('i52LTPVFrontendBundle:Lineaventa')->
@@ -361,8 +422,7 @@ class DatosController extends Controller
         $mandar = new Response(json_encode(array(
           'code' => 1,
           'response'=> array( 
-            'respuesta' => "El usuario no se ha identificado correctamente",
-            'cabecera' => $tokend))));      
+            'respuesta' => "El usuario no se ha identificado correctamente"))));      
         $mandar->headers->set('Content-Type', 'application/json');
         return $mandar;        
       }      
@@ -380,6 +440,7 @@ class DatosController extends Controller
   }
 
   public function ultimocierreAction(){
+    $fechac; 
     //Devuelve el diario (cierre) del dia anterior  
     //Extraer la cabecera de la petición
     $headers=apache_request_headers();
@@ -392,11 +453,10 @@ class DatosController extends Controller
       //Si los datos del token son correctos, se cargan los productos
       if($this->comprobarToken($tokend->id, $tokend->username))
       {   
-        $fechahoy = new \DateTime("now"); 
-        $fecha = $fechahoy->modify('-1 day');
+        $ultimocierre = $this->devuelveUltimaFecha();
         $em = $this->getDoctrine()->getEntityManager();
         $cierre = $em->getRepository('i52LTPVFrontendBundle:Diario')->
-          findOneByFecha($fecha);  	
+          findOneByFecha($ultimocierre);  	
         $tokend->iat = time();
 	$tokend->exp = time() + 900;
 	$jwt = JWT::encode($tokend, '');
@@ -432,13 +492,27 @@ class DatosController extends Controller
     } 
   }
 
-  private function devuelveVentasHoy(){
-    //Devuelve el listado de todas las ventas realizadas hoy.
-    $hoy = new \DateTime("now");
+  private function devuelveVentas($fecha){
+    //Devuelve el listado de todas las ventas realizadas tras la fecha indicada.
     $em = $this->getDoctrine()->getEntityManager();
-    $ventas = $em->getRepository('i52LTPVFrontendBundle:Venta')->
-      findByFechaventa($hoy);  	
-    return $ventas;
+    $query = $em->createQuery(
+      'SELECT p
+      FROM i52LTPVFrontendBundle:Venta p
+      WHERE p.fechaventa > :fecha'
+    )->setParameter('fecha', $fecha);	
+    return $query->getResult();
+  }
+
+  private function devuelveUltimaFecha(){
+    //Devuelve la fecha del último cierre de caja.
+    $em = $this->getDoctrine()->getEntityManager();
+    $query = $em->createQuery(
+      'SELECT p
+      FROM i52LTPVFrontendBundle:Diario p
+      WHERE p.fecha=(SELECT MAX(q.fecha) 
+      from i52LTPVFrontendBundle:Diario q)'
+    );  	
+    return $query->getResult()[0]->getFecha();
   }
 
   public function recibircierreAction()

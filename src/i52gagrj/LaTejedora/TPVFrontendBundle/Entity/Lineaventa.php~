@@ -25,7 +25,7 @@ class Lineaventa
     /**
      * @var string
      *
-     * @ORM\Column(name="precio", type="decimal")
+     * @ORM\Column(name="precio", type="decimal", scale=2)
      */
     private $precio;
 

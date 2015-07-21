@@ -81,6 +81,11 @@ class Producto
     private $proveedor;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Tipo")
+     */
+    private $tipo;
+
+    /**
      * @ORM\OneToMany(targetEntity="Lineaventa", mappedBy="producto")
      */
     private $lineaventas;
@@ -285,6 +290,29 @@ class Producto
     public function getProveedor()
     {
         return $this->proveedor;
+    }
+
+    /**
+     * Set tipo
+     *
+     * @param \i52gagrj\LaTejedora\TPVFrontendBundle\Entity\Tipo $tipo
+     * @return Producto
+     */
+    public function setTipo(\i52gagrj\LaTejedora\TPVFrontendBundle\Entity\Tipo $tipo = null)
+    {
+        $this->tipo = $tipo;
+
+        return $this;
+    }
+
+    /**
+     * Get proveedor
+     *
+     * @return \i52gagrj\LaTejedora\TPVFrontendBundle\Entity\Tipo
+     */
+    public function getTipo()
+    {
+        return $this->tipo;
     }
 
     /**
