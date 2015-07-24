@@ -47,21 +47,20 @@ security:
                 path:   /caja/logout
                 target: /caja/index
 
-        #login:
-            #pattern:  ^/caja/datos/login
-            #stateless: true
-            #anonymous: true
-            #form_login:
-                #check_path:               /caja/datos/login
-                #success_handler:          lexik_jwt_authentication.handler.authentication_success
-                #failure_handler:          lexik_jwt_authentication.handler.authentication_failure
-                #require_previous_session: false
+        login:
+            pattern:  ^/caja/datos/login
+            stateless: true
+            anonymous: true
+            form_login:
+                check_path:               /caja/datos/login
+                success_handler:          lexik_jwt_authentication.handler.authentication_success
+                failure_handler:          lexik_jwt_authentication.handler.authentication_failure
+                require_previous_session: false
 
         api:
             pattern:   ^/caja/datos
-            #stateless: true            
-            #lexik_jwt: ~
-            security: false
+            stateless: true
+            lexik_jwt: ~
 
 
 
@@ -73,6 +72,6 @@ security:
         - { path: ^/index, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/administracion, roles: ROLE_ADMINISTRADOR }
         - { path: ^/caja, roles: ROLE_USUARIO }
-        #- { path: ^/caja/datos/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        #- { path: ^/caja/datos,       roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/caja/datos/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/caja/datos,       roles: IS_AUTHENTICATED_FULLY }
 

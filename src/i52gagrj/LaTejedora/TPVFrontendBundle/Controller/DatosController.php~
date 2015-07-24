@@ -280,7 +280,7 @@ class DatosController extends Controller
       $lineaventa->setCantidad($linea['cantidad']);
       $lineaventa->setVenta($venta);
       $lineaventa->setProducto($producto);
-      if(!($venta->getContado())){        
+      if($venta->getContado()==0){        
         $socio->setSaldo( $socio->getSaldo()-
           ( ( $producto->getPrecio() * (1 + ($producto->getIva()/100) ) ) 
           * $linea['cantidad'] )

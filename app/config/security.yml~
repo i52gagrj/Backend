@@ -74,5 +74,5 @@ security:
         - { path: ^/administracion, roles: ROLE_ADMINISTRADOR }
         - { path: ^/caja, roles: ROLE_USUARIO }
         #- { path: ^/caja/datos/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        #- { path: ^/caja/datos,       roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/caja/datos,       roles: IS_AUTHENTICATED_FULLY }
 
