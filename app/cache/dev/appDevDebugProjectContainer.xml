@@ -2071,31 +2071,6 @@
             <argument>true</argument>
           </service>
         </argument>
-        <argument type="service">
-          <service class="Symfony\Component\Security\Core\Authentication\Provider\DaoAuthenticationProvider" public="false">
-            <argument type="service" id="security.user.provider.concrete.in_memory"/>
-            <argument type="service">
-              <service class="Symfony\Component\Security\Core\User\UserChecker" public="false"/>
-            </argument>
-            <argument>login</argument>
-            <argument type="service" id="security.encoder_factory"/>
-            <argument>true</argument>
-          </service>
-        </argument>
-        <argument type="service">
-          <service class="Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider" public="false">
-            <argument>55b27d94d000f</argument>
-          </service>
-        </argument>
-        <argument type="service">
-          <service class="Lexik\Bundle\JWTAuthenticationBundle\Security\Authentication\Provider\JWTProvider" public="false">
-            <argument type="service" id="security.user.provider.concrete.in_memory"/>
-            <argument type="service" id="lexik_jwt_authentication.jwt_manager"/>
-            <call method="setUserIdentityField">
-              <argument>username</argument>
-            </call>
-          </service>
-        </argument>
       </argument>
       <argument>true</argument>
       <call method="setEventDispatcher">
@@ -2105,9 +2080,6 @@
     <service id="security.authentication.trust_resolver" class="Symfony\Component\Security\Core\Authentication\AuthenticationTrustResolver" public="false">
       <argument>Symfony\Component\Security\Core\Authentication\Token\AnonymousToken</argument>
       <argument>Symfony\Component\Security\Core\Authentication\Token\RememberMeToken</argument>
-    </service>
-    <service id="security.authentication.session_strategy" class="Symfony\Component\Security\Http\Session\SessionAuthenticationStrategy" public="false">
-      <argument>migrate</argument>
     </service>
     <service id="security.authentication_utils" class="Symfony\Component\Security\Http\Authentication\AuthenticationUtils">
       <argument type="service" id="request_stack"/>
@@ -2170,11 +2142,6 @@
                 <argument>^/(caja|administracion)</argument>
               </service>
             </argument>
-            <argument key="security.firewall.map.context.login" type="service">
-              <service class="Symfony\Component\HttpFoundation\RequestMatcher" public="false">
-                <argument>^/caja/datos/login</argument>
-              </service>
-            </argument>
             <argument key="security.firewall.map.context.api" type="service">
               <service class="Symfony\Component\HttpFoundation\RequestMatcher" public="false">
                 <argument>^/caja/datos</argument>
@@ -2185,100 +2152,10 @@
       </argument>
       <argument type="service" id="debug.event_dispatcher"/>
     </service>
-    <service id="security.http_utils" class="Symfony\Component\Security\Http\HttpUtils" public="false">
-      <argument type="service" id="router" on-invalid="null"/>
-      <argument type="service" id="router" on-invalid="null"/>
-    </service>
     <service id="security.validator.user_password" class="Symfony\Component\Security\Core\Validator\Constraints\UserPasswordValidator">
       <tag name="validator.constraint_validator" alias="security.validator.user_password"/>
       <argument type="service" id="security.context"/>
       <argument type="service" id="security.encoder_factory"/>
-    </service>
-    <service id="security.channel_listener" class="Symfony\Component\Security\Http\Firewall\ChannelListener" public="false">
-      <tag name="monolog.logger" channel="security"/>
-      <argument type="service" id="security.access_map"/>
-      <argument type="service">
-        <service class="Symfony\Component\Security\Http\EntryPoint\RetryAuthenticationEntryPoint" public="false">
-          <argument>80</argument>
-          <argument>443</argument>
-        </service>
-      </argument>
-      <argument type="service" id="monolog.logger.security" on-invalid="null"/>
-    </service>
-    <service id="security.access_map" class="Symfony\Component\Security\Http\AccessMap" public="false">
-      <call method="add">
-        <argument type="service">
-          <service class="Symfony\Component\HttpFoundation\RequestMatcher" public="false">
-            <argument>^/login</argument>
-          </service>
-        </argument>
-        <argument type="collection">
-          <argument>IS_AUTHENTICATED_ANONYMOUSLY</argument>
-        </argument>
-        <argument>null</argument>
-      </call>
-      <call method="add">
-        <argument type="service">
-          <service class="Symfony\Component\HttpFoundation\RequestMatcher" public="false">
-            <argument>^/index</argument>
-          </service>
-        </argument>
-        <argument type="collection">
-          <argument>IS_AUTHENTICATED_ANONYMOUSLY</argument>
-        </argument>
-        <argument>null</argument>
-      </call>
-      <call method="add">
-        <argument type="service">
-          <service class="Symfony\Component\HttpFoundation\RequestMatcher" public="false">
-            <argument>^/administracion</argument>
-          </service>
-        </argument>
-        <argument type="collection">
-          <argument>ROLE_ADMINISTRADOR</argument>
-        </argument>
-        <argument>null</argument>
-      </call>
-      <call method="add">
-        <argument type="service">
-          <service class="Symfony\Component\HttpFoundation\RequestMatcher" public="false">
-            <argument>^/caja</argument>
-          </service>
-        </argument>
-        <argument type="collection">
-          <argument>ROLE_USUARIO</argument>
-        </argument>
-        <argument>null</argument>
-      </call>
-      <call method="add">
-        <argument type="service">
-          <service class="Symfony\Component\HttpFoundation\RequestMatcher" public="false">
-            <argument>^/caja/datos/login</argument>
-          </service>
-        </argument>
-        <argument type="collection">
-          <argument>IS_AUTHENTICATED_ANONYMOUSLY</argument>
-        </argument>
-        <argument>null</argument>
-      </call>
-      <call method="add">
-        <argument type="service">
-          <service class="Symfony\Component\HttpFoundation\RequestMatcher" public="false">
-            <argument>^/caja/datos</argument>
-          </service>
-        </argument>
-        <argument type="collection">
-          <argument>IS_AUTHENTICATED_FULLY</argument>
-        </argument>
-        <argument>null</argument>
-      </call>
-    </service>
-    <service id="security.access_listener" class="Symfony\Component\Security\Http\Firewall\AccessListener" public="false">
-      <tag name="monolog.logger" channel="security"/>
-      <argument type="service" id="security.context"/>
-      <argument type="service" id="security.access.decision_manager"/>
-      <argument type="service" id="security.access_map"/>
-      <argument type="service" id="security.authentication.manager"/>
     </service>
     <service id="security.rememberme.response_listener" class="Symfony\Component\Security\Http\RememberMe\ResponseListener">
       <tag name="kernel.event_subscriber"/>
@@ -2299,41 +2176,6 @@
       <tag name="templating.helper" alias="security"/>
       <argument type="service" id="security.context" on-invalid="ignore"/>
     </service>
-    <service id="security.user.provider.concrete.in_memory" class="Symfony\Component\Security\Core\User\InMemoryUserProvider" public="false">
-      <call method="createUser">
-        <argument type="service">
-          <service class="Symfony\Component\Security\Core\User\User" public="false">
-            <argument>alberto</argument>
-            <argument>$2a$12$fU.jXZO4vIAb7pKz77j7I.R5Aal09OrR9YR6TOwVs0bn0HLqIyirm</argument>
-            <argument type="collection">
-              <argument>ROLE_USUARIO</argument>
-            </argument>
-          </service>
-        </argument>
-      </call>
-      <call method="createUser">
-        <argument type="service">
-          <service class="Symfony\Component\Security\Core\User\User" public="false">
-            <argument>maria</argument>
-            <argument>$2a$12$fU.jXZO4vIAb7pKz77j7I.R5Aal09OrR9YR6TOwVs0bn0HLqIyirm</argument>
-            <argument type="collection">
-              <argument>ROLE_SUPERVISOR</argument>
-            </argument>
-          </service>
-        </argument>
-      </call>
-      <call method="createUser">
-        <argument type="service">
-          <service class="Symfony\Component\Security\Core\User\User" public="false">
-            <argument>miguel</argument>
-            <argument>$2a$12$fU.jXZO4vIAb7pKz77j7I.R5Aal09OrR9YR6TOwVs0bn0HLqIyirm</argument>
-            <argument type="collection">
-              <argument>ROLE_ADMINISTRADOR</argument>
-            </argument>
-          </service>
-        </argument>
-      </call>
-    </service>
     <service id="security.user.provider.concrete.base_datos" class="Symfony\Bridge\Doctrine\Security\User\EntityUserProvider" public="false">
       <argument type="service" id="doctrine"/>
       <argument>i52LTPVFrontendBundle:Usuario</argument>
@@ -2350,12 +2192,107 @@
     </service>
     <service id="security.firewall.map.context.i52ltpv_protegido" class="Symfony\Bundle\SecurityBundle\Security\FirewallContext">
       <argument type="collection">
-        <argument type="service" id="security.channel_listener"/>
+        <argument type="service">
+          <service class="Symfony\Component\Security\Http\Firewall\ChannelListener" public="false">
+            <tag name="monolog.logger" channel="security"/>
+            <argument type="service">
+              <service class="Symfony\Component\Security\Http\AccessMap" public="false">
+                <call method="add">
+                  <argument type="service">
+                    <service class="Symfony\Component\HttpFoundation\RequestMatcher" public="false">
+                      <argument>^/login</argument>
+                    </service>
+                  </argument>
+                  <argument type="collection">
+                    <argument>IS_AUTHENTICATED_ANONYMOUSLY</argument>
+                  </argument>
+                  <argument>null</argument>
+                </call>
+                <call method="add">
+                  <argument type="service">
+                    <service class="Symfony\Component\HttpFoundation\RequestMatcher" public="false">
+                      <argument>^/index</argument>
+                    </service>
+                  </argument>
+                  <argument type="collection">
+                    <argument>IS_AUTHENTICATED_ANONYMOUSLY</argument>
+                  </argument>
+                  <argument>null</argument>
+                </call>
+                <call method="add">
+                  <argument type="service">
+                    <service class="Symfony\Component\HttpFoundation\RequestMatcher" public="false">
+                      <argument>^/administracion</argument>
+                    </service>
+                  </argument>
+                  <argument type="collection">
+                    <argument>ROLE_ADMINISTRADOR</argument>
+                  </argument>
+                  <argument>null</argument>
+                </call>
+                <call method="add">
+                  <argument type="service">
+                    <service class="Symfony\Component\HttpFoundation\RequestMatcher" public="false">
+                      <argument>^/caja</argument>
+                    </service>
+                  </argument>
+                  <argument type="collection">
+                    <argument>ROLE_USUARIO</argument>
+                  </argument>
+                  <argument>null</argument>
+                </call>
+              </service>
+            </argument>
+            <argument type="service">
+              <service class="Symfony\Component\Security\Http\EntryPoint\RetryAuthenticationEntryPoint" public="false">
+                <argument>80</argument>
+                <argument>443</argument>
+              </service>
+            </argument>
+            <argument type="service" id="monolog.logger.security" on-invalid="null"/>
+          </service>
+        </argument>
         <argument type="service">
           <service class="Symfony\Component\Security\Http\Firewall\ContextListener" public="false">
             <argument type="service" id="security.context"/>
             <argument type="collection">
-              <argument type="service" id="security.user.provider.concrete.in_memory"/>
+              <argument type="service">
+                <service class="Symfony\Component\Security\Core\User\InMemoryUserProvider" public="false">
+                  <call method="createUser">
+                    <argument type="service">
+                      <service class="Symfony\Component\Security\Core\User\User" public="false">
+                        <argument>alberto</argument>
+                        <argument>$2a$12$fU.jXZO4vIAb7pKz77j7I.R5Aal09OrR9YR6TOwVs0bn0HLqIyirm</argument>
+                        <argument type="collection">
+                          <argument>ROLE_USUARIO</argument>
+                        </argument>
+                      </service>
+                    </argument>
+                  </call>
+                  <call method="createUser">
+                    <argument type="service">
+                      <service class="Symfony\Component\Security\Core\User\User" public="false">
+                        <argument>maria</argument>
+                        <argument>$2a$12$fU.jXZO4vIAb7pKz77j7I.R5Aal09OrR9YR6TOwVs0bn0HLqIyirm</argument>
+                        <argument type="collection">
+                          <argument>ROLE_SUPERVISOR</argument>
+                        </argument>
+                      </service>
+                    </argument>
+                  </call>
+                  <call method="createUser">
+                    <argument type="service">
+                      <service class="Symfony\Component\Security\Core\User\User" public="false">
+                        <argument>miguel</argument>
+                        <argument>$2a$12$fU.jXZO4vIAb7pKz77j7I.R5Aal09OrR9YR6TOwVs0bn0HLqIyirm</argument>
+                        <argument type="collection">
+                          <argument>ROLE_ADMINISTRADOR</argument>
+                        </argument>
+                      </service>
+                    </argument>
+                  </call>
+                </service>
+              </argument>
               <argument type="service" id="security.user.provider.concrete.base_datos"/>
             </argument>
             <argument>i52LTPV_protegido</argument>
@@ -2366,10 +2303,20 @@
         <argument type="service">
           <service class="Symfony\Component\Security\Http\Firewall\LogoutListener" public="false">
             <argument type="service" id="security.context"/>
-            <argument type="service" id="security.http_utils"/>
+            <argument type="service">
+              <service class="Symfony\Component\Security\Http\HttpUtils" public="false">
+                <argument type="service" id="router" on-invalid="null"/>
+                <argument type="service" id="router" on-invalid="null"/>
+              </service>
+            </argument>
             <argument type="service">
               <service class="Symfony\Component\Security\Http\Logout\DefaultLogoutSuccessHandler" public="false">
-                <argument type="service" id="security.http_utils"/>
+                <argument type="service">
+                  <service class="Symfony\Component\Security\Http\HttpUtils" public="false">
+                    <argument type="service" id="router" on-invalid="null"/>
+                    <argument type="service" id="router" on-invalid="null"/>
+                  </service>
+                </argument>
                 <argument>/caja/index</argument>
               </service>
             </argument>
@@ -2390,12 +2337,26 @@
             <tag name="security.remember_me_aware" id="i52LTPV_protegido" provider="security.user.provider.concrete.base_datos"/>
             <argument type="service" id="security.context"/>
             <argument type="service" id="security.authentication.manager"/>
-            <argument type="service" id="security.authentication.session_strategy"/>
-            <argument type="service" id="security.http_utils"/>
+            <argument type="service">
+              <service class="Symfony\Component\Security\Http\Session\SessionAuthenticationStrategy" public="false">
+                <argument>migrate</argument>
+              </service>
+            </argument>
+            <argument type="service">
+              <service class="Symfony\Component\Security\Http\HttpUtils" public="false">
+                <argument type="service" id="router" on-invalid="null"/>
+                <argument type="service" id="router" on-invalid="null"/>
+              </service>
+            </argument>
             <argument>i52LTPV_protegido</argument>
             <argument type="service">
               <service class="Symfony\Component\Security\Http\Authentication\DefaultAuthenticationSuccessHandler" public="false">
-                <argument type="service" id="security.http_utils"/>
+                <argument type="service">
+                  <service class="Symfony\Component\Security\Http\HttpUtils" public="false">
+                    <argument type="service" id="router" on-invalid="null"/>
+                    <argument type="service" id="router" on-invalid="null"/>
+                  </service>
+                </argument>
                 <argument type="collection"/>
                 <call method="setOptions">
                   <argument type="collection">
@@ -2414,7 +2375,12 @@
             <argument type="service">
               <service class="Symfony\Component\Security\Http\Authentication\DefaultAuthenticationFailureHandler" public="false">
                 <argument type="service" id="http_kernel"/>
-                <argument type="service" id="security.http_utils"/>
+                <argument type="service">
+                  <service class="Symfony\Component\Security\Http\HttpUtils" public="false">
+                    <argument type="service" id="router" on-invalid="null"/>
+                    <argument type="service" id="router" on-invalid="null"/>
+                  </service>
+                </argument>
                 <argument type="collection"/>
                 <argument type="service" id="monolog.logger.security" on-invalid="null"/>
                 <call method="setOptions">
@@ -2442,18 +2408,83 @@
             <argument>null</argument>
           </service>
         </argument>
-        <argument type="service" id="security.access_listener"/>
+        <argument type="service">
+          <service class="Symfony\Component\Security\Http\Firewall\AccessListener" public="false">
+            <tag name="monolog.logger" channel="security"/>
+            <argument type="service" id="security.context"/>
+            <argument type="service" id="security.access.decision_manager"/>
+            <argument type="service">
+              <service class="Symfony\Component\Security\Http\AccessMap" public="false">
+                <call method="add">
+                  <argument type="service">
+                    <service class="Symfony\Component\HttpFoundation\RequestMatcher" public="false">
+                      <argument>^/login</argument>
+                    </service>
+                  </argument>
+                  <argument type="collection">
+                    <argument>IS_AUTHENTICATED_ANONYMOUSLY</argument>
+                  </argument>
+                  <argument>null</argument>
+                </call>
+                <call method="add">
+                  <argument type="service">
+                    <service class="Symfony\Component\HttpFoundation\RequestMatcher" public="false">
+                      <argument>^/index</argument>
+                    </service>
+                  </argument>
+                  <argument type="collection">
+                    <argument>IS_AUTHENTICATED_ANONYMOUSLY</argument>
+                  </argument>
+                  <argument>null</argument>
+                </call>
+                <call method="add">
+                  <argument type="service">
+                    <service class="Symfony\Component\HttpFoundation\RequestMatcher" public="false">
+                      <argument>^/administracion</argument>
+                    </service>
+                  </argument>
+                  <argument type="collection">
+                    <argument>ROLE_ADMINISTRADOR</argument>
+                  </argument>
+                  <argument>null</argument>
+                </call>
+                <call method="add">
+                  <argument type="service">
+                    <service class="Symfony\Component\HttpFoundation\RequestMatcher" public="false">
+                      <argument>^/caja</argument>
+                    </service>
+                  </argument>
+                  <argument type="collection">
+                    <argument>ROLE_USUARIO</argument>
+                  </argument>
+                  <argument>null</argument>
+                </call>
+              </service>
+            </argument>
+            <argument type="service" id="security.authentication.manager"/>
+          </service>
+        </argument>
       </argument>
       <argument type="service">
         <service class="Symfony\Component\Security\Http\Firewall\ExceptionListener" public="false">
           <argument type="service" id="security.context"/>
           <argument type="service" id="security.authentication.trust_resolver"/>
-          <argument type="service" id="security.http_utils"/>
+          <argument type="service">
+            <service class="Symfony\Component\Security\Http\HttpUtils" public="false">
+              <argument type="service" id="router" on-invalid="null"/>
+              <argument type="service" id="router" on-invalid="null"/>
+            </service>
+          </argument>
           <argument>i52LTPV_protegido</argument>
           <argument type="service">
             <service class="Symfony\Component\Security\Http\EntryPoint\FormAuthenticationEntryPoint" public="false">
               <argument type="service" id="http_kernel"/>
-              <argument type="service" id="security.http_utils"/>
+              <argument type="service">
+                <service class="Symfony\Component\Security\Http\HttpUtils" public="false">
+                  <argument type="service" id="router" on-invalid="null"/>
+                  <argument type="service" id="router" on-invalid="null"/>
+                </service>
+              </argument>
               <argument>/caja/login</argument>
               <argument>false</argument>
             </service>
@@ -2464,131 +2495,9 @@
         </service>
       </argument>
     </service>
-    <service id="security.firewall.map.context.login" class="Symfony\Bundle\SecurityBundle\Security\FirewallContext">
-      <argument type="collection">
-        <argument type="service" id="security.channel_listener"/>
-        <argument type="service">
-          <service class="Symfony\Component\Security\Http\Firewall\UsernamePasswordFormAuthenticationListener" public="false">
-            <tag name="security.remember_me_aware" id="login" provider="security.user.provider.concrete.in_memory"/>
-            <argument type="service" id="security.context"/>
-            <argument type="service" id="security.authentication.manager"/>
-            <argument type="service" id="security.authentication.session_strategy"/>
-            <argument type="service" id="security.http_utils"/>
-            <argument>login</argument>
-            <argument type="service">
-              <service class="Symfony\Component\Security\Http\Authentication\CustomAuthenticationSuccessHandler" public="false">
-                <argument type="service" id="lexik_jwt_authentication.handler.authentication_success"/>
-                <argument type="collection">
-                  <argument key="always_use_default_target_path">false</argument>
-                  <argument key="default_target_path">/</argument>
-                  <argument key="login_path">/login</argument>
-                  <argument key="target_path_parameter">_target_path</argument>
-                  <argument key="use_referer">false</argument>
-                </argument>
-                <argument>login</argument>
-              </service>
-            </argument>
-            <argument type="service">
-              <service class="Symfony\Component\Security\Http\Authentication\CustomAuthenticationFailureHandler" public="false">
-                <argument type="service" id="lexik_jwt_authentication.handler.authentication_failure"/>
-                <argument type="collection">
-                  <argument key="login_path">/login</argument>
-                  <argument key="failure_path">null</argument>
-                  <argument key="failure_forward">false</argument>
-                  <argument key="failure_path_parameter">_failure_path</argument>
-                </argument>
-              </service>
-            </argument>
-            <argument type="collection">
-              <argument key="check_path">/caja/datos/login</argument>
-              <argument key="require_previous_session">false</argument>
-              <argument key="use_forward">false</argument>
-              <argument key="username_parameter">_username</argument>
-              <argument key="password_parameter">_password</argument>
-              <argument key="csrf_parameter">_csrf_token</argument>
-              <argument key="intention">authenticate</argument>
-              <argument key="post_only">true</argument>
-            </argument>
-            <argument type="service" id="monolog.logger.security" on-invalid="null"/>
-            <argument type="service" id="debug.event_dispatcher" on-invalid="null"/>
-            <argument>null</argument>
-          </service>
-        </argument>
-        <argument type="service">
-          <service class="Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener" public="false">
-            <argument type="service" id="security.context"/>
-            <argument>55b27d94d000f</argument>
-            <argument type="service" id="monolog.logger.security" on-invalid="null"/>
-            <argument type="service" id="security.authentication.manager"/>
-          </service>
-        </argument>
-        <argument type="service" id="security.access_listener"/>
-      </argument>
-      <argument type="service">
-        <service class="Symfony\Component\Security\Http\Firewall\ExceptionListener" public="false">
-          <argument type="service" id="security.context"/>
-          <argument type="service" id="security.authentication.trust_resolver"/>
-          <argument type="service" id="security.http_utils"/>
-          <argument>login</argument>
-          <argument type="service">
-            <service class="Symfony\Component\Security\Http\EntryPoint\FormAuthenticationEntryPoint" public="false">
-              <argument type="service" id="http_kernel"/>
-              <argument type="service" id="security.http_utils"/>
-              <argument>/login</argument>
-              <argument>false</argument>
-            </service>
-          </argument>
-          <argument>null</argument>
-          <argument>null</argument>
-          <argument type="service" id="monolog.logger.security" on-invalid="null"/>
-        </service>
-      </argument>
-    </service>
     <service id="security.firewall.map.context.api" class="Symfony\Bundle\SecurityBundle\Security\FirewallContext">
-      <argument type="collection">
-        <argument type="service" id="security.channel_listener"/>
-        <argument type="service">
-          <service class="Lexik\Bundle\JWTAuthenticationBundle\Security\Firewall\JWTListener" public="false">
-            <argument type="service" id="security.token_storage"/>
-            <argument type="service" id="security.authentication.manager"/>
-            <argument type="collection">
-              <argument key="authorization_header" type="collection">
-                <argument key="enabled">true</argument>
-                <argument key="prefix">Bearer</argument>
-              </argument>
-              <argument key="query_parameter" type="collection">
-                <argument key="enabled">false</argument>
-                <argument key="name">bearer</argument>
-              </argument>
-              <argument key="throw_exceptions">false</argument>
-              <argument key="create_entry_point">true</argument>
-              <argument key="authentication_provider">lexik_jwt_authentication.security.authentication.provider</argument>
-            </argument>
-            <call method="addTokenExtractor">
-              <argument type="service">
-                <service class="Lexik\Bundle\JWTAuthenticationBundle\TokenExtractor\AuthorizationHeaderTokenExtractor" public="false">
-                  <argument>Bearer</argument>
-                </service>
-              </argument>
-            </call>
-          </service>
-        </argument>
-        <argument type="service" id="security.access_listener"/>
-      </argument>
-      <argument type="service">
-        <service class="Symfony\Component\Security\Http\Firewall\ExceptionListener" public="false">
-          <argument type="service" id="security.context"/>
-          <argument type="service" id="security.authentication.trust_resolver"/>
-          <argument type="service" id="security.http_utils"/>
-          <argument>api</argument>
-          <argument type="service">
-            <service class="Lexik\Bundle\JWTAuthenticationBundle\Security\Http\EntryPoint\JWTEntryPoint" public="false"/>
-          </argument>
-          <argument>null</argument>
-          <argument>null</argument>
-          <argument type="service" id="monolog.logger.security" on-invalid="null"/>
-        </service>
-      </argument>
+      <argument type="collection"/>
+      <argument>null</argument>
     </service>
     <service id="twig" class="Twig_Environment">
       <argument type="service" id="twig.loader"/>
