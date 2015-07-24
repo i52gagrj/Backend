@@ -18,3 +18,4 @@ fc6315,192.168.1.3,POST,http://192.168.1.3/TPVCJ1.2/web/app_dev.php/caja/login_c
 c2199b,192.168.1.3,GET,http://192.168.1.3/TPVCJ1.2/web/app_dev.php/caja/venta,1437761639,
 adbff1,192.168.1.3,GET,http://192.168.1.3/TPVCJ1.2/web/app_dev.php/caja/venta,1437761724,
 2244be,192.168.1.3,GET,http://192.168.1.3/TPVCJ1.2/web/app_dev.php/caja/datos/todosProductos.json?callback=JSON_CALLBACK,1437761735,
+31c2b3,192.168.1.3,GET,http://192.168.1.3/TPVCJ1.2/web/app_dev.php/caja/datos/todosProductos.json?callback=JSON_CALLBACK,1437763319,
