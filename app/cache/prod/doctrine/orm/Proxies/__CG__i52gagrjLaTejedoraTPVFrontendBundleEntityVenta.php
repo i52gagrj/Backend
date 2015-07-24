@@ -64,10 +64,10 @@ class Venta extends \i52gagrj\LaTejedora\TPVFrontendBundle\Entity\Venta implemen
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Venta' . "\0" . 'id', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Venta' . "\0" . 'fechaventa', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Venta' . "\0" . 'horaventa', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Venta' . "\0" . 'usuario', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Venta' . "\0" . 'socio', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Venta' . "\0" . 'lineaventas');
+            return array('__isInitialized__', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Venta' . "\0" . 'id', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Venta' . "\0" . 'fechaventa', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Venta' . "\0" . 'horaventa', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Venta' . "\0" . 'contado', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Venta' . "\0" . 'usuario', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Venta' . "\0" . 'socio', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Venta' . "\0" . 'lineaventas');
         }
 
-        return array('__isInitialized__', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Venta' . "\0" . 'id', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Venta' . "\0" . 'fechaventa', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Venta' . "\0" . 'horaventa', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Venta' . "\0" . 'usuario', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Venta' . "\0" . 'socio', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Venta' . "\0" . 'lineaventas');
+        return array('__isInitialized__', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Venta' . "\0" . 'id', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Venta' . "\0" . 'fechaventa', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Venta' . "\0" . 'horaventa', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Venta' . "\0" . 'contado', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Venta' . "\0" . 'usuario', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Venta' . "\0" . 'socio', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Venta' . "\0" . 'lineaventas');
     }
 
     /**
@@ -230,6 +230,28 @@ class Venta extends \i52gagrj\LaTejedora\TPVFrontendBundle\Entity\Venta implemen
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHoraventa', array());
 
         return parent::getHoraventa();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setContado($contado)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setContado', array($contado));
+
+        return parent::setContado($contado);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getContado()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getContado', array());
+
+        return parent::getContado();
     }
 
     /**

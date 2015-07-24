@@ -64,10 +64,10 @@ class Usuario extends \i52gagrj\LaTejedora\TPVFrontendBundle\Entity\Usuario impl
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Usuario' . "\0" . 'id', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Usuario' . "\0" . 'nombre', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Usuario' . "\0" . 'dni', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Usuario' . "\0" . 'clave', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Usuario' . "\0" . 'activo', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Usuario' . "\0" . 'fechainactivo', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Usuario' . "\0" . 'clase', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Usuario' . "\0" . 'ventas');
+            return array('__isInitialized__', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Usuario' . "\0" . 'id', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Usuario' . "\0" . 'nombre', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Usuario' . "\0" . 'dni', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Usuario' . "\0" . 'salt', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Usuario' . "\0" . 'username', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Usuario' . "\0" . 'password', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Usuario' . "\0" . 'isActive', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Usuario' . "\0" . 'fechainactivo', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Usuario' . "\0" . 'ventas', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Usuario' . "\0" . 'cargos');
         }
 
-        return array('__isInitialized__', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Usuario' . "\0" . 'id', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Usuario' . "\0" . 'nombre', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Usuario' . "\0" . 'dni', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Usuario' . "\0" . 'clave', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Usuario' . "\0" . 'activo', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Usuario' . "\0" . 'fechainactivo', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Usuario' . "\0" . 'clase', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Usuario' . "\0" . 'ventas');
+        return array('__isInitialized__', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Usuario' . "\0" . 'id', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Usuario' . "\0" . 'nombre', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Usuario' . "\0" . 'dni', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Usuario' . "\0" . 'salt', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Usuario' . "\0" . 'username', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Usuario' . "\0" . 'password', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Usuario' . "\0" . 'isActive', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Usuario' . "\0" . 'fechainactivo', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Usuario' . "\0" . 'ventas', '' . "\0" . 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Entity\\Usuario' . "\0" . 'cargos');
     }
 
     /**
@@ -235,45 +235,89 @@ class Usuario extends \i52gagrj\LaTejedora\TPVFrontendBundle\Entity\Usuario impl
     /**
      * {@inheritDoc}
      */
-    public function setClave($clave)
+    public function setSalt($salt)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setClave', array($clave));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSalt', array($salt));
 
-        return parent::setClave($clave);
+        return parent::setSalt($salt);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getClave()
+    public function getSalt()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getClave', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSalt', array());
 
-        return parent::getClave();
+        return parent::getSalt();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setActivo($activo)
+    public function setUsername($username)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setActivo', array($activo));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setUsername', array($username));
 
-        return parent::setActivo($activo);
+        return parent::setUsername($username);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getActivo()
+    public function getUsername()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getActivo', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUsername', array());
 
-        return parent::getActivo();
+        return parent::getUsername();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setPassword($password)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPassword', array($password));
+
+        return parent::setPassword($password);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getPassword()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPassword', array());
+
+        return parent::getPassword();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setIsActive($isActive)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIsActive', array($isActive));
+
+        return parent::setIsActive($isActive);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getIsActive()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIsActive', array());
+
+        return parent::getIsActive();
     }
 
     /**
@@ -296,28 +340,6 @@ class Usuario extends \i52gagrj\LaTejedora\TPVFrontendBundle\Entity\Usuario impl
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFechainactivo', array());
 
         return parent::getFechainactivo();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setClase($clase)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setClase', array($clase));
-
-        return parent::setClase($clase);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getClase()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getClase', array());
-
-        return parent::getClase();
     }
 
     /**
@@ -351,6 +373,116 @@ class Usuario extends \i52gagrj\LaTejedora\TPVFrontendBundle\Entity\Usuario impl
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVentas', array());
 
         return parent::getVentas();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function eraseCredentials()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'eraseCredentials', array());
+
+        return parent::eraseCredentials();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function equals(\Symfony\Component\Security\Core\User\UserInterface $user)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'equals', array($user));
+
+        return parent::equals($user);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getRoles()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRoles', array());
+
+        return parent::getRoles();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isAccountNonExpired()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'isAccountNonExpired', array());
+
+        return parent::isAccountNonExpired();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isAccountNonLocked()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'isAccountNonLocked', array());
+
+        return parent::isAccountNonLocked();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isCredentialsNonExpired()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'isCredentialsNonExpired', array());
+
+        return parent::isCredentialsNonExpired();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isEnabled()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'isEnabled', array());
+
+        return parent::isEnabled();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function addCargo(\i52gagrj\LaTejedora\TPVFrontendBundle\Entity\Cargo $cargos)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addCargo', array($cargos));
+
+        return parent::addCargo($cargos);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removeCargo(\i52gagrj\LaTejedora\TPVFrontendBundle\Entity\Cargo $cargos)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeCargo', array($cargos));
+
+        return parent::removeCargo($cargos);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getCargos()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCargos', array());
+
+        return parent::getCargos();
     }
 
 }
