@@ -106,3 +106,11 @@ d7deaa,192.168.1.3,GET,http://192.168.1.3/TPVCJ1.2/web/app_dev.php/caja/datos/to
 1c11e8,192.168.1.3,GET,http://192.168.1.3/TPVCJ1.2/web/app_dev.php/caja/datos/todosClientes.json?callback=JSON_CALLBACK,1437770136,
 956653,192.168.1.3,GET,http://192.168.1.3/TPVCJ1.2/web/app_dev.php/caja/datos/todosTipos.json?callback=JSON_CALLBACK,1437770136,
 5722e0,192.168.1.3,GET,http://192.168.1.3/TPVCJ1.2/web/app_dev.php/caja/datos/todosProductos.json?callback=JSON_CALLBACK,1437771789,
+af8075,192.168.1.3,GET,http://192.168.1.3/TPVCJ1.2/web/app_dev.php/caja/datos/login,1437772928,154f90
+154f90,192.168.1.3,GET,http://192.168.1.3/TPVCJ1.2/web/app_dev.php/caja/datos/login,1437772928,
+e2eaab,192.168.1.3,GET,"http://192.168.1.3/TPVCJ1.2/web/app_dev.php/caja/datos/login,%20%7Busername:%20elena,%20password:%20pruebas%7D",1437773101,813fa1
+813fa1,192.168.1.3,GET,"http://192.168.1.3/TPVCJ1.2/web/app_dev.php/caja/datos/login,%20%7Busername:%20elena,%20password:%20pruebas%7D",1437773101,
+8a8afc,192.168.1.3,GET,http://192.168.1.3/TPVCJ1.2/web/app_dev.php/caja/datos/login,1437773122,c5f7fa
+c5f7fa,192.168.1.3,GET,http://192.168.1.3/TPVCJ1.2/web/app_dev.php/caja/datos/login,1437773122,
+ca5f7c,192.168.1.3,GET,http://192.168.1.3/TPVCJ1.2/web/app_dev.php/caja/datos/login,1437773131,041663
+041663,192.168.1.3,GET,http://192.168.1.3/TPVCJ1.2/web/app_dev.php/caja/datos/login,1437773131,

@@ -570,7 +570,7 @@ class DatosController extends Controller
     
     $fecha = new \DateTime("now");
     $venta->setFecha($fecha);       
-    $venta->setDejado($dejado);  
+    $venta->setDejado($dejado * 1);  
 
     $em->persist($venta);
     $em->flush();
@@ -976,8 +976,7 @@ class DatosController extends Controller
 ////////////////////////////LOGIN////////////////////////////////
 
   public function loginAction()
-  {
-    //$respuesta = array();
+  {    
     // Recuperar el json recibido
     $content = $this->get("request")->getContent();
     // decodificarlo con json decode
