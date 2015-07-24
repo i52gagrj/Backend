@@ -25,7 +25,7 @@
         "jms/serializer-bundle": "@stable",
         "friendsofsymfony/rest-bundle": "@stable",
         "lexik/jwt-authentication-bundle": "~1.0",
-        "firebase/php-jwt": "^2.1",
+        "firebase/php-jwt": "^2.1"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"
