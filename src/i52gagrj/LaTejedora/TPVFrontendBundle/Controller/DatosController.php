@@ -1005,7 +1005,7 @@ class DatosController extends Controller
 	  'response'=> array( 
 	  'token' => $jwt))));
         $mandar->headers->add(
-                array('Access-Control-Allow-Headers' => 'Content-Type',
+                array('Access-Control-Allow-Headers' => '*',
                     'Access-Control-Allow-Methods' => 'GET, POST, OPTIONS',
                     'Access-Control-Allow-Origin' => '*'));
         $mandar->headers->set('Content-Type', 'application/json');
