@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new AppBundle\AppBundle(),
             new i52gagrj\LaTejedora\TPVFrontendBundle\i52LTPVFrontendBundle(),
             new i52gagrj\LaTejedora\TPVBackendBundle\i52LTPVBackendBundle(),
+            new Nelmio\CorsBundle\NelmioCorsBundle(),
             // Add your dependencies
             new Sonata\CoreBundle\SonataCoreBundle(),
             new Sonata\BlockBundle\SonataBlockBundle(),

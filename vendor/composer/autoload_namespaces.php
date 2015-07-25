@@ -18,6 +18,7 @@ return array(
     'PhpOption\\' => array($vendorDir . '/phpoption/phpoption/src'),
     'PhpCollection' => array($vendorDir . '/phpcollection/phpcollection/src'),
     'Net' => array($vendorDir . '/phpseclib/phpseclib/phpseclib'),
+    'Nelmio\\CorsBundle' => array($vendorDir . '/nelmio/cors-bundle'),
     'Negotiation' => array($vendorDir . '/willdurand/negotiation/src'),
     'Namshi\\JOSE' => array($vendorDir . '/namshi/jose/src'),
     'Metadata\\' => array($vendorDir . '/jms/metadata/src'),
