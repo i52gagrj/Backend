@@ -1002,6 +1002,9 @@ class DatosController extends Controller
 	  'code' => 0,
 	  'response'=> array( 
 	  'token' => $jwt))));
+        $mandar->headers->add('Access-Control-Allow-Headers', 'Content-Type');  
+        $mandar->headers->add('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+        $mandar->headers->add('Access-Control-Allow-Origin', '*');
         $mandar->headers->set('Content-Type', 'application/json');
         return $mandar;
       }  
@@ -1010,6 +1013,9 @@ class DatosController extends Controller
     	  'code' => 1,
 	  'response'=> array(
           'respuesta' => "La clave no es correcta"))));
+        $mandar->headers->add('Access-Control-Allow-Headers', 'Content-Type');  
+        $mandar->headers->add('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+        $mandar->headers->add('Access-Control-Allow-Origin', '*');
         $mandar->headers->set('Content-Type', 'application/json');
         return $mandar; 
       } 
@@ -1019,6 +1025,9 @@ class DatosController extends Controller
 	'code' => 2,
 	'response'=> array(
         'respuesta' => "No existe el usuario"))));
+      $mandar->headers->add('Access-Control-Allow-Headers', 'Content-Type');  
+      $mandar->headers->add('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+      $mandar->headers->add('Access-Control-Allow-Origin', '*');
       $mandar->headers->set('Content-Type', 'application/json');
       return $mandar; 
     }
