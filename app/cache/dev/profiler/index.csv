@@ -182,3 +182,10 @@ f9bb81,192.168.1.3,GET,http://192.168.1.3/TPVCJ1.2/web/app_dev.php/caja/datos/to
 e78c45,192.168.1.3,GET,http://192.168.1.3/TPVCJ1.2/web/app_dev.php/caja/datos/todosTipos.json?callback=JSON_CALLBACK,1437845997,
 e662f9,192.168.1.3,GET,http://192.168.1.3/TPVCJ1.2/web/app_dev.php/caja/datos/todosClientes.json?callback=JSON_CALLBACK,1437845997,
 1a576e,192.168.1.3,GET,http://192.168.1.3/TPVCJ1.2/web/app_dev.php/caja/datos/todosProductos.json?callback=JSON_CALLBACK,1437845999,
+98348f,192.168.1.3,GET,http://192.168.1.3/TPVCJ1.2/web/app_dev.php/caja/datos/login,1437846204,91d266
+91d266,192.168.1.3,OPTIONS,http://192.168.1.3/TPVCJ1.2/web/app_dev.php/caja/datos/login,1437846204,
+542008,192.168.1.3,GET,http://192.168.1.3/TPVCJ1.2/web/app_dev.php/caja/datos/login,1437846278,2834ba
+2834ba,192.168.1.3,OPTIONS,http://192.168.1.3/TPVCJ1.2/web/app_dev.php/caja/datos/login,1437846278,
+72852f,192.168.1.3,GET,http://192.168.1.3/TPVCJ1.2/web/app_dev.php/caja/datos/todosProductos.json?callback=JSON_CALLBACK,1437852446,
+37b51f,192.168.1.3,GET,http://192.168.1.3/TPVCJ1.2/web/app_dev.php/caja/datos/todosProductos.json?callback=JSON_CALLBACK,1437852455,
+ba8561,192.168.1.3,GET,http://192.168.1.3/TPVCJ1.2/web/app_dev.php/caja/datos/todosProductos.json?callback=JSON_CALLBACK,1437852459,
