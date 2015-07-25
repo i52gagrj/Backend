@@ -5,6 +5,8 @@ namespace i52gagrj\LaTejedora\TPVFrontendBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use \Doctrine\Common\Collections\ArrayCollection;
 use FOS\RestBundle\Controller\Annotations\View;
 
@@ -1002,9 +1004,12 @@ class DatosController extends Controller
 	  'code' => 0,
 	  'response'=> array( 
 	  'token' => $jwt))));
-        $mandar->headers->add('Access-Control-Allow-Headers', 'Content-Type');  
-        $mandar->headers->add('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-        $mandar->headers->add('Access-Control-Allow-Origin', '*');
+        $mandar->headers->add(
+                array('Access-Control-Allow-Headers' => $this->get("request")->headers->get("Access-Control-Request-Headers"),
+                    'Access-Control-Allow-Methods' => $this->get("request")->headers->get("Access-Control-Request-Method"),
+                    'Access-Control-Allow-Origin' => '*'));
+        $mandar->headers->set('Access-Control-Allow-Headers', 'Content-Type');  
+        $mandar->headers->set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
         $mandar->headers->set('Content-Type', 'application/json');
         return $mandar;
       }  
