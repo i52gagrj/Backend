@@ -156,6 +156,8 @@ class appDevDebugProjectContainer extends Container
             'monolog.logger.security' => 'getMonolog_Logger_SecurityService',
             'monolog.logger.templating' => 'getMonolog_Logger_TemplatingService',
             'monolog.logger.translation' => 'getMonolog_Logger_TranslationService',
+            'nelmio_cors.cors_listener' => 'getNelmioCors_CorsListenerService',
+            'nelmio_cors.options_provider.config' => 'getNelmioCors_OptionsProvider_ConfigService',
             'profiler' => 'getProfilerService',
             'profiler_listener' => 'getProfilerListenerService',
             'property_accessor' => 'getPropertyAccessorService',
@@ -693,6 +695,7 @@ class appDevDebugProjectContainer extends Container
 
         $instance->addListenerService('kernel.controller', array(0 => 'data_collector.router', 1 => 'onKernelController'), 0);
         $instance->addListenerService('kernel.request', array(0 => 'assetic.request_listener', 1 => 'onKernelRequest'), 0);
+        $instance->addListenerService('kernel.request', array(0 => 'nelmio_cors.cors_listener', 1 => 'onKernelRequest'), 10000);
         $instance->addListenerService('kernel.response', array(0 => 'sonata.block.cache.handler.default', 1 => 'onKernelResponse'), 0);
         $instance->addListenerService('kernel.request', array(0 => 'knp_menu.listener.voters', 1 => 'onKernelRequest'), 0);
         $instance->addListenerService('kernel.controller', array(0 => 'acme.demo.listener', 1 => 'onKernelController'), 0);
@@ -2138,6 +2141,32 @@ class appDevDebugProjectContainer extends Container
     }
 
     /**
+     * Gets the 'nelmio_cors.cors_listener' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return \Nelmio\CorsBundle\EventListener\CorsListener A Nelmio\CorsBundle\EventListener\CorsListener instance.
+     */
+    protected function getNelmioCors_CorsListenerService()
+    {
+        return $this->services['nelmio_cors.cors_listener'] = new \Nelmio\CorsBundle\EventListener\CorsListener($this->get('debug.event_dispatcher'), new \Nelmio\CorsBundle\Options\Resolver(array(0 => $this->get('nelmio_cors.options_provider.config'))));
+    }
+
+    /**
+     * Gets the 'nelmio_cors.options_provider.config' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * @return \Nelmio\CorsBundle\Options\ConfigProvider A Nelmio\CorsBundle\Options\ConfigProvider instance.
+     */
+    protected function getNelmioCors_OptionsProvider_ConfigService()
+    {
+        return $this->services['nelmio_cors.options_provider.config'] = new \Nelmio\CorsBundle\Options\ConfigProvider(array('^/' => array('allow_origin' => true, 'allow_headers' => array(0 => 'origin', 1 => 'content-type'), 'allow_methods' => array(0 => 'POST', 1 => 'PUT', 2 => 'GET', 3 => 'DELETE', 4 => 'OPTIONS'), 'max_age' => 3600)), array('allow_origin' => array(), 'allow_credentials' => true, 'allow_headers' => array(), 'expose_headers' => array(), 'allow_methods' => array(), 'max_age' => 0, 'hosts' => array(), 'origin_regex' => false));
+    }
+
+    /**
      * Gets the 'profiler' service.
      *
      * This service is shared.
@@ -2467,7 +2496,7 @@ class appDevDebugProjectContainer extends Container
         $c = $this->get('security.http_utils');
         $d = $this->get('monolog.logger.security', ContainerInterface::NULL_ON_INVALID_REFERENCE);
 
-        return $this->services['security.firewall.map.context.login'] = new \Symfony\Bundle\SecurityBundle\Security\FirewallContext(array(0 => $this->get('security.channel_listener'), 1 => new \Symfony\Component\Security\Http\Firewall\UsernamePasswordFormAuthenticationListener($a, $b, $this->get('security.authentication.session_strategy'), $c, 'login', new \Symfony\Component\Security\Http\Authentication\CustomAuthenticationSuccessHandler($this->get('lexik_jwt_authentication.handler.authentication_success'), array('always_use_default_target_path' => false, 'default_target_path' => '/', 'login_path' => '/login', 'target_path_parameter' => '_target_path', 'use_referer' => false), 'login'), new \Symfony\Component\Security\Http\Authentication\CustomAuthenticationFailureHandler($this->get('lexik_jwt_authentication.handler.authentication_failure'), array('login_path' => '/login', 'failure_path' => NULL, 'failure_forward' => false, 'failure_path_parameter' => '_failure_path')), array('check_path' => '/caja/datos/login', 'require_previous_session' => false, 'use_forward' => false, 'username_parameter' => '_username', 'password_parameter' => '_password', 'csrf_parameter' => '_csrf_token', 'intention' => 'authenticate', 'post_only' => true), $d, $this->get('debug.event_dispatcher', ContainerInterface::NULL_ON_INVALID_REFERENCE), NULL), 2 => new \Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener($a, '55b3fc1f6e5d5', $d, $b), 3 => $this->get('security.access_listener')), new \Symfony\Component\Security\Http\Firewall\ExceptionListener($a, $this->get('security.authentication.trust_resolver'), $c, 'login', new \Symfony\Component\Security\Http\EntryPoint\FormAuthenticationEntryPoint($this->get('http_kernel'), $c, '/login', false), NULL, NULL, $d));
+        return $this->services['security.firewall.map.context.login'] = new \Symfony\Bundle\SecurityBundle\Security\FirewallContext(array(0 => $this->get('security.channel_listener'), 1 => new \Symfony\Component\Security\Http\Firewall\UsernamePasswordFormAuthenticationListener($a, $b, $this->get('security.authentication.session_strategy'), $c, 'login', new \Symfony\Component\Security\Http\Authentication\CustomAuthenticationSuccessHandler($this->get('lexik_jwt_authentication.handler.authentication_success'), array('always_use_default_target_path' => false, 'default_target_path' => '/', 'login_path' => '/login', 'target_path_parameter' => '_target_path', 'use_referer' => false), 'login'), new \Symfony\Component\Security\Http\Authentication\CustomAuthenticationFailureHandler($this->get('lexik_jwt_authentication.handler.authentication_failure'), array('login_path' => '/login', 'failure_path' => NULL, 'failure_forward' => false, 'failure_path_parameter' => '_failure_path')), array('check_path' => '/caja/datos/login', 'require_previous_session' => false, 'use_forward' => false, 'username_parameter' => '_username', 'password_parameter' => '_password', 'csrf_parameter' => '_csrf_token', 'intention' => 'authenticate', 'post_only' => true), $d, $this->get('debug.event_dispatcher', ContainerInterface::NULL_ON_INVALID_REFERENCE), NULL), 2 => new \Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener($a, '55b4a0c1c5c8b', $d, $b), 3 => $this->get('security.access_listener')), new \Symfony\Component\Security\Http\Firewall\ExceptionListener($a, $this->get('security.authentication.trust_resolver'), $c, 'login', new \Symfony\Component\Security\Http\EntryPoint\FormAuthenticationEntryPoint($this->get('http_kernel'), $c, '/login', false), NULL, NULL, $d));
     }
 
     /**
@@ -5461,7 +5490,7 @@ class appDevDebugProjectContainer extends Container
         $d = new \Lexik\Bundle\JWTAuthenticationBundle\Security\Authentication\Provider\JWTProvider($b, $this->get('lexik_jwt_authentication.jwt_manager'));
         $d->setUserIdentityField('username');
 
-        $this->services['security.authentication.manager'] = $instance = new \Symfony\Component\Security\Core\Authentication\AuthenticationProviderManager(array(0 => new \Symfony\Component\Security\Core\Authentication\Provider\DaoAuthenticationProvider($this->get('security.user.provider.concrete.base_datos'), $c, 'i52LTPV_protegido', $a, true), 1 => new \Symfony\Component\Security\Core\Authentication\Provider\DaoAuthenticationProvider($b, $c, 'login', $a, true), 2 => new \Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider('55b3fc1f6e5d5'), 3 => $d), true);
+        $this->services['security.authentication.manager'] = $instance = new \Symfony\Component\Security\Core\Authentication\AuthenticationProviderManager(array(0 => new \Symfony\Component\Security\Core\Authentication\Provider\DaoAuthenticationProvider($this->get('security.user.provider.concrete.base_datos'), $c, 'i52LTPV_protegido', $a, true), 1 => new \Symfony\Component\Security\Core\Authentication\Provider\DaoAuthenticationProvider($b, $c, 'login', $a, true), 2 => new \Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider('55b4a0c1c5c8b'), 3 => $d), true);
 
         $instance->setEventDispatcher($this->get('debug.event_dispatcher'));
 
@@ -5795,6 +5824,7 @@ class appDevDebugProjectContainer extends Container
                 'AppBundle' => 'AppBundle\\AppBundle',
                 'i52LTPVFrontendBundle' => 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\i52LTPVFrontendBundle',
                 'i52LTPVBackendBundle' => 'i52gagrj\\LaTejedora\\TPVBackendBundle\\i52LTPVBackendBundle',
+                'NelmioCorsBundle' => 'Nelmio\\CorsBundle\\NelmioCorsBundle',
                 'SonataCoreBundle' => 'Sonata\\CoreBundle\\SonataCoreBundle',
                 'SonataBlockBundle' => 'Sonata\\BlockBundle\\SonataBlockBundle',
                 'KnpMenuBundle' => 'Knp\\Bundle\\MenuBundle\\KnpMenuBundle',
@@ -6260,9 +6290,9 @@ class appDevDebugProjectContainer extends Container
 
             ),
             'assetic.java.bin' => '/usr/bin/java',
-            'assetic.node.bin' => '/home/juan/.nvm/v0.11.13/bin/node',
+            'assetic.node.bin' => '/usr/bin/node',
             'assetic.ruby.bin' => '/usr/bin/ruby',
-            'assetic.sass.bin' => '/home/juan/.rbenv/shims/sass',
+            'assetic.sass.bin' => '/usr/bin/sass',
             'assetic.filter.cssrewrite.class' => 'Assetic\\Filter\\CssRewriteFilter',
             'assetic.twig_extension.functions' => array(
 
@@ -6394,6 +6424,46 @@ class appDevDebugProjectContainer extends Container
             'i52_ltpv_backend.database_password' => 'rolling',
             'i52_ltpv_backend.database_host' => 'localhost',
             'i52_ltpv_backend.model.class' => 'i52gagrj\\LaTejedora\\TPVFrontendBundle\\Model\\Model',
+            'nelmio_cors.defaults' => array(
+                'allow_origin' => array(
+
+                ),
+                'allow_credentials' => true,
+                'allow_headers' => array(
+
+                ),
+                'expose_headers' => array(
+
+                ),
+                'allow_methods' => array(
+
+                ),
+                'max_age' => 0,
+                'hosts' => array(
+
+                ),
+                'origin_regex' => false,
+            ),
+            'nelmio_cors.map' => array(
+                '^/' => array(
+                    'allow_origin' => true,
+                    'allow_headers' => array(
+                        0 => 'origin',
+                        1 => 'content-type',
+                    ),
+                    'allow_methods' => array(
+                        0 => 'POST',
+                        1 => 'PUT',
+                        2 => 'GET',
+                        3 => 'DELETE',
+                        4 => 'OPTIONS',
+                    ),
+                    'max_age' => 3600,
+                ),
+            ),
+            'nelmio_cors.cors_listener.class' => 'Nelmio\\CorsBundle\\EventListener\\CorsListener',
+            'nelmio_cors.options_resolver.class' => 'Nelmio\\CorsBundle\\Options\\Resolver',
+            'nelmio_cors.options_provider.config.class' => 'Nelmio\\CorsBundle\\Options\\ConfigProvider',
             'sonata.core.flashmessage.manager.class' => 'Sonata\\CoreBundle\\FlashMessage\\FlashManager',
             'sonata.core.twig.extension.flashmessage.class' => 'Sonata\\CoreBundle\\Twig\\Extension\\FlashMessageExtension',
             'sonata.core.form_type' => 'standard',

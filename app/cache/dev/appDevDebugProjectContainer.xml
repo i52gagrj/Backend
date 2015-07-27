@@ -19,6 +19,7 @@
       <parameter key="AppBundle">AppBundle\AppBundle</parameter>
       <parameter key="i52LTPVFrontendBundle">i52gagrj\LaTejedora\TPVFrontendBundle\i52LTPVFrontendBundle</parameter>
       <parameter key="i52LTPVBackendBundle">i52gagrj\LaTejedora\TPVBackendBundle\i52LTPVBackendBundle</parameter>
+      <parameter key="NelmioCorsBundle">Nelmio\CorsBundle\NelmioCorsBundle</parameter>
       <parameter key="SonataCoreBundle">Sonata\CoreBundle\SonataCoreBundle</parameter>
       <parameter key="SonataBlockBundle">Sonata\BlockBundle\SonataBlockBundle</parameter>
       <parameter key="KnpMenuBundle">Knp\Bundle\MenuBundle\KnpMenuBundle</parameter>
@@ -470,9 +471,9 @@
     <parameter key="assetic.write_to">/var/www/html/TPVCJ1.2/app/../web</parameter>
     <parameter key="assetic.variables" type="collection"/>
     <parameter key="assetic.java.bin">/usr/bin/java</parameter>
-    <parameter key="assetic.node.bin">/home/juan/.nvm/v0.11.13/bin/node</parameter>
+    <parameter key="assetic.node.bin">/usr/bin/node</parameter>
     <parameter key="assetic.ruby.bin">/usr/bin/ruby</parameter>
-    <parameter key="assetic.sass.bin">/home/juan/.rbenv/shims/sass</parameter>
+    <parameter key="assetic.sass.bin">/usr/bin/sass</parameter>
     <parameter key="assetic.filter.cssrewrite.class">Assetic\Filter\CssRewriteFilter</parameter>
     <parameter key="assetic.twig_extension.functions" type="collection"/>
     <parameter key="assetic.controller.class">Symfony\Bundle\AsseticBundle\Controller\AsseticController</parameter>
@@ -600,6 +601,36 @@
     <parameter key="i52_ltpv_backend.database_password">rolling</parameter>
     <parameter key="i52_ltpv_backend.database_host">localhost</parameter>
     <parameter key="i52_ltpv_backend.model.class">i52gagrj\LaTejedora\TPVFrontendBundle\Model\Model</parameter>
+    <parameter key="nelmio_cors.defaults" type="collection">
+      <parameter key="allow_origin" type="collection"/>
+      <parameter key="allow_credentials">true</parameter>
+      <parameter key="allow_headers" type="collection"/>
+      <parameter key="expose_headers" type="collection"/>
+      <parameter key="allow_methods" type="collection"/>
+      <parameter key="max_age">0</parameter>
+      <parameter key="hosts" type="collection"/>
+      <parameter key="origin_regex">false</parameter>
+    </parameter>
+    <parameter key="nelmio_cors.map" type="collection">
+      <parameter key="^/" type="collection">
+        <parameter key="allow_origin">true</parameter>
+        <parameter key="allow_headers" type="collection">
+          <parameter>origin</parameter>
+          <parameter>content-type</parameter>
+        </parameter>
+        <parameter key="allow_methods" type="collection">
+          <parameter>POST</parameter>
+          <parameter>PUT</parameter>
+          <parameter>GET</parameter>
+          <parameter>DELETE</parameter>
+          <parameter>OPTIONS</parameter>
+        </parameter>
+        <parameter key="max_age">3600</parameter>
+      </parameter>
+    </parameter>
+    <parameter key="nelmio_cors.cors_listener.class">Nelmio\CorsBundle\EventListener\CorsListener</parameter>
+    <parameter key="nelmio_cors.options_resolver.class">Nelmio\CorsBundle\Options\Resolver</parameter>
+    <parameter key="nelmio_cors.options_provider.config.class">Nelmio\CorsBundle\Options\ConfigProvider</parameter>
     <parameter key="sonata.core.flashmessage.manager.class">Sonata\CoreBundle\FlashMessage\FlashManager</parameter>
     <parameter key="sonata.core.twig.extension.flashmessage.class">Sonata\CoreBundle\Twig\Extension\FlashMessageExtension</parameter>
     <parameter key="sonata.core.form_type">standard</parameter>
@@ -1916,6 +1947,14 @@
         <argument>0</argument>
       </call>
       <call method="addListenerService">
+        <argument>kernel.request</argument>
+        <argument type="collection">
+          <argument>nelmio_cors.cors_listener</argument>
+          <argument>onKernelRequest</argument>
+        </argument>
+        <argument>10000</argument>
+      </call>
+      <call method="addListenerService">
         <argument>kernel.response</argument>
         <argument type="collection">
           <argument>sonata.block.cache.handler.default</argument>
@@ -2084,7 +2123,7 @@
         </argument>
         <argument type="service">
           <service class="Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider" public="false">
-            <argument>55b3fc1f6e5d5</argument>
+            <argument>55b4a0c1c5c8b</argument>
           </service>
         </argument>
         <argument type="service">
@@ -2517,7 +2556,7 @@
         <argument type="service">
           <service class="Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener" public="false">
             <argument type="service" id="security.context"/>
-            <argument>55b3fc1f6e5d5</argument>
+            <argument>55b4a0c1c5c8b</argument>
             <argument type="service" id="monolog.logger.security" on-invalid="null"/>
             <argument type="service" id="security.authentication.manager"/>
           </service>
@@ -3207,6 +3246,47 @@
       <argument>root</argument>
       <argument>rolling</argument>
       <argument>localhost</argument>
+    </service>
+    <service id="nelmio_cors.cors_listener" class="Nelmio\CorsBundle\EventListener\CorsListener">
+      <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest" priority="10000"/>
+      <argument type="service" id="debug.event_dispatcher"/>
+      <argument type="service">
+        <service class="Nelmio\CorsBundle\Options\Resolver" public="false">
+          <argument type="collection">
+            <argument type="service" id="nelmio_cors.options_provider.config"/>
+          </argument>
+        </service>
+      </argument>
+    </service>
+    <service id="nelmio_cors.options_provider.config" class="Nelmio\CorsBundle\Options\ConfigProvider">
+      <tag name="nelmio_cors.options_provider" priority="-1"/>
+      <argument type="collection">
+        <argument key="^/" type="collection">
+          <argument key="allow_origin">true</argument>
+          <argument key="allow_headers" type="collection">
+            <argument>origin</argument>
+            <argument>content-type</argument>
+          </argument>
+          <argument key="allow_methods" type="collection">
+            <argument>POST</argument>
+            <argument>PUT</argument>
+            <argument>GET</argument>
+            <argument>DELETE</argument>
+            <argument>OPTIONS</argument>
+          </argument>
+          <argument key="max_age">3600</argument>
+        </argument>
+      </argument>
+      <argument type="collection">
+        <argument key="allow_origin" type="collection"/>
+        <argument key="allow_credentials">true</argument>
+        <argument key="allow_headers" type="collection"/>
+        <argument key="expose_headers" type="collection"/>
+        <argument key="allow_methods" type="collection"/>
+        <argument key="max_age">0</argument>
+        <argument key="hosts" type="collection"/>
+        <argument key="origin_regex">false</argument>
+      </argument>
     </service>
     <service id="sonata.core.date.moment_format_converter" class="Sonata\CoreBundle\Date\MomentFormatConverter"/>
     <service id="sonata.core.flashmessage.manager" class="Sonata\CoreBundle\FlashMessage\FlashManager">
