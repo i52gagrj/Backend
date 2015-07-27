@@ -25,7 +25,7 @@ class DatosController extends Controller
   public function todosproductosAction()
   {
     //Extraer la cabecera de la petición
-    $headers=Access-Control-Request-Headers();
+    $headers=apache_request_headers();
     //Si contiene el token, en la sección Authorization
     if(isset($headers["Authorization"]))
     {
