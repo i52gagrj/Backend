@@ -22,7 +22,7 @@ class DatosController extends Controller
 
 //////////////////////////VENTA////////////////////////////////
 
-  public function todosproductosAction()
+  /*public function todosproductosAction()
   {
     //Extraer la cabecera de la petición
     $headers=apache_request_headers();
@@ -83,10 +83,11 @@ class DatosController extends Controller
       $mandar->headers->set('Content-Type', 'application/json');
       return $mandar;
     }
-  }
+  }*/
 
-  /*public function todosproductosAction()
+  public function todosproductosAction()
   {
+    $respuesta = array();
     $em = $this->getDoctrine()->getEntityManager();
     $productos = $em->getRepository('i52LTPVFrontendBundle:Producto')->
       findAll();
@@ -105,7 +106,7 @@ class DatosController extends Controller
       'productos' => $respuesta))));
     $mandar->headers->set('Content-Type', 'application/json');
     return $mandar;
-  }*/
+  }
 
   public function todosclientesAction()
   {
