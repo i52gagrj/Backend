@@ -85,6 +85,28 @@ class DatosController extends Controller
     }
   }
 
+  /*public function todosproductosAction()
+  {
+    $em = $this->getDoctrine()->getEntityManager();
+    $productos = $em->getRepository('i52LTPVFrontendBundle:Producto')->
+      findAll();
+    foreach($productos as $producto)
+    {
+      $elemento = array(
+        'id' => $producto->getId(),
+        'nombre' => $producto->getNombre(),
+        'precio' => $producto->getPrecio(),
+        'iva' => $producto->getIva());
+      array_push($respuesta, $elemento);    
+    }     
+    $mandar = new Response(json_encode(array(
+      'code' => 0,
+      'response'=> array(
+      'productos' => $respuesta))));
+    $mandar->headers->set('Content-Type', 'application/json');
+    return $mandar;
+  }*/
+
   public function todosclientesAction()
   {
     //Extraer la cabecera de la petición
