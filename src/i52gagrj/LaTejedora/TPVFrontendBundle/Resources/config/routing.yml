@@ -101,11 +101,11 @@ i52_ltpv_frontend_ejecutadevolucion:
 
 
 i52_ltpv_frontend_apiTodosProductos:
-    path: /datos/todosProductos.json?callback=JSON_CALLBACK
+    path: /datos/todosProductos.json
     defaults: { _controller: i52LTPVFrontendBundle:Datos:todosproductos }
     requirements:
          _format: (xml|json)
-         _method: GET
+         _method: *
 
 i52_ltpv_frontend_apiTodosClientes:
     path: /datos/todosClientes.json
