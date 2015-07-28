@@ -173,7 +173,7 @@ class DatosController extends Controller
   public function todostiposAction()
   {
     //Extraer la cabecera de la petición
-    $headers=apache_request_headers();
+    $headers=apache_request_headers().Access-Control-Request-Headers;
     //Si contiene el token, en la sección Authorization
     if(isset($headers["Authorization"]))
     {
