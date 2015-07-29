@@ -93,20 +93,24 @@ class DatosController extends Controller
       findAll();
     foreach($productos as $producto)
     {
-      $elemento = array(
-        'id' => $producto->getId(),
-        'nombre' => $producto->getNombre(),
-        'precio' => $producto->getPrecio(),
-        'iva' => $producto->getIva());
-      array_push($respuesta, $elemento);    
+      if($producto->getActivo())
+      { 
+        $elemento = array(
+          'id' => $producto->getId(),
+          'nombre' => $producto->getNombre(),
+          'precio' => $producto->getPrecio(),
+          'iva' => $producto->getIva(),
+          'tipo' => $producto->getTipo()->getNombre());
+        array_push($respuesta, $elemento);    
+      }
     }     
     $mandar = new Response(json_encode(array(
       'code' => 0,
       'response'=> array(
-      'productos' => $respuesta))));
+        'productos' => $respuesta))));
     $mandar->headers->set('Content-Type', 'application/json');
     return $mandar;
-  }
+  }  
 
   public function todosclientesAction()
   {
