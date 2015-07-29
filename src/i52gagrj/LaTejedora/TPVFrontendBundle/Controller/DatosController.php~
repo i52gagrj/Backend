@@ -119,8 +119,7 @@ class DatosController extends Controller
     //Si contiene el token, en la sección Authorization
     if(isset($headers["Authorization"]))
     {
-      //$token=explode(" ", $headers["Authorization"]);
-      $token=$headers["Authorization"]; 
+      $token=explode(" ", $headers["Authorization"]);      
       $tokend=JWT::decode(trim($token,'"'));
       $respuesta = array();
       //Si los datos del token son correctos, se cargan los socios
