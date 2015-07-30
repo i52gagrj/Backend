@@ -88,6 +88,7 @@ class DatosController extends Controller
   public function todosproductosAction()
   {
     $respuesta = array();
+    $headers=apache_request_headers();
     $em = $this->getDoctrine()->getEntityManager();
     $productos = $em->getRepository('i52LTPVFrontendBundle:Producto')->
       findAll();

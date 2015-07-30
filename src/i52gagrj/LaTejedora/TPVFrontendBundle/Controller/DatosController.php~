@@ -119,7 +119,7 @@ class DatosController extends Controller
     $request=$this->getRequest();
     $headers=$request->headers->all(); 
     //Si contiene el token, en la sección Authorization
-    if(isset($headers->get('Authorization')))
+    if(isset($headers['Authorization']))
     {
       $token=explode(" ", $headers["Authorization"]);
       $tokend=JWT::decode(trim($token[1],'"'));
