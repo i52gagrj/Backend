@@ -87,7 +87,7 @@ class DatosController extends Controller
 
   public function todosproductosAction()
   {
-    $headers=apache_request_headers();
+    //$headers=apache_request_headers();
     $respuesta = array();
     $em = $this->getDoctrine()->getEntityManager();
     $productos = $em->getRepository('i52LTPVFrontendBundle:Producto')->
@@ -179,7 +179,8 @@ class DatosController extends Controller
   public function todostiposAction()
   {
     //Extraer la cabecera de la petición
-    $request=Request::createFromGlobals();
+    $request=$this->getRequest(); 
+    //$request=Request::createFromGlobals();
     //$headers=apache_request_headers();
     //Si contiene el token, en la sección Authorization
     if(isset($request->headers->get('Authorization');))
