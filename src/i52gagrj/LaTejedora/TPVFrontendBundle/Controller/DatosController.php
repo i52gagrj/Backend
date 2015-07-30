@@ -115,20 +115,9 @@ class DatosController extends Controller
   public function todosclientesAction()
   {
     //Extraer la cabecera de la petición
-    $headers=getallheaders();
-    if($headers==false){
-        $mandar = new Response(json_encode(array(
-          'code' => 3,
-          'response'=> array( 
-            'respuesta' => "Esto no peta"))));      
-        $mandar->headers->set('Content-Type', 'application/json');
-        return $mandar; 
-    }
-    else{
-    //$request = Request::createFromGlobals();
-    //$headers=$request->headers->all(); 
+    $headers=apache_request_headers();
     //Si contiene el token, en la sección Authorization
-    if(isset($headers['Authorization']))
+    if(isset($headers["Authorization"]))
     {
       $token=explode(" ", $headers["Authorization"]);
       $tokend=JWT::decode(trim($token[1],'"'));
@@ -183,13 +172,12 @@ class DatosController extends Controller
       $mandar->headers->set('Content-Type', 'application/json');
       return $mandar;
     }
-    }
   }
 
   public function todostiposAction()
   {
     //Extraer la cabecera de la petición
-    $headers=getallheaders();
+    $headers=apache_request_headers();
     //Si contiene el token, en la sección Authorization
     if(isset($headers["Authorization"]))
     {
