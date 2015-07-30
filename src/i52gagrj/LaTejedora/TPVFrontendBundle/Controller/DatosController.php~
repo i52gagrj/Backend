@@ -87,7 +87,7 @@ class DatosController extends Controller
 
   public function todosproductosAction()
   {
-    $respuesta = array();
+    $respuesta = array();    
     $em = $this->getDoctrine()->getEntityManager();
     $productos = $em->getRepository('i52LTPVFrontendBundle:Producto')->
       findAll();
@@ -115,9 +115,18 @@ class DatosController extends Controller
   public function todosclientesAction()
   {
     //Extraer la cabecera de la petición
-    //$headers=apache_request_headers();
-    $request=$this->getRequest();
-    $headers=$request->headers->all(); 
+    $headers=getallheaders();
+    if($headers==false){
+        $mandar = new Response(json_encode(array(
+          'code' => 3,
+          'response'=> array( 
+            'respuesta' => "Esto no peta"))));      
+        $mandar->headers->set('Content-Type', 'application/json');
+        return $mandar; 
+    }
+    else{
+    //$request = Request::createFromGlobals();
+    //$headers=$request->headers->all(); 
     //Si contiene el token, en la sección Authorization
     if(isset($headers['Authorization']))
     {
@@ -174,12 +183,13 @@ class DatosController extends Controller
       $mandar->headers->set('Content-Type', 'application/json');
       return $mandar;
     }
+    }
   }
 
   public function todostiposAction()
   {
     //Extraer la cabecera de la petición
-    $headers=apache_request_headers();
+    $headers=$this->apache_request_headers2();
     //Si contiene el token, en la sección Authorization
     if(isset($headers["Authorization"]))
     {
@@ -615,7 +625,6 @@ class DatosController extends Controller
 
   public function buscaventaAction(){  
     //Extraer la cabecera de la petición
-    $headers=apache_request_headers();
     //Si contiene el token, en la sección Authorization
     if(isset($headers["Authorization"]))
     {
@@ -1077,5 +1086,32 @@ class DatosController extends Controller
     }*/
   }  
 
+  public function apache_request_headers2() 
+{
+        $arh = array();
+        $rx_http = '/\AHTTP_/';
+
+        foreach($_SERVER as $key => $val) {
+            if( preg_match($rx_http, $key) ) {
+                $arh_key = preg_replace($rx_http, '', $key);
+                $rx_matches = array();
+           // do some nasty string manipulations to restore the original letter case
+           // this should work in most cases
+                $rx_matches = explode('_', $arh_key);
+
+                if( count($rx_matches) > 0 and strlen($arh_key) > 2 ) {
+                    foreach($rx_matches as $ak_key => $ak_val) {
+                        $rx_matches[$ak_key] = ucfirst($ak_val);
+                    }
+
+                    $arh_key = implode('-', $rx_matches);
+                }
+
+                $arh[$arh_key] = $val;
+            }
+        }
+
+        return( $arh );
+    }
   
 }
