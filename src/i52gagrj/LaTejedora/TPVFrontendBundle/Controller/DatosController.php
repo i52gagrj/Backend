@@ -87,6 +87,7 @@ class DatosController extends Controller
 
   public function todosproductosAction()
   {
+    //$headers=apache_request_headers();
     $respuesta = array();
     $em = $this->getDoctrine()->getEntityManager();
     $productos = $em->getRepository('i52LTPVFrontendBundle:Producto')->
@@ -115,12 +116,13 @@ class DatosController extends Controller
   public function todosclientesAction()
   {
     //Extraer la cabecera de la petición
-    $headers=apache_request_headers();
+    //$headers=apache_request_headers();
+    //$request=Request::createFromGlobals();
     //Si contiene el token, en la sección Authorization
     if(isset($headers["Authorization"]))
     {
-      $token=explode(" ", $headers["Authorization"]);      
-      $tokend=JWT::decode(trim($token,'"'));
+      $token=explode(" ", $headers["Authorization"]);
+      $tokend=JWT::decode(trim($token[1],'"'));
       $respuesta = array();
       //Si los datos del token son correctos, se cargan los socios
       if($this->comprobarToken($tokend->id, $tokend->username))
@@ -177,11 +179,12 @@ class DatosController extends Controller
   public function todostiposAction()
   {
     //Extraer la cabecera de la petición
-    $headers=apache_request_headers();
+    $request=Request::createFromGlobals();
+    //$headers=apache_request_headers();
     //Si contiene el token, en la sección Authorization
-    if(isset($headers["Authorization"]))
+    if(isset($request->headers->get('Authorization');))
     {
-      $token=explode(" ", $headers["Authorization"]);
+      $token=explode(" ", $request->headers->get('Authorization'));
       $tokend=JWT::decode(trim($token[1],'"'));
       $respuesta = array();
       //Si los datos del token son correctos, se cargan los tipos
