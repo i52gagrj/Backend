@@ -1014,6 +1014,7 @@ class DatosController extends Controller
     $user=$data['username'];
     $pass=$data['password'];
     $usuario=$this->devuelveUsuario($user);
+    $info = phpinfo();
 
     if($usuario){ 
       if(password_verify($pass, $usuario->getPassword())){
@@ -1030,6 +1031,7 @@ class DatosController extends Controller
 	$mandar = new Response(json_encode(array(
 	  'code' => 0,
 	  'response'=> array( 
+          'info'=> $info,
 	  'token' => $jwt))));
         $mandar->headers->set('Content-Type', 'application/json');
         return $mandar;
@@ -1038,6 +1040,7 @@ class DatosController extends Controller
         $mandar = new Response(json_encode(array(
     	  'code' => 1,
 	  'response'=> array(
+          'info'=> $info,
           'respuesta' => "La clave no es correcta"))));
         $mandar->headers->set('Content-Type', 'application/json');
         return $mandar; 
@@ -1047,6 +1050,7 @@ class DatosController extends Controller
       $mandar = new Response(json_encode(array(
 	'code' => 2,
 	'response'=> array(
+        'info'=> $info,
         'respuesta' => "No existe el usuario"))));
       $mandar->headers->set('Content-Type', 'application/json');
       return $mandar; 
@@ -1074,33 +1078,5 @@ class DatosController extends Controller
       if($usuario->getUsername()==$user) return $usuario;   
     }*/
   }  
-
-  public function apache_request_headers2() 
-{
-        $arh = array();
-        $rx_http = '/\AHTTP_/';
-
-        foreach($_SERVER as $key => $val) {
-            if( preg_match($rx_http, $key) ) {
-                $arh_key = preg_replace($rx_http, '', $key);
-                $rx_matches = array();
-           // do some nasty string manipulations to restore the original letter case
-           // this should work in most cases
-                $rx_matches = explode('_', $arh_key);
-
-                if( count($rx_matches) > 0 and strlen($arh_key) > 2 ) {
-                    foreach($rx_matches as $ak_key => $ak_val) {
-                        $rx_matches[$ak_key] = ucfirst($ak_val);
-                    }
-
-                    $arh_key = implode('-', $rx_matches);
-                }
-
-                $arh[$arh_key] = $val;
-            }
-        }
-
-        return( $arh );
-    }
   
 }
