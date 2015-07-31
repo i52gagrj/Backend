@@ -120,7 +120,7 @@ class DatosController extends Controller
     if(isset($headers["Authorization"]))
     {
       $token=explode(" ", $headers["Authorization"]);
-      $tokend=JWT::decode(trim($token,'"'));
+      $tokend=JWT::decode(trim($token[1],'"'));
       $respuesta = array();
       //Si los datos del token son correctos, se cargan los socios
       if($this->comprobarToken($tokend->id, $tokend->username))
