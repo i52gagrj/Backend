@@ -471,9 +471,9 @@
     <parameter key="assetic.write_to">/var/www/html/TPVCJ1.2/app/../web</parameter>
     <parameter key="assetic.variables" type="collection"/>
     <parameter key="assetic.java.bin">/usr/bin/java</parameter>
-    <parameter key="assetic.node.bin">/usr/bin/node</parameter>
+    <parameter key="assetic.node.bin">/home/juan/.nvm/v0.11.13/bin/node</parameter>
     <parameter key="assetic.ruby.bin">/usr/bin/ruby</parameter>
-    <parameter key="assetic.sass.bin">/usr/bin/sass</parameter>
+    <parameter key="assetic.sass.bin">/home/juan/.rbenv/shims/sass</parameter>
     <parameter key="assetic.filter.cssrewrite.class">Assetic\Filter\CssRewriteFilter</parameter>
     <parameter key="assetic.twig_extension.functions" type="collection"/>
     <parameter key="assetic.controller.class">Symfony\Bundle\AsseticBundle\Controller\AsseticController</parameter>
@@ -614,10 +614,7 @@
     <parameter key="nelmio_cors.map" type="collection">
       <parameter key="^/" type="collection">
         <parameter key="allow_origin">true</parameter>
-        <parameter key="allow_headers" type="collection">
-          <parameter>origin</parameter>
-          <parameter>content-type</parameter>
-        </parameter>
+        <parameter key="allow_headers">true</parameter>
         <parameter key="allow_methods" type="collection">
           <parameter>POST</parameter>
           <parameter>PUT</parameter>
@@ -2123,7 +2120,7 @@
         </argument>
         <argument type="service">
           <service class="Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider" public="false">
-            <argument>55b8827f04851</argument>
+            <argument>55bbdfa840d24</argument>
           </service>
         </argument>
         <argument type="service">
@@ -2556,7 +2553,7 @@
         <argument type="service">
           <service class="Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener" public="false">
             <argument type="service" id="security.context"/>
-            <argument>55b8827f04851</argument>
+            <argument>55bbdfa840d24</argument>
             <argument type="service" id="monolog.logger.security" on-invalid="null"/>
             <argument type="service" id="security.authentication.manager"/>
           </service>
@@ -3263,10 +3260,7 @@
       <argument type="collection">
         <argument key="^/" type="collection">
           <argument key="allow_origin">true</argument>
-          <argument key="allow_headers" type="collection">
-            <argument>origin</argument>
-            <argument>content-type</argument>
-          </argument>
+          <argument key="allow_headers">true</argument>
           <argument key="allow_methods" type="collection">
             <argument>POST</argument>
             <argument>PUT</argument>

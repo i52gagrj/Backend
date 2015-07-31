@@ -1014,7 +1014,6 @@ class DatosController extends Controller
     $user=$data['username'];
     $pass=$data['password'];
     $usuario=$this->devuelveUsuario($user);
-    $info = phpinfo();
 
     if($usuario){ 
       if(password_verify($pass, $usuario->getPassword())){
