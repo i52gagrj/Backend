@@ -1031,8 +1031,7 @@ class DatosController extends Controller
 	$mandar = new Response(json_encode(array(
 	  'code' => 0,
 	  'response'=> array( 
-          'token' => $jwt,
-	  'info'=> $info))));
+            'token' => $jwt))));
         $mandar->headers->set('Content-Type', 'application/json');
         return $mandar;
       }  
@@ -1040,8 +1039,7 @@ class DatosController extends Controller
         $mandar = new Response(json_encode(array(
     	  'code' => 1,
 	  'response'=> array(
-          'info'=> $info,
-          'respuesta' => "La clave no es correcta"))));
+            'respuesta' => "La clave no es correcta"))));
         $mandar->headers->set('Content-Type', 'application/json');
         return $mandar; 
       } 
@@ -1050,8 +1048,7 @@ class DatosController extends Controller
       $mandar = new Response(json_encode(array(
 	'code' => 2,
 	'response'=> array(
-        'info'=> $info,
-        'respuesta' => "No existe el usuario"))));
+          'respuesta' => "No existe el usuario"))));
       $mandar->headers->set('Content-Type', 'application/json');
       return $mandar; 
     }

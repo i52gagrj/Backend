@@ -1031,8 +1031,8 @@ class DatosController extends Controller
 	$mandar = new Response(json_encode(array(
 	  'code' => 0,
 	  'response'=> array( 
-          'info'=> $info,
-	  'token' => $jwt))));
+          'token' => $jwt,
+	  'info'=> $info))));
         $mandar->headers->set('Content-Type', 'application/json');
         return $mandar;
       }  
