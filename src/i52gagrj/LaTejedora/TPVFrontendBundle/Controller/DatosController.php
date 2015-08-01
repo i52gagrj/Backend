@@ -186,7 +186,7 @@ class DatosController extends Controller
     //if(isset($headers["Authorization"]))
     if($headers->get('authorization'))
     {
-      $token=explode(" ", $request->headers['Authorization']);
+      $token=explode(" ", $headers->get('authorization'));
       $tokend=JWT::decode(trim($token[1],'"'));
       $respuesta = array();
       //Si los datos del token son correctos, se cargan los tipos
