@@ -116,11 +116,14 @@ class DatosController extends Controller
   public function todosclientesAction()
   {
     //Extraer la cabecera de la petición
-    $headers=apache_request_headers();
+    //$headers=apache_request_headers();   
     //Si contiene el token, en la sección Authorization
-    if(isset($headers["Authorization"]))
+    //if(isset($headers["Authorization"]))
+    $request = Request::createFromGlobals();
+    $headers=$request->headers;
+    if($headers->get('authorization'))
     {
-      $token=explode(" ", $headers["Authorization"]);
+      $token=explode(" ", $headers->get('authorization'));
       $tokend=JWT::decode(trim($token[1],'"'));
       $respuesta = array();
       //Si los datos del token son correctos, se cargan los tipos
@@ -178,12 +181,11 @@ class DatosController extends Controller
   public function todostiposAction()
   {
     //Extraer la cabecera de la petición
-    $request = Request::createFromGlobals();
-    $headers=$request->headers;
-    //$headers=apache_request_headers();
-    
+    //$headers=apache_request_headers();   
     //Si contiene el token, en la sección Authorization
     //if(isset($headers["Authorization"]))
+    $request = Request::createFromGlobals();
+    $headers=$request->headers;
     if($headers->get('authorization'))
     {
       $token=explode(" ", $headers->get('authorization'));
