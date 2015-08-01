@@ -116,15 +116,13 @@ class DatosController extends Controller
   {
     //Extraer la cabecera de la petición
     $headers=apache_request_headers();
-    //$request=$this->getRequest();
-    //$headers=$request->headers->all();
     //Si contiene el token, en la sección Authorization
     if(isset($headers["Authorization"]))
     {
       $token=explode(" ", $headers["Authorization"]);
       $tokend=JWT::decode(trim($token[1],'"'));
       $respuesta = array();
-      //Si los datos del token son correctos, se cargan los socios
+      //Si los datos del token son correctos, se cargan los tipos
       if($this->comprobarToken($tokend->id, $tokend->username))
       {  
         $em = $this->getDoctrine()->getEntityManager();

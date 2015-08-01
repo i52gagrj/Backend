@@ -115,6 +115,7 @@ class DatosController extends Controller
   public function todosclientesAction()
   {
     //Extraer la cabecera de la petición
+    if(apache_request_headers()){
     $headers=apache_request_headers();
     //Si contiene el token, en la sección Authorization
     if(isset($headers["Authorization"]))
@@ -169,6 +170,16 @@ class DatosController extends Controller
         'code' => 2,
         'response'=> array( 
           'respuesta' => "No está autorizado para realizar la consulta"))));      
+      $mandar->headers->set('Content-Type', 'application/json');
+      return $mandar;
+    }
+    }
+    else 
+    {
+      $mandar = new Response(json_encode(array(
+        'code' => 4,
+        'response'=> array( 
+          'respuesta' => "El servidor corre bajo fast-cgi"))));      
       $mandar->headers->set('Content-Type', 'application/json');
       return $mandar;
     }
