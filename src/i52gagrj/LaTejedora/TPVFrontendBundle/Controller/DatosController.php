@@ -5,6 +5,7 @@ namespace i52gagrj\LaTejedora\TPVFrontendBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\HeaderBag;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use \Doctrine\Common\Collections\ArrayCollection;
@@ -115,7 +116,6 @@ class DatosController extends Controller
   public function todosclientesAction()
   {
     //Extraer la cabecera de la petición
-    if(apache_request_headers()){
     $headers=apache_request_headers();
     //Si contiene el token, en la sección Authorization
     if(isset($headers["Authorization"]))
@@ -173,26 +173,20 @@ class DatosController extends Controller
       $mandar->headers->set('Content-Type', 'application/json');
       return $mandar;
     }
-    }
-    else 
-    {
-      $mandar = new Response(json_encode(array(
-        'code' => 4,
-        'response'=> array( 
-          'respuesta' => "El servidor corre bajo fast-cgi"))));      
-      $mandar->headers->set('Content-Type', 'application/json');
-      return $mandar;
-    }
   }
 
   public function todostiposAction()
   {
     //Extraer la cabecera de la petición
-    $headers=apache_request_headers();
+    $request = Request::createFromGlobals();
+    $headers=$request->headers;
+    //$headers=apache_request_headers();
+    
     //Si contiene el token, en la sección Authorization
-    if(isset($headers["Authorization"]))
+    //if(isset($headers["Authorization"]))
+    if($headers->get('authorization'))
     {
-      $token=explode(" ", $headers["Authorization"]);
+      $token=explode(" ", $request->headers['Authorization']);
       $tokend=JWT::decode(trim($token[1],'"'));
       $respuesta = array();
       //Si los datos del token son correctos, se cargan los tipos
@@ -237,7 +231,9 @@ class DatosController extends Controller
       $mandar = new Response(json_encode(array(
         'code' => 2,
         'response'=> array( 
-          'respuesta' => "No está autorizado para realizar la consulta"))));      
+          'respuesta' => "No está autorizado para realizar la consulta",
+          'content' => $request->headers->get('content_type'),
+          'auth' => $request->headers->get('authorization')))));      
       $mandar->headers->set('Content-Type', 'application/json');
       return $mandar;
     }
