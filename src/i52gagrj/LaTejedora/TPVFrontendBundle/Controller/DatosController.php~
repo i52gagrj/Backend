@@ -115,8 +115,9 @@ class DatosController extends Controller
   public function todosclientesAction()
   {
     //Extraer la cabecera de la petición
-    $request=$this->getRequest();
-    $headers=$request->headers->all();
+    $headers=apache_request_headers();
+    //$request=$this->getRequest();
+    //$headers=$request->headers->all();
     //Si contiene el token, en la sección Authorization
     if(isset($headers["Authorization"]))
     {
