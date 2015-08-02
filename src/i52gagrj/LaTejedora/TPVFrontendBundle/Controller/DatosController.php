@@ -29,6 +29,8 @@ class DatosController extends Controller
     //$headers=apache_request_headers();   
     //Si contiene el token, en la sección Authorization
     //if(isset($headers["Authorization"]))
+    //{
+    //  $token=explode(" ", $headers["Authorization"]);
     $request = Request::createFromGlobals();
     $headers=$request->headers;
     if($headers->get('authorization'))
@@ -87,34 +89,7 @@ class DatosController extends Controller
       $mandar->headers->set('Content-Type', 'application/json');
       return $mandar;
     }
-  }
-
-  /*public function todosproductosAction()
-  {
-    $respuesta = array();    
-    $em = $this->getDoctrine()->getEntityManager();
-    $productos = $em->getRepository('i52LTPVFrontendBundle:Producto')->
-      findAll();
-    foreach($productos as $producto)
-    {
-      if($producto->getActivo())
-      { 
-        $elemento = array(
-          'id' => $producto->getId(),
-          'nombre' => $producto->getNombre(),
-          'precio' => $producto->getPrecio(),
-          'iva' => $producto->getIva(),
-          'tipo' => $producto->getTipo()->getNombre());
-        array_push($respuesta, $elemento);    
-      }
-    }     
-    $mandar = new Response(json_encode(array(
-      'code' => 0,
-      'response'=> array(
-        'productos' => $respuesta))));
-    $mandar->headers->set('Content-Type', 'application/json');
-    return $mandar;
-  }*/  
+  } 
 
   public function todosclientesAction()
   {
@@ -122,6 +97,8 @@ class DatosController extends Controller
     //$headers=apache_request_headers();   
     //Si contiene el token, en la sección Authorization
     //if(isset($headers["Authorization"]))
+    //{
+    //  $token=explode(" ", $headers["Authorization"]);
     $request = Request::createFromGlobals();
     $headers=$request->headers;
     if($headers->get('authorization'))
@@ -186,6 +163,8 @@ class DatosController extends Controller
     //$headers=apache_request_headers();   
     //Si contiene el token, en la sección Authorization
     //if(isset($headers["Authorization"]))
+    //{
+    //  $token=explode(" ", $headers["Authorization"]);
     $request = Request::createFromGlobals();
     $headers=$request->headers;
     if($headers->get('authorization'))
@@ -244,11 +223,16 @@ class DatosController extends Controller
   public function recibirventaAction()
   {
     //Extraer la cabecera de la petición
-    $headers=apache_request_headers();
+    //$headers=apache_request_headers();   
     //Si contiene el token, en la sección Authorization
-    if(isset($headers["Authorization"]))
+    //if(isset($headers["Authorization"]))
+    //{
+    //  $token=explode(" ", $headers["Authorization"]);
+    $request = Request::createFromGlobals();
+    $headers=$request->headers;
+    if($headers->get('authorization'))
     {
-      $token=explode(" ", $headers["Authorization"]);
+      $token=explode(" ", $headers->get('authorization'));
       $tokend=JWT::decode(trim($token[1],'"'));
       //Si los datos del token son correctos, se guarda la venta
       if($this->comprobarToken($tokend->id, $tokend->username))
@@ -346,14 +330,17 @@ class DatosController extends Controller
 //////////////////////////////CIERRE/////////////////////////////
 
   public function cierreventasAction(){    
-    //Devuelve todas las ventas realizadas hoy.
-    //Hay que tratar el listado para que devuelva una consulta JSON.
     //Extraer la cabecera de la petición
-    $headers=apache_request_headers();
+    //$headers=apache_request_headers();   
     //Si contiene el token, en la sección Authorization
-    if(isset($headers["Authorization"]))
+    //if(isset($headers["Authorization"]))
+    //{
+    //  $token=explode(" ", $headers["Authorization"]);
+    $request = Request::createFromGlobals();
+    $headers=$request->headers;
+    if($headers->get('authorization'))
     {
-      $token=explode(" ", $headers["Authorization"]);
+      $token=explode(" ", $headers->get('authorization'));
       $tokend=JWT::decode(trim($token[1],'"'));
       $respuesta = array();
       $fechac; 
@@ -414,11 +401,16 @@ class DatosController extends Controller
 
   public function cierrelineasAction(){
     //Extraer la cabecera de la petición
-    $headers=apache_request_headers();
+    //$headers=apache_request_headers();   
     //Si contiene el token, en la sección Authorization
-    if(isset($headers["Authorization"]))
+    //if(isset($headers["Authorization"]))
+    //{
+    //  $token=explode(" ", $headers["Authorization"]);
+    $request = Request::createFromGlobals();
+    $headers=$request->headers;
+    if($headers->get('authorization'))
     {
-      $token=explode(" ", $headers["Authorization"]);
+      $token=explode(" ", $headers->get('authorization'));
       $tokend=JWT::decode(trim($token[1],'"'));
       $respuesta = array();
       //Si los datos del token son correctos, se cargan los productos
@@ -479,13 +471,17 @@ class DatosController extends Controller
 
   public function ultimocierreAction(){
     $fechac; 
-    //Devuelve el diario (cierre) del dia anterior  
     //Extraer la cabecera de la petición
-    $headers=apache_request_headers();
+    //$headers=apache_request_headers();   
     //Si contiene el token, en la sección Authorization
-    if(isset($headers["Authorization"]))
+    //if(isset($headers["Authorization"]))
+    //{
+    //  $token=explode(" ", $headers["Authorization"]);
+    $request = Request::createFromGlobals();
+    $headers=$request->headers;
+    if($headers->get('authorization'))
     {
-      $token=explode(" ", $headers["Authorization"]);
+      $token=explode(" ", $headers->get('authorization'));
       $tokend=JWT::decode(trim($token[1],'"'));
       $respuesta = array();
       //Si los datos del token son correctos, se cargan los productos
@@ -556,11 +552,16 @@ class DatosController extends Controller
   public function recibircierreAction()
   {
     //Extraer la cabecera de la petición
-    $headers=apache_request_headers();
+    //$headers=apache_request_headers();   
     //Si contiene el token, en la sección Authorization
-    if(isset($headers["Authorization"]))
+    //if(isset($headers["Authorization"]))
+    //{
+    //  $token=explode(" ", $headers["Authorization"]);
+    $request = Request::createFromGlobals();
+    $headers=$request->headers;
+    if($headers->get('authorization'))
     {
-      $token=explode(" ", $headers["Authorization"]);
+      $token=explode(" ", $headers->get('authorization'));
       $tokend=JWT::decode(trim($token[1],'"'));
       //Si los datos del token son correctos, se guarda la venta
       if($this->comprobarToken($tokend->id, $tokend->username))
@@ -622,10 +623,16 @@ class DatosController extends Controller
 
   public function buscaventaAction(){  
     //Extraer la cabecera de la petición
+    //$headers=apache_request_headers();   
     //Si contiene el token, en la sección Authorization
-    if(isset($headers["Authorization"]))
+    //if(isset($headers["Authorization"]))
+    //{
+    //  $token=explode(" ", $headers["Authorization"]);
+    $request = Request::createFromGlobals();
+    $headers=$request->headers;
+    if($headers->get('authorization'))
     {
-      $token=explode(" ", $headers["Authorization"]);
+      $token=explode(" ", $headers->get('authorization'));
       $tokend=JWT::decode(trim($token[1],'"'));
       $respuesta = array();
       //Si los datos del token son correctos, se cargan los productos
@@ -701,11 +708,16 @@ class DatosController extends Controller
 
   public function buscalistaventaAction(){   
     //Extraer la cabecera de la petición
-    $headers=apache_request_headers();
+    //$headers=apache_request_headers();   
     //Si contiene el token, en la sección Authorization
-    if(isset($headers["Authorization"]))
+    //if(isset($headers["Authorization"]))
+    //{
+    //  $token=explode(" ", $headers["Authorization"]);
+    $request = Request::createFromGlobals();
+    $headers=$request->headers;
+    if($headers->get('authorization'))
     {
-      $token=explode(" ", $headers["Authorization"]);
+      $token=explode(" ", $headers->get('authorization'));
       $tokend=JWT::decode(trim($token[1],'"'));
       $respuesta = array();
       //Si los datos del token son correctos, se cargan los productos
@@ -776,11 +788,16 @@ class DatosController extends Controller
   public function recibirmodificadaAction()
   {
     //Extraer la cabecera de la petición
-    $headers=apache_request_headers();
+    //$headers=apache_request_headers();   
     //Si contiene el token, en la sección Authorization
-    if(isset($headers["Authorization"]))
+    //if(isset($headers["Authorization"]))
+    //{
+    //  $token=explode(" ", $headers["Authorization"]);
+    $request = Request::createFromGlobals();
+    $headers=$request->headers;
+    if($headers->get('authorization'))
     {
-      $token=explode(" ", $headers["Authorization"]);
+      $token=explode(" ", $headers->get('authorization'));
       $tokend=JWT::decode(trim($token[1],'"'));
       //Si los datos del token son correctos, se guarda la venta
       if($this->comprobarToken($tokend->id, $tokend->username))
@@ -830,7 +847,6 @@ class DatosController extends Controller
     //Habria que modificar las existencias de productos, cosa que no se ha hecho.
      
     $em = $this->getDoctrine()->getEntityManager();
-
 
     foreach($venta as $lineamodificada)
     {
@@ -888,11 +904,16 @@ class DatosController extends Controller
   public function todosclientescuotasAction()
   {
     //Extraer la cabecera de la petición
-    $headers=apache_request_headers();
+    //$headers=apache_request_headers();   
     //Si contiene el token, en la sección Authorization
-    if(isset($headers["Authorization"]))
+    //if(isset($headers["Authorization"]))
+    //{
+    //  $token=explode(" ", $headers["Authorization"]);
+    $request = Request::createFromGlobals();
+    $headers=$request->headers;
+    if($headers->get('authorization'))
     {
-      $token=explode(" ", $headers["Authorization"]);
+      $token=explode(" ", $headers->get('authorization'));
       $tokend=JWT::decode(trim($token[1],'"'));
       $respuesta = array();
       //Si los datos del token son correctos, se cargan los productos
@@ -953,11 +974,16 @@ class DatosController extends Controller
   public function recibircuotasAction()
   {
     //Extraer la cabecera de la petición
-    $headers=apache_request_headers();
+    //$headers=apache_request_headers();   
     //Si contiene el token, en la sección Authorization
-    if(isset($headers["Authorization"]))
+    //if(isset($headers["Authorization"]))
+    //{
+    //  $token=explode(" ", $headers["Authorization"]);
+    $request = Request::createFromGlobals();
+    $headers=$request->headers;
+    if($headers->get('authorization'))
     {
-      $token=explode(" ", $headers["Authorization"]);
+      $token=explode(" ", $headers->get('authorization'));
       $tokend=JWT::decode(trim($token[1],'"'));
       //Si los datos del token son correctos, se guarda la venta
       if($this->comprobarToken($tokend->id, $tokend->username))
