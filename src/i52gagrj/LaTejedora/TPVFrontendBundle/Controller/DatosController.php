@@ -288,8 +288,9 @@ class DatosController extends Controller
     $hora = new \DateTime("now");
     $venta->setHoraventa($hora);    
     $venta->setUsuario($usuario);    
-    $venta->setSocio($socio);  
-    $venta->setContado($contado);
+    $venta->setSocio($socio);
+    if($contado==1) $venta->setContado(true);  
+    else $venta->setContado(false);
 
     $em->persist($venta);
 
