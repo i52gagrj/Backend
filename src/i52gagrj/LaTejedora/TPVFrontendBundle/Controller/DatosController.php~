@@ -289,8 +289,8 @@ class DatosController extends Controller
     $venta->setHoraventa($hora);    
     $venta->setUsuario($usuario);    
     $venta->setSocio($socio);
-    if($contado==1) $venta->setContado(true);  
-    else $venta->setContado(false);
+    if($contado==true) $venta->setContado(1);  
+    else $venta->setContado(0);
 
     $em->persist($venta);
 
