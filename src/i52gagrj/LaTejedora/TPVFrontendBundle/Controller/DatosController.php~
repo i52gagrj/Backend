@@ -1138,6 +1138,22 @@ class DatosController extends Controller
         $tokend->iat = time();
 	$tokend->exp = time() + 900;
 	$jwt = JWT::encode($tokend, '');
+        foreach($proveedores as $proveedor)
+        {
+          $elemento = array(
+            'id' => $proveedor->getId(),
+            'nombre' => $proveedor->getNombre(),
+            'nif' => $proveedor->getNif(),
+            'direccion' => $proveedor->getDireccion(),
+            'poblacion' => $proveedor->getPoblacion()
+            'provincia' => $proveedor->getNombre(),
+            'cp' => $proveedor->getNif(),
+            'fijo' => $proveedor->getTelefijo(),
+            'movil' => $proveedor->getTelemovil(),
+            'email' => $proveedor->getEmail(),
+            'activo' => $proveedor->getActivo(),);
+          array_push($respuesta, $elemento);    
+        }             
         $mandar = new Response(json_encode(array(
           'code' => 0,
           'response'=> array(
