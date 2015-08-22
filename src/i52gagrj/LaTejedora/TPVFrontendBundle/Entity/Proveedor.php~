@@ -86,6 +86,13 @@ class Proveedor
      */
     private $email;
 
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="activo", type="boolean")
+     */
+    private $activo;
+
 
     // ASOCIACIONES //
 

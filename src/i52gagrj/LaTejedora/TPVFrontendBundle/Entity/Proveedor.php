@@ -86,6 +86,13 @@ class Proveedor
      */
     private $email;
 
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="activo", type="boolean")
+     */
+    private $activo;
+
 
     // ASOCIACIONES //
 
@@ -317,6 +324,29 @@ class Proveedor
     public function getEmail()
     {
         return $this->email;
+    }
+
+    /**
+     * Set activo
+     *
+     * @param boolean $activo
+     * @return Proveedor
+     */
+    public function setActivo($activo)
+    {
+        $this->activo = $activo;
+
+        return $this;
+    }
+
+    /**
+     * Get activo
+     *
+     * @return boolean 
+     */
+    public function getActivo()
+    {
+        return $this->activo;
     }
 
     /**
