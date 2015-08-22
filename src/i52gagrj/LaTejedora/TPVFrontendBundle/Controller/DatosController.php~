@@ -1138,7 +1138,7 @@ class DatosController extends Controller
         $tokend->iat = time();
 	$tokend->exp = time() + 900;
 	$jwt = JWT::encode($tokend, '');
-        foreach($proveedores as $proveedor)
+        /*foreach($proveedores as $proveedor)
         {
           $elemento = array(
             'id' => $proveedor->getId(),
@@ -1151,14 +1151,14 @@ class DatosController extends Controller
             'fijo' => $proveedor->getTelefijo(),
             'movil' => $proveedor->getTelemovil(),
             'email' => $proveedor->getEmail(),
-            /*'activo' => $proveedor->getActivo()*/);
+            'activo' => $proveedor->getActivo());
           array_push($respuesta, $elemento);    
-        }             
+        }*/             
         $mandar = new Response(json_encode(array(
           'code' => 0,
           'response'=> array(
           'token' => $jwt, 
-          'proveedores' => $respuesta))));
+          'proveedores' => $proveedores))));
         $mandar->headers->set('Content-Type', 'application/json');
         return $mandar;
       }  
