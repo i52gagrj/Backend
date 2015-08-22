@@ -1142,16 +1142,7 @@ class DatosController extends Controller
         {
           $elemento = array(
             'id' => $proveedor->getId(),
-            'nombre' => $proveedor->getNombre(),
-            'nif' => $proveedor->getNif(),
-            'direccion' => $proveedor->getDireccion(),
-            'poblacion' => $proveedor->getPoblacion()
-            'provincia' => $proveedor->getNombre(),
-            'cp' => $proveedor->getNif(),
-            'fijo' => $proveedor->getTelefijo(),
-            'movil' => $proveedor->getTelemovil(),
-            'email' => $proveedor->getEmail(),
-            'activo' => $proveedor->getActivo());
+            'nombre' => $proveedor->getNombre());
           array_push($respuesta, $elemento);    
         }             
         $mandar = new Response(json_encode(array(
