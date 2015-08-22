@@ -1143,11 +1143,11 @@ class DatosController extends Controller
           $elemento = array(
             'id' => $proveedor->getId(),
             'nombre' => $proveedor->getNombre(),
-            'nif' => $proveedor->getNif(),
-            'direccion' => $proveedor->getDireccion(),
-            'poblacion' => $proveedor->getPoblacion()
-            'provincia' => $proveedor->getNombre(),
-            'cp' => $proveedor->getCp()//,
+            'nif' => $proveedor->getNif()//,
+            //'direccion' => $proveedor->getDireccion(),
+            //'poblacion' => $proveedor->getPoblacion()
+            //'provincia' => $proveedor->getNombre(),
+            //'cp' => $proveedor->getCp(),
             //'fijo' => $proveedor->getTelefijo(),
             //'movil' => $proveedor->getTelemovil(),
             //'email' => $proveedor->getEmail(),

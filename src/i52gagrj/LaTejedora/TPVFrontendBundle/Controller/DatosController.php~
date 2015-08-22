@@ -1147,7 +1147,7 @@ class DatosController extends Controller
             'direccion' => $proveedor->getDireccion(),
             'poblacion' => $proveedor->getPoblacion()
             'provincia' => $proveedor->getNombre(),
-            'cp' => $proveedor->getNif()//,
+            'cp' => $proveedor->getCp()//,
             //'fijo' => $proveedor->getTelefijo(),
             //'movil' => $proveedor->getTelemovil(),
             //'email' => $proveedor->getEmail(),
