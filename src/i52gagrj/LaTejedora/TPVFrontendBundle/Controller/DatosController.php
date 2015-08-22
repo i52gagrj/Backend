@@ -1147,10 +1147,11 @@ class DatosController extends Controller
             'direccion' => $proveedor->getDireccion(),
             'poblacion' => $proveedor->getPoblacion()
             'provincia' => $proveedor->getNombre(),
-            'cp' => $proveedor->getNif(),
-            'fijo' => $proveedor->getTelefijo(),
-            'movil' => $proveedor->getTelemovil(),
-            'email' => $proveedor->getEmail());
+            'cp' => $proveedor->getCp()//,
+            //'fijo' => $proveedor->getTelefijo(),
+            //'movil' => $proveedor->getTelemovil(),
+            //'email' => $proveedor->getEmail(),
+            /*'activo' => $proveedor->getActivo()*/);
           array_push($respuesta, $elemento);    
         }             
         $mandar = new Response(json_encode(array(
