@@ -198,8 +198,8 @@ i52_ltpv_frontend_apiLogin:
 ################################################################################
 
 i52_ltpv_frontend_apiListadoProveedores:
-    path: /gestion2/listadoProveedores.json
-    defaults: { _controller: i52LTPVFrontendBundle:Gestion2:listadoproveedores }
+    path: /datos/listadoProveedores.json
+    defaults: { _controller: i52LTPVFrontendBundle:Datos:listadoproveedores }
     requirements:
          _format: (xml|json)
          _method: GET
