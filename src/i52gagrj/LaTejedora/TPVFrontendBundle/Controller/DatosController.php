@@ -1148,9 +1148,9 @@ class DatosController extends Controller
             'poblacion' => $proveedor->getPoblacion(),
             'provincia' => $proveedor->getProvincia(),
             'cp' => $proveedor->getCp(),
-            //'fijo' => $proveedor->getTelefijo(),
-            //'movil' => $proveedor->getTelemovil(),
-            //'email' => $proveedor->getEmail(),
+            'fijo' => $proveedor->getTelefijo(),
+            'movil' => $proveedor->getTelemovil(),
+            'email' => $proveedor->getEmail(),
             /*'activo' => $proveedor->getActivo()*/);
           array_push($respuesta, $elemento);    
         }             
