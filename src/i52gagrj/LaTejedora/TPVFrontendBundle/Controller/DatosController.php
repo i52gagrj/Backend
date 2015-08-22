@@ -1143,14 +1143,14 @@ class DatosController extends Controller
           $elemento = array(
             'id' => $proveedor->getId(),
             'nombre' => $proveedor->getNombre(),
-            'nif' => $proveedor->getNif()//,
-            //'direccion' => $proveedor->getDireccion(),
-            //'poblacion' => $proveedor->getPoblacion()
-            //'provincia' => $proveedor->getNombre(),
-            //'cp' => $proveedor->getCp(),
-            //'fijo' => $proveedor->getTelefijo(),
-            //'movil' => $proveedor->getTelemovil(),
-            //'email' => $proveedor->getEmail(),
+            'nif' => $proveedor->getNif(),
+            'direccion' => $proveedor->getDireccion(),
+            'poblacion' => $proveedor->getPoblacion()
+            'provincia' => $proveedor->getProvincia(),
+            'cp' => $proveedor->getCp(),
+            'fijo' => $proveedor->getTelefijo(),
+            'movil' => $proveedor->getTelemovil(),
+            'email' => $proveedor->getEmail(),
             /*'activo' => $proveedor->getActivo()*/);
           array_push($respuesta, $elemento);    
         }             
