@@ -95,13 +95,6 @@ i52_ltpv_frontend_ejecutadevolucion:
     requirements:
        _method: POST
 
-i52_ltpv_frontend_ListadoProveedores:
-    path: /gestion/listadoProveedores.json
-    defaults: { _controller: i52LTPVFrontendBundle:Gestion:listadoproveedores }
-    requirements:
-         _format: (xml|json)
-         _method: GET
-
 #############################################################################
 
 i52_ltpv_frontend_apiTodosProductos:
@@ -202,7 +195,16 @@ i52_ltpv_frontend_apiLogin:
          _format: (xml|json)
          _method: POST
 
-#############################################################################
+################################################################################
+
+i52_ltpv_frontend_gestionListadoProveedores:
+    path: /gestion/listadoProveedores.json
+    defaults: { _controller: i52LTPVFrontendBundle:Gestion:listadoproveedores }
+    requirements:
+         _format: (xml|json)
+         _method: GET
+
+################################################################################
 
 api_login_check:
    path: /datos/login_check
