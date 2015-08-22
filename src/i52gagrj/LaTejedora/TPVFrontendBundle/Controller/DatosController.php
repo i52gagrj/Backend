@@ -1136,22 +1136,22 @@ class DatosController extends Controller
         $em = $this->getDoctrine()->getEntityManager();
         $proveedores = $em->getRepository('i52LTPVFrontendBundle:Proveedor')->
           findAll();   
-        foreach($proveedores as $proveedor)
+        /*foreach($proveedores as $proveedor)
         {
           $elemento = array(
-            'id' => $producto->getId(),
-            'nombre' => $producto->getNombre(),
-            'nif' => $producto->getNif(),
-            'direccion' => $producto->getDireccion(),
-            'poblacion' => $producto->getPoblacion();
-            'provincia' => $producto->getProvincia(),
-            'cp' => $producto->getCp(),
-            'telefijo' => $producto->getTelefijo();
-            'telemovil' => $producto->getTelemovil();
-            'email' => $producto->getEmail();
-            'activo' => $producto->getActivo();
+            'id' => $proveedor->getId(),
+            'nombre' => $proveedor->getNombre(),
+            'nif' => $proveedor->getNif(),
+            'direccion' => $proveedor->getDireccion(),
+            'poblacion' => $proveedor->getPoblacion();
+            'provincia' => $proveedor->getProvincia(),
+            'cp' => $proveedor->getCp(),
+            'telefijo' => $proveedor->getTelefijo();
+            'telemovil' => $proveedor->getTelemovil();
+            'email' => $proveedor->getEmail();
+            'activo' => $proveedor->getActivo();
           array_push($respuesta, $elemento);    
-        }  
+        } */ 
         $tokend->iat = time();
 	$tokend->exp = time() + 900;
 	$jwt = JWT::encode($tokend, '');
@@ -1159,7 +1159,7 @@ class DatosController extends Controller
           'code' => 0,
           'response'=> array(
           'token' => $jwt, 
-          'proveedores' => $respuesta))));
+          'proveedores' => $proveedor))));
         $mandar->headers->set('Content-Type', 'application/json');
         return $mandar;
       }  
