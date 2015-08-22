@@ -1151,7 +1151,7 @@ class DatosController extends Controller
             'fijo' => $proveedor->getTelefijo(),
             'movil' => $proveedor->getTelemovil(),
             'email' => $proveedor->getEmail(),
-            /*'activo' => $proveedor->getActivo()*/);
+            'activo' => $proveedor->getActivo());
           array_push($respuesta, $elemento);    
         }             
         $mandar = new Response(json_encode(array(
