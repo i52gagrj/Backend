@@ -58,11 +58,9 @@ security:
                 require_previous_session: false
 
         api:
-            pattern:   ^/caja/(datos|gestion)
+            pattern:   ^/caja/datos
             stateless: true
             lexik_jwt: ~
-
-         
 
 
 
@@ -76,4 +74,4 @@ security:
         - { path: ^/caja, roles: ROLE_USUARIO }
         - { path: ^/caja/datos/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/caja/datos,       roles: IS_AUTHENTICATED_FULLY }
-        - { path: ^/caja/gestion,       roles: IS_AUTHENTICATED_FULLY }
+
