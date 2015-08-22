@@ -1150,7 +1150,7 @@ class DatosController extends Controller
             'cp' => $proveedor->getCp(),
             'fijo' => $proveedor->getTelefijo(),
             'movil' => $proveedor->getTelemovil(),
-            'email' => $proveedor->getEmail(),
+            'email' => $proveedor->getEmail()//,
             /*'activo' => $proveedor->getActivo()*/);
           array_push($respuesta, $elemento);    
         }             
