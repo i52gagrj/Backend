@@ -19,7 +19,7 @@ use i52gagrj\LaTejedora\TPVFrontendBundle\Entity\Producto;
 use i52gagrj\LaTejedora\TPVFrontendBundle\Entity\Diario;
 use i52gagrj\LaTejedora\TPVFrontendBundle\Entity\Usuario;
 
-class GestionController extends Controller
+class Gestion2Controller extends Controller
 {
 //////////////////////////PROVEEDORES////////////////////////////////
 
@@ -78,7 +78,7 @@ class GestionController extends Controller
     }
   }
 
-  public function recibeproveedorAction()
+  /*public function recibeproveedorAction()
   {
     //Extraer la cabecera de la petición
     //$headers=apache_request_headers();   
@@ -182,7 +182,7 @@ class GestionController extends Controller
       
     $em->flush();
     return "El proveedor se ha modificado correctamente";
-  }
+  }*/
 
 
 //////////////////////////PRODUCTOS//////////////////////////////////

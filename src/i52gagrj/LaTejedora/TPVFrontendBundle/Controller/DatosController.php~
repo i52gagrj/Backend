@@ -1136,7 +1136,7 @@ class DatosController extends Controller
         $em = $this->getDoctrine()->getEntityManager();
         $proveedores = $em->getRepository('i52LTPVFrontendBundle:Proveedor')->
           findAll();   
-        foreach($proveedores as $proveedor)
+        /*foreach($proveedores as $proveedor)
         {
           $elemento = array(
             'id' => $proveedor->getId(),
@@ -1151,7 +1151,7 @@ class DatosController extends Controller
             'email' => $proveedor->getEmail();
             'activo' => $proveedor->getActivo();
           array_push($respuesta, $elemento);    
-        }  
+        } */ 
         $tokend->iat = time();
 	$tokend->exp = time() + 900;
 	$jwt = JWT::encode($tokend, '');

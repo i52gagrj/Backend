@@ -17,7 +17,6 @@ use i52gagrj\LaTejedora\TPVFrontendBundle\Entity\Lineaventa;
 use i52gagrj\LaTejedora\TPVFrontendBundle\Entity\Producto;
 use i52gagrj\LaTejedora\TPVFrontendBundle\Entity\Diario;
 use i52gagrj\LaTejedora\TPVFrontendBundle\Entity\Usuario;
-use i52gagrj\LaTejedora\TPVFrontendBundle\Entity\Proveedor;
 
 class DatosController extends Controller
 {
@@ -1114,77 +1113,5 @@ class DatosController extends Controller
       if($usuario->getUsername()==$user) return $usuario;   
     }*/
   }  
-
-  public function listadoproveedoresAction()
-  {
-    //Extraer la cabecera de la petición
-    //$headers=apache_request_headers();   
-    //Si contiene el token, en la sección Authorization
-    //if(isset($headers["Authorization"]))
-    //{
-    //  $token=explode(" ", $headers["Authorization"]);
-    $request = Request::createFromGlobals();
-    $headers=$request->headers;
-    if($headers->get('authorization'))
-    {
-      $token=explode(" ", $headers->get('authorization'));
-      $tokend=JWT::decode(trim($token[1],'"'));
-      $respuesta = array();
-      //Si los datos del token son correctos, se cargan los productos
-      if($this->comprobarToken($tokend->id, $tokend->username))
-      {  
-        $em = $this->getDoctrine()->getEntityManager();
-        $proveedores = $em->getRepository('i52LTPVFrontendBundle:Proveedor')->
-          findAll();   
-        /*foreach($proveedores as $proveedor)
-        {
-          $elemento = array(
-            'id' => $proveedor->getId(),
-            'nombre' => $proveedor->getNombre(),
-            'nif' => $proveedor->getNif(),
-            'direccion' => $proveedor->getDireccion(),
-            'poblacion' => $proveedor->getPoblacion();
-            'provincia' => $proveedor->getProvincia(),
-            'cp' => $proveedor->getCp(),
-            'telefijo' => $proveedor->getTelefijo();
-            'telemovil' => $proveedor->getTelemovil();
-            'email' => $proveedor->getEmail();
-            'activo' => $proveedor->getActivo();
-          array_push($respuesta, $elemento);    
-        } */ 
-        $tokend->iat = time();
-	$tokend->exp = time() + 900;
-	$jwt = JWT::encode($tokend, '');
-        $mandar = new Response(json_encode(array(
-          'code' => 0,
-          'response'=> array(
-          'token' => $jwt, 
-          'proveedores' => $proveedor))));
-        $mandar->headers->set('Content-Type', 'application/json');
-        return $mandar;
-      }  
-      //Si los datos del token no son correctos, se manda un codigo de error 1 y un mensaje
-      else
-      {
-        $mandar = new Response(json_encode(array(
-          'code' => 1,
-          'response'=> array( 
-            'respuesta' => "El usuario no se ha identificado correctamente"))));      
-        $mandar->headers->set('Content-Type', 'application/json');
-        return $mandar;        
-      }      
-    }
-    //Si la petición no contiene el token, se manda un codigo de error 2 y un mensaje
-    else
-    {
-      $mandar = new Response(json_encode(array(
-        'code' => 2,
-        'response'=> array( 
-          'respuesta' => "No está autorizado para realizar la consulta"))));      
-      $mandar->headers->set('Content-Type', 'application/json');
-      return $mandar;
-    }
-  }
-
   
 }

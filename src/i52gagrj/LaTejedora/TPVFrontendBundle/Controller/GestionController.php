@@ -78,7 +78,7 @@ class GestionController extends Controller
     }
   }
 
-  public function recibeproveedorAction()
+  /*public function recibeproveedorAction()
   {
     //Extraer la cabecera de la petición
     //$headers=apache_request_headers();   
@@ -182,7 +182,7 @@ class GestionController extends Controller
       
     $em->flush();
     return "El proveedor se ha modificado correctamente";
-  }
+  }*/
 
 
 //////////////////////////PRODUCTOS//////////////////////////////////
