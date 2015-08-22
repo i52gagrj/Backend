@@ -1113,5 +1113,61 @@ class DatosController extends Controller
       if($usuario->getUsername()==$user) return $usuario;   
     }*/
   }  
+
+  public function listadoproveedoresAction()
+  {
+    //Extraer la cabecera de la petición
+    //$headers=apache_request_headers();   
+    //Si contiene el token, en la sección Authorization
+    //if(isset($headers["Authorization"]))
+    //{
+    //  $token=explode(" ", $headers["Authorization"]);
+    $request = Request::createFromGlobals();
+    $headers=$request->headers;
+    if($headers->get('authorization'))
+    {
+      $token=explode(" ", $headers->get('authorization'));
+      $tokend=JWT::decode(trim($token[1],'"'));
+      $respuesta = array();
+      //Si los datos del token son correctos, se cargan los productos
+      if($this->comprobarToken($tokend->id, $tokend->username))
+      {  
+        $em = $this->getDoctrine()->getEntityManager();
+        $proveedores = $em->getRepository('i52LTPVFrontendBundle:Proveedor')->
+          findAll();   
+        $tokend->iat = time();
+	$tokend->exp = time() + 900;
+	$jwt = JWT::encode($tokend, '');
+        $mandar = new Response(json_encode(array(
+          'code' => 0,
+          'response'=> array(
+          'token' => $jwt, 
+          'proveedores' => $proveedores))));
+        $mandar->headers->set('Content-Type', 'application/json');
+        return $mandar;
+      }  
+      //Si los datos del token no son correctos, se manda un codigo de error 1 y un mensaje
+      else
+      {
+        $mandar = new Response(json_encode(array(
+          'code' => 1,
+          'response'=> array( 
+            'respuesta' => "El usuario no se ha identificado correctamente"))));      
+        $mandar->headers->set('Content-Type', 'application/json');
+        return $mandar;        
+      }      
+    }
+    //Si la petición no contiene el token, se manda un codigo de error 2 y un mensaje
+    else
+    {
+      $mandar = new Response(json_encode(array(
+        'code' => 2,
+        'response'=> array( 
+          'respuesta' => "No está autorizado para realizar la consulta"))));      
+      $mandar->headers->set('Content-Type', 'application/json');
+      return $mandar;
+    }
+  }
+
   
 }
