@@ -12,6 +12,7 @@ use \Doctrine\Common\Collections\ArrayCollection;
 use FOS\RestBundle\Controller\Annotations\View;
 
 use i52gagrj\LaTejedora\TPVFrontendBundle\Entity\Socio;
+use i52gagrj\LaTejedora\TPVFrontendBundle\Entity\Proveedor;
 use i52gagrj\LaTejedora\TPVFrontendBundle\Entity\Venta;
 use i52gagrj\LaTejedora\TPVFrontendBundle\Entity\Lineaventa;
 use i52gagrj\LaTejedora\TPVFrontendBundle\Entity\Producto;

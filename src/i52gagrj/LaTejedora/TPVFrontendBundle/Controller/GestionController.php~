@@ -31,22 +31,19 @@ class GestionController extends Controller
     //if(isset($headers["Authorization"]))
     //{
     //  $token=explode(" ", $headers["Authorization"]);
-    //$request = Request::createFromGlobals();
-    //$headers=$request->headers;
-    //if($headers->get('authorization'))
-    //{
-      //$token=explode(" ", $headers->get('authorization'));
-      //$tokend=JWT::decode(trim($token[1],'"'));
+    $request = Request::createFromGlobals();
+    $headers=$request->headers;
+    if($headers->get('authorization'))
+    {
+      $token=explode(" ", $headers->get('authorization'));
+      $tokend=JWT::decode(trim($token[1],'"'));
       $respuesta = array();
       //Si los datos del token son correctos, se cargan los productos
-      //if($this->comprobarToken($tokend->id, $tokend->username))
-      //{  
+      if($this->comprobarToken($tokend->id, $tokend->username))
+      {  
         $em = $this->getDoctrine()->getEntityManager();
         $proveedores = $em->getRepository('i52LTPVFrontendBundle:Proveedor')->
           findAll();   
-        //$tokend->iat = time();
-	//$tokend->exp = time() + 900;
-	//$jwt = JWT::encode($tokend, '');
         foreach($proveedores as $proveedor)
         {
           $elemento = array(
@@ -63,16 +60,19 @@ class GestionController extends Controller
             'activo' => $proveedor->getActivo());
           array_push($respuesta, $elemento);    
         }             
+        $tokend->iat = time();
+	$tokend->exp = time() + 900;
+	$jwt = JWT::encode($tokend, '');
         $mandar = new Response(json_encode(array(
           'code' => 0,
           'response'=> array(
-          //'token' => $jwt, 
+          'token' => $jwt, 
           'proveedores' => $respuesta))));
         $mandar->headers->set('Content-Type', 'application/json');
         return $mandar;
-      //}  
+      }  
       //Si los datos del token no son correctos, se manda un codigo de error 1 y un mensaje
-      /*else
+      else
       {
         $mandar = new Response(json_encode(array(
           'code' => 1,
@@ -91,8 +91,9 @@ class GestionController extends Controller
           'respuesta' => "No está autorizado para realizar la consulta"))));      
       $mandar->headers->set('Content-Type', 'application/json');
       return $mandar;
-    }*/
+    }
   }
+
 
   /*public function recibeproveedorAction()
   {
