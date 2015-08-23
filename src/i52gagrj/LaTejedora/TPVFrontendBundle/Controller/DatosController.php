@@ -1235,10 +1235,10 @@ class DatosController extends Controller
         $data = json_decode($content, true);
         // Mandar los datos para persistir
         if($data['id']!=0){
-          $respuesta=$this->modificaProveedor($data['id'], $data['nombre'], $data['nif'], $data['direccion'], $data['poblacion'], $data['provincia'], $data['cp'], $data['telefijo'], $data['telemovil'], $data['email']);
+          $respuesta=$this->modificaProveedor($data['id'], $data['nombre'], $data['nif'], $data['direccion'], $data['poblacion'], $data['provincia'], $data['cp'], $data['fijo'], $data['movil'], $data['email'], $data['activo']);
         }
         else{
-          $respuesta=$this->persisteProveedor($data['nombre'], $data['nif'], $data['direccion'], $data['poblacion'], $data['provincia'], $data['cp'], $data['telefijo'], $data['telemovil'], $data['email']);
+          $respuesta=$this->persisteProveedor($data['nombre'], $data['nif'], $data['direccion'], $data['poblacion'], $data['provincia'], $data['cp'], $data['fijo'], $data['movil'], $data['email'],$data['activo']);
         } 
         $tokend->iat = time();
 	$tokend->exp = time() + 900;
