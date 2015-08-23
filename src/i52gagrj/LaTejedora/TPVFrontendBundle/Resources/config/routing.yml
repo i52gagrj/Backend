@@ -211,6 +211,13 @@ i52_ltpv_frontend_apiListadoProveedores:
          _format: (xml|json)
          _method: GET
 
+i52_ltpv_frontend_apiRecibeProveedor:
+    path: /datos/recibeProveedor
+    defaults: { _controller: i52LTPVFrontendBundle:Datos:recibeproveedor }
+    requirements:
+         _format: (xml|json)
+         _method: POST
+
 ################################################################################
 
 api_login_check:
