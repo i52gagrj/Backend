@@ -204,12 +204,12 @@ i52_ltpv_frontend_apiLogin:
 #         _format: (xml|json)
 #         _method: GET
 
-i52_ltpv_frontend_apiListadoProveedores:
-    path: /datos/listadoProveedores.json
-    defaults: { _controller: i52LTPVFrontendBundle:Datos:listadoproveedores }
-    requirements:
-         _format: (xml|json)
-         _method: GET
+#i52_ltpv_frontend_apiListadoProveedores:
+#    path: /datos/listadoProveedores.json
+#    defaults: { _controller: i52LTPVFrontendBundle:Datos:listadoproveedores }
+#    requirements:
+#         _format: (xml|json)
+#         _method: GET
 
 ################################################################################
 
