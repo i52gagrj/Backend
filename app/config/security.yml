@@ -58,7 +58,7 @@ security:
                 require_previous_session: false
 
         api:
-            pattern:   ^/caja/datos
+            pattern:   ^/caja/(datos|gestion)
             stateless: true
             lexik_jwt: ~
 
