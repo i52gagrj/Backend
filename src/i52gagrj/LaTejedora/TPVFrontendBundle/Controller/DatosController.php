@@ -1161,9 +1161,6 @@ class DatosController extends Controller
         $em = $this->getDoctrine()->getEntityManager();
         $proveedores = $em->getRepository('i52LTPVFrontendBundle:Proveedor')->
           findAll();   
-        $tokend->iat = time();
-	$tokend->exp = time() + 900;
-	$jwt = JWT::encode($tokend, '');
         foreach($proveedores as $proveedor)
         {
           $elemento = array(
@@ -1180,6 +1177,9 @@ class DatosController extends Controller
             'activo' => $proveedor->getActivo());
           array_push($respuesta, $elemento);    
         }             
+        $tokend->iat = time();
+	$tokend->exp = time() + 900;
+	$jwt = JWT::encode($tokend, '');
         $mandar = new Response(json_encode(array(
           'code' => 0,
           'response'=> array(
@@ -1188,7 +1188,7 @@ class DatosController extends Controller
         $mandar->headers->set('Content-Type', 'application/json');
         return $mandar;
       }  
-      Si los datos del token no son correctos, se manda un codigo de error 1 y un mensaje
+      //Si los datos del token no son correctos, se manda un codigo de error 1 y un mensaje
       else
       {
         $mandar = new Response(json_encode(array(
