@@ -1124,10 +1124,6 @@ class DatosController extends Controller
     $usuario = $em->getRepository('i52LTPVFrontendBundle:Usuario')->
       findOneByUsername($user);
     return $usuario;
-    /*foreach($usuarios as $usuario)
-    {
-      if($usuario->getUsername()==$user) return $usuario;   
-    }*/
   }  
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1144,7 +1140,7 @@ class DatosController extends Controller
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-  /*public function listadoproveedoresAction()
+  public function listadoproveedoresAction()
   {
     //Extraer la cabecera de la petición
     //$headers=apache_request_headers();   
@@ -1213,7 +1209,7 @@ class DatosController extends Controller
       $mandar->headers->set('Content-Type', 'application/json');
       return $mandar;
     }
-  }*/
+  }
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

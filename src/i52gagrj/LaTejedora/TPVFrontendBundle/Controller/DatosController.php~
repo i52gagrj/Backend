@@ -1124,10 +1124,6 @@ class DatosController extends Controller
     $usuario = $em->getRepository('i52LTPVFrontendBundle:Usuario')->
       findOneByUsername($user);
     return $usuario;
-    /*foreach($usuarios as $usuario)
-    {
-      if($usuario->getUsername()==$user) return $usuario;   
-    }*/
   }  
 
 ////////////////////////////////////////////////////////////////////////////////
