@@ -1376,7 +1376,7 @@ class DatosController extends Controller
     $socio->setEmail($email);
     $socio->setActivo($activo);
     $socio->setSaldo($saldo);
-    if($baja=="true")
+    if($baja)
     {
       $fecha = new \DateTime("now");
       $socio->setFechainactivo($fecha);
