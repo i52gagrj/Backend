@@ -1222,7 +1222,7 @@ class DatosController extends Controller
             $elemento = array(
               'id' => $socio->getId(),
               'nombre' => $socio->getNombre(),
-              'direccion' => $socio->getDireccion(),
+              /*'direccion' => $socio->getDireccion(),
               'poblacion' => $socio->getPoblacion(),
               'cp' => $socio->getCp(),
               'provincia' => $socio->getProvincia(),
@@ -1232,7 +1232,7 @@ class DatosController extends Controller
               'movil' => $socio->getTelemovil(),
               'saldo' => $socio->getSaldo(),
               'activo' => $socio->getActivo()
-              //'fecha-inactivo' => $socio->getFechainactivo());
+              'fecha-inactivo' => $socio->getFechainactivo());*/
             array_push($respuesta, $elemento);   
           } 
         }             
