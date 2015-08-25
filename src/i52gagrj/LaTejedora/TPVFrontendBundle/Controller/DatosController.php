@@ -920,144 +920,6 @@ class DatosController extends Controller
 
 ////////////////////////FIN DEVOLUCIÓN///////////////////////////
 
-
-
-/////////////////////////////CUOTAS//////////////////////////////
-  public function todosclientescuotasAction()
-  {
-    //Extraer la cabecera de la petición
-    //$headers=apache_request_headers();   
-    //Si contiene el token, en la sección Authorization
-    //if(isset($headers["Authorization"]))
-    //{
-    //  $token=explode(" ", $headers["Authorization"]);
-    $request = Request::createFromGlobals();
-    $headers=$request->headers;
-    if($headers->get('authorization'))
-    {
-      $token=explode(" ", $headers->get('authorization'));
-      $tokend=JWT::decode(trim($token[1],'"'));
-      $respuesta = array();
-      //Si los datos del token son correctos, se cargan los productos
-      if($this->comprobarToken($tokend->id, $tokend->username))
-      {
-        $respuesta = array();
-        $em = $this->getDoctrine()->getEntityManager();
-        $socios = $em->getRepository('i52LTPVFrontendBundle:Socio')->
-          findAll();
-        foreach($socios as $socio)
-        {
-          if($socio->getId()!='1'){
-            $elemento = array(
-              'id' => $socio->getId(),
-              'nombre' => $socio->getNombre(),
-              'dni' => $socio->getDni(),     
-              'saldo' => $socio->getSaldo(),
-              'cuota' => 25); 
-            array_push($respuesta, $elemento); 
-          }       
-        }    
-        $tokend->iat = time();
-	$tokend->exp = time() + 900;
-	$jwt = JWT::encode($tokend, '');
-        $mandar = new Response(json_encode(array(
-          'code' => 0,
-          'response'=> array(
-            'token' => $jwt, 
-            'socios' => $respuesta))));
-        $mandar->headers->set('Content-Type', 'application/json');
-        return $mandar;
-      }  
-
-      //Si los datos del token no son correctos, se manda un codigo de error 1 y un mensaje
-      else
-      {
-        $mandar = new Response(json_encode(array(
-          'code' => 1,
-          'response'=> array( 
-            'respuesta' => "El usuario no se ha identificado correctamente"))));      
-        $mandar->headers->set('Content-Type', 'application/json');
-        return $mandar;        
-      }      
-    }
-
-    //Si la petición no contiene el token, se manda un codigo de error 2 y un mensaje
-    else
-    {
-      $mandar = new Response(json_encode(array(
-        'code' => 2,
-        'response'=> array( 
-          'respuesta' => "No está autorizado para realizar la consulta"))));      
-      $mandar->headers->set('Content-Type', 'application/json');
-      return $mandar;
-    } 
-  }
-
-  public function recibircuotasAction()
-  {
-    //Extraer la cabecera de la petición
-    //$headers=apache_request_headers();   
-    //Si contiene el token, en la sección Authorization
-    //if(isset($headers["Authorization"]))
-    //{
-    //  $token=explode(" ", $headers["Authorization"]);
-    $request = Request::createFromGlobals();
-    $headers=$request->headers;
-    if($headers->get('authorization'))
-    {
-      $token=explode(" ", $headers->get('authorization'));
-      $tokend=JWT::decode(trim($token[1],'"'));
-      //Si los datos del token son correctos, se guarda la venta
-      if($this->comprobarToken($tokend->id, $tokend->username))
-      {
-        // Recuperar el json recibido
-        $content = $this->get("request")->getContent();
-        // decodificarlo con json decode
-        $data = json_decode($content, true);
-        // Mandar los datos para persistir
-        $this->finalizaCuotas($data['socios']);
-        $tokend->iat = time();
-	$tokend->exp = time() + 900;
-	$jwt = JWT::encode($tokend, '');
-        $mandar = new Response(json_encode(array(
-          'code' => 0,
-          'response'=> array(
-            'respuesta' => 'Cuotas almacenadas correctamente',
-            'token' => $jwt))));
-        $mandar->headers->set('Content-Type', 'application/json');
-        return $mandar;
-      }
-      else{
-        $mandar = new Response(json_encode(array(
-    	  'code' => 1,
-	  'response'=> array(
-            'respuesta' => "La clave no es correcta"))));
-        $mandar->headers->set('Content-Type', 'application/json');
-        return $mandar; 
-      } 
-    } 
-    else{
-      $mandar = new Response(json_encode(array(
-	'code' => 2,
-	'response'=> array(
-          'respuesta' => "No existe el usuario"))));
-      $mandar->headers->set('Content-Type', 'application/json');
-      return $mandar; 
-    } 
-  }
-
-
-  private function finalizaCuotas($socios){    
-    $em = $this->getDoctrine()->getEntityManager();
-    foreach($socios as $cliente)
-    {
-      $socio = $this->devuelveSocio($cliente['id']);
-      $socio->setSaldo($socio->getSaldo() + $cliente['cuota']);
-      $em->flush();         
-    }  
-  } 
-///////////////////////////FIN CUOTAS////////////////////////////
-
 ////////////////////////////LOGIN////////////////////////////////
 
   public function loginAction()
@@ -1355,7 +1217,7 @@ class DatosController extends Controller
           findAll();   
         foreach($socios as $socio)
         {
-          if($socio->getId()!=1)
+          if($socio->getId()!='1')
           {
             $elemento = array(
               'id' => $socio->getId(),
@@ -1370,7 +1232,7 @@ class DatosController extends Controller
               'movil' => $socio->getTelemovil(),
               'saldo' => $socio->getSaldo(),
               'activo' => $socio->getActivo()
-              'fecha-inactivo' => $socio->getFechainactivo());
+              //'fecha-inactivo' => $socio->getFechainactivo());
             array_push($respuesta, $elemento);   
           } 
         }             
@@ -1519,6 +1381,144 @@ class DatosController extends Controller
     $em->flush();
     return "El socio se ha modificado correctamente";*/
   }
+
+/////////////////////////////CUOTAS//////////////////////////////
+  public function todosclientescuotasAction()
+  {
+    //Extraer la cabecera de la petición
+    //$headers=apache_request_headers();   
+    //Si contiene el token, en la sección Authorization
+    //if(isset($headers["Authorization"]))
+    //{
+    //  $token=explode(" ", $headers["Authorization"]);
+    $request = Request::createFromGlobals();
+    $headers=$request->headers;
+    if($headers->get('authorization'))
+    {
+      $token=explode(" ", $headers->get('authorization'));
+      $tokend=JWT::decode(trim($token[1],'"'));
+      $respuesta = array();
+      //Si los datos del token son correctos, se cargan los productos
+      if($this->comprobarToken($tokend->id, $tokend->username))
+      {
+        $respuesta = array();
+        $em = $this->getDoctrine()->getEntityManager();
+        $socios = $em->getRepository('i52LTPVFrontendBundle:Socio')->
+          findAll();
+        foreach($socios as $socio)
+        {
+          if($socio->getId()!='1'){
+            $elemento = array(
+              'id' => $socio->getId(),
+              'nombre' => $socio->getNombre(),
+              'dni' => $socio->getDni(),     
+              'saldo' => $socio->getSaldo(),
+              'cuota' => 25); 
+            array_push($respuesta, $elemento); 
+          }       
+        }    
+        $tokend->iat = time();
+	$tokend->exp = time() + 900;
+	$jwt = JWT::encode($tokend, '');
+        $mandar = new Response(json_encode(array(
+          'code' => 0,
+          'response'=> array(
+            'token' => $jwt, 
+            'socios' => $respuesta))));
+        $mandar->headers->set('Content-Type', 'application/json');
+        return $mandar;
+      }  
+
+      //Si los datos del token no son correctos, se manda un codigo de error 1 y un mensaje
+      else
+      {
+        $mandar = new Response(json_encode(array(
+          'code' => 1,
+          'response'=> array( 
+            'respuesta' => "El usuario no se ha identificado correctamente"))));      
+        $mandar->headers->set('Content-Type', 'application/json');
+        return $mandar;        
+      }      
+    }
+
+    //Si la petición no contiene el token, se manda un codigo de error 2 y un mensaje
+    else
+    {
+      $mandar = new Response(json_encode(array(
+        'code' => 2,
+        'response'=> array( 
+          'respuesta' => "No está autorizado para realizar la consulta"))));      
+      $mandar->headers->set('Content-Type', 'application/json');
+      return $mandar;
+    } 
+  }
+
+  public function recibircuotasAction()
+  {
+    //Extraer la cabecera de la petición
+    //$headers=apache_request_headers();   
+    //Si contiene el token, en la sección Authorization
+    //if(isset($headers["Authorization"]))
+    //{
+    //  $token=explode(" ", $headers["Authorization"]);
+    $request = Request::createFromGlobals();
+    $headers=$request->headers;
+    if($headers->get('authorization'))
+    {
+      $token=explode(" ", $headers->get('authorization'));
+      $tokend=JWT::decode(trim($token[1],'"'));
+      //Si los datos del token son correctos, se guarda la venta
+      if($this->comprobarToken($tokend->id, $tokend->username))
+      {
+        // Recuperar el json recibido
+        $content = $this->get("request")->getContent();
+        // decodificarlo con json decode
+        $data = json_decode($content, true);
+        // Mandar los datos para persistir
+        $this->finalizaCuotas($data['socios']);
+        $tokend->iat = time();
+	$tokend->exp = time() + 900;
+	$jwt = JWT::encode($tokend, '');
+        $mandar = new Response(json_encode(array(
+          'code' => 0,
+          'response'=> array(
+            'respuesta' => 'Cuotas almacenadas correctamente',
+            'token' => $jwt))));
+        $mandar->headers->set('Content-Type', 'application/json');
+        return $mandar;
+      }
+      else{
+        $mandar = new Response(json_encode(array(
+    	  'code' => 1,
+	  'response'=> array(
+            'respuesta' => "La clave no es correcta"))));
+        $mandar->headers->set('Content-Type', 'application/json');
+        return $mandar; 
+      } 
+    } 
+    else{
+      $mandar = new Response(json_encode(array(
+	'code' => 2,
+	'response'=> array(
+          'respuesta' => "No existe el usuario"))));
+      $mandar->headers->set('Content-Type', 'application/json');
+      return $mandar; 
+    } 
+  }
+
+
+  private function finalizaCuotas($socios){    
+    $em = $this->getDoctrine()->getEntityManager();
+    foreach($socios as $cliente)
+    {
+      $socio = $this->devuelveSocio($cliente['id']);
+      $socio->setSaldo($socio->getSaldo() + $cliente['cuota']);
+      $em->flush();         
+    }  
+  } 
+///////////////////////////FIN CUOTAS////////////////////////////
+
+
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
