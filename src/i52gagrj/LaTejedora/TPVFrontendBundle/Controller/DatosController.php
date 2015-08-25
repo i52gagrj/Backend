@@ -1232,7 +1232,7 @@ class DatosController extends Controller
               'movil' => $socio->getTelemovil(),
               'saldo' => $socio->getSaldo(),
               'activo' => $socio->getActivo(),
-              'fecha-inactivo' => $socio->getFechainactivo()*/);
+              'fecha-inactivo' => date_format($socio->getFechainactivo(),'Y-m-d'));
             array_push($respuesta, $elemento);   
           } 
         }             
