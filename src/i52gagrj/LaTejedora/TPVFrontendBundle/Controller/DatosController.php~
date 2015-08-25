@@ -1222,9 +1222,9 @@ class DatosController extends Controller
             $elemento = array(
               'id' => $socio->getId(),
               'nombre' => $socio->getNombre(),
-              /*'direccion' => $socio->getDireccion(),
+              'direccion' => $socio->getDireccion(),
               'poblacion' => $socio->getPoblacion(),
-              'cp' => $socio->getCp(),
+              /*'cp' => $socio->getCp(),
               'provincia' => $socio->getProvincia(),
               'dni' => $socio->getDni(),
               'email' => $socio->getEmail(),
