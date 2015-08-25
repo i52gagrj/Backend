@@ -662,9 +662,7 @@ class DatosController extends Controller
       {    
         $request = $this->getRequest(); 
         $idventa=$request->get('idventa');
-        $venta = $this->devuelveVenta($idventa);  	
-        /////////Aquí: condicional si no existe la venta///////
-        /////////AÑADIR//////////////////    
+        $venta = $this->devuelveVenta($idventa);  	   
         if($venta)
         {
           if($venta->getContado()) 
@@ -1232,7 +1230,7 @@ class DatosController extends Controller
               'movil' => $socio->getTelemovil(),
               'saldo' => $socio->getSaldo(),
               'activo' => $socio->getActivo(),
-              'fecha-inactivo' => date_format($socio->getFechainactivo(),'Y-m-d'));
+              'fechainactivo' => date_format($socio->getFechainactivo(),'Y-m-d'));
             array_push($respuesta, $elemento);   
           } 
         }             
@@ -1294,7 +1292,7 @@ class DatosController extends Controller
         $data = json_decode($content, true);
         // Mandar los datos para persistir
         if($data['id']!=0){
-          $respuesta=$this->modificaSocio($data['id'], $data['nombre'], $data['dni'], $data['direccion'], $data['poblacion'], $data['cp'], $data['provincia'], $data['fijo'], $data['movil'], $data['email'], $data['activo'], $data['saldo'], $data['baja']);
+          $respuesta=$this->modificaSocio($data['id'], $data['nombre'], $data['dni'], $data['direccion'], $data['poblacion'], $data['provincia'], $data['cp'], $data['fijo'], $data['movil'], $data['email'], $data['activo'], $data['saldo'], $data['baja']);
         }
         else{
           $respuesta=$this->persisteSocio($data['nombre'], $data['dni'], $data['direccion'], $data['poblacion'], $data['provincia'], $data['cp'], $data['fijo'], $data['movil'], $data['email'],$data['activo'], $data['saldo']);
@@ -1333,7 +1331,7 @@ class DatosController extends Controller
   {
     $em = $this->getDoctrine()->getEntityManager();
     $existe = $em->getRepository('i52LTPVFrontendBundle:Socio')->
-      findOneByDni($dni);
+      findByDni($dni);
     if($existe)
     {
       return "El socio indicado ya existe";
@@ -1359,7 +1357,7 @@ class DatosController extends Controller
     } 
   }
 
-  protected function modificaSocio($id, $nombre, $dni, $direccion, $poblacion, $cp, $provincia, $telefijo, $telemovil, $email, $activo, $saldo, $baja)
+  protected function modificaSocio($id, $nombre, $dni, $direccion, $poblacion, $provincia, $cp, $telefijo, $telemovil, $email, $activo, $saldo, $baja)
   {
     $em = $this->getDoctrine()->getEntityManager();
     $socio = $em->getRepository('i52LTPVFrontendBundle:Socio')->
