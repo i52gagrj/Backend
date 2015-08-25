@@ -1294,10 +1294,10 @@ class DatosController extends Controller
         $data = json_decode($content, true);
         // Mandar los datos para persistir
         if($data['id']!=0){
-          $respuesta=$this->modificaSocio($data['id'], $data['nombre'], $data['direccion'], $data['poblacion'], $data['cp'], $data['provincia'], $data['nif'], $data['fijo'], $data['movil'], $data['email'], $data['activo'], $data['saldo'], $data['baja']);
+          $respuesta=$this->modificaSocio($data['id'], $data['nombre'], $data['dni'], $data['direccion'], $data['poblacion'], $data['cp'], $data['provincia'], $data['fijo'], $data['movil'], $data['email'], $data['activo'], $data['saldo'], $data['baja']);
         }
         else{
-          $respuesta=$this->persisteSocio($data['nombre'], $data['nif'], $data['direccion'], $data['poblacion'], $data['provincia'], $data['cp'], $data['fijo'], $data['movil'], $data['email'],$data['activo'], $data['saldo']);
+          $respuesta=$this->persisteSocio($data['nombre'], $data['dni'], $data['direccion'], $data['poblacion'], $data['provincia'], $data['cp'], $data['fijo'], $data['movil'], $data['email'],$data['activo'], $data['saldo']);
         } 
         $tokend->iat = time();
 	$tokend->exp = time() + 900;
@@ -1329,11 +1329,11 @@ class DatosController extends Controller
     } 
   }
   
-  protected function persisteSocio($nombre, $dni, $direccion, $poblacion, $provincia, $cp, $telefijo, $telemovil, $email, $activo, $saldo, $baja)
+  protected function persisteSocio($nombre, $dni, $direccion, $poblacion, $provincia, $cp, $telefijo, $telemovil, $email, $activo, $saldo)
   {
     $em = $this->getDoctrine()->getEntityManager();
     $existe = $em->getRepository('i52LTPVFrontendBundle:Socio')->
-      findByNif($nif);
+      findByNif($dni);
     if($existe)
     {
       return "El socio indicado ya existe";
@@ -1359,14 +1359,14 @@ class DatosController extends Controller
     } 
   }
 
-  protected function modificaSocio($id, $nombre, $nif, $direccion, $poblacion, $provincia, $cp, $telefijo, $telemovil, $email, $activo, $saldo)
+  protected function modificaSocio($id, $nombre, $dni, $direccion, $poblacion, $cp, $provincia, $telefijo, $telemovil, $email, $activo, $saldo, $baja)
   {
     $em = $this->getDoctrine()->getEntityManager();
     $socio = $em->getRepository('i52LTPVFrontendBundle:Socio')->
       find($id);
     
     $socio->setNombre($nombre);        
-    $socio->setNif($nif);
+    $socio->setDni($dni);
     $socio->setDireccion($direccion);
     $socio->setPoblacion($poblacion);
     $socio->setProvincia($provincia);
@@ -1375,6 +1375,7 @@ class DatosController extends Controller
     $socio->setTelemovil($telemovil);
     $socio->setEmail($email);
     $socio->setActivo($activo);
+    $socio->setSaldo($saldo);
     if($baja==true)
     {
       $fecha = new \DateTime("now");
