@@ -1243,7 +1243,7 @@ class DatosController extends Controller
           'code' => 0,
           'response'=> array(
           'token' => $jwt, 
-          //'socios' => $respuesta
+          'socios' => $respuesta
         ))));
         $mandar->headers->set('Content-Type', 'application/json');
         return $mandar;
