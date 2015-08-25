@@ -1141,6 +1141,12 @@ class DatosController extends Controller
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////PROVEEDORES////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
   public function listadoproveedoresAction()
   {
     //Extraer la cabecera de la petición
@@ -1320,6 +1326,199 @@ class DatosController extends Controller
     return "El proveedor se ha modificado correctamente";
   }
 
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////SOCIOS//////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+  public function listadosociosAction()
+  {
+    //Extraer la cabecera de la petición
+    //$headers=apache_request_headers();   
+    //Si contiene el token, en la sección Authorization
+    //if(isset($headers["Authorization"]))
+    //{
+    //  $token=explode(" ", $headers["Authorization"]);
+    $request = Request::createFromGlobals();
+    $headers=$request->headers;
+    if($headers->get('authorization'))
+    {
+      $token=explode(" ", $headers->get('authorization'));
+      $tokend=JWT::decode(trim($token[1],'"'));
+      $respuesta = array();
+      //Si los datos del token son correctos, se cargan los productos
+      if($this->comprobarToken($tokend->id, $tokend->username))
+      {  
+        $em = $this->getDoctrine()->getEntityManager();
+        $socios = $em->getRepository('i52LTPVFrontendBundle:Socio')->
+          findAll();   
+        foreach($socios as $socio)
+        {
+          if($socio->getId()!=1)
+          {
+            $elemento = array(
+              'id' => $socio->getId(),
+              'nombre' => $socio->getNombre(),
+              'direccion' => $socio->getDireccion(),
+              'poblacion' => $socio->getPoblacion(),
+              'cp' => $socio->getCp(),
+              'provincia' => $socio->getProvincia(),
+              'dni' => $socio->getDni(),
+              'email' => $socio->getEmail(),
+              'fijo' => $socio->getTelefijo(),
+              'movil' => $socio->getTelemovil(),
+              'saldo' => $socio->getSaldo(),
+              'activo' => $socio->getActivo()
+              'fecha-inactivo' => $socio->getFechainactivo());
+            array_push($respuesta, $elemento);   
+          } 
+        }             
+        $tokend->iat = time();
+	$tokend->exp = time() + 900;
+	$jwt = JWT::encode($tokend, '');
+        $mandar = new Response(json_encode(array(
+          'code' => 0,
+          'response'=> array(
+          'token' => $jwt, 
+          'socios' => $respuesta))));
+        $mandar->headers->set('Content-Type', 'application/json');
+        return $mandar;
+      }  
+      //Si los datos del token no son correctos, se manda un codigo de error 1 y un mensaje
+      else
+      {
+        $mandar = new Response(json_encode(array(
+          'code' => 1,
+          'response'=> array( 
+            'respuesta' => "El usuario no se ha identificado correctamente"))));      
+        $mandar->headers->set('Content-Type', 'application/json');
+        return $mandar;        
+      }      
+    }
+    //Si la petición no contiene el token, se manda un codigo de error 2 y un mensaje
+    else
+    {
+      $mandar = new Response(json_encode(array(
+        'code' => 2,
+        'response'=> array( 
+          'respuesta' => "No está autorizado para realizar la consulta"))));      
+      $mandar->headers->set('Content-Type', 'application/json');
+      return $mandar;
+    }
+  }
+
+  public function recibesocioAction()
+  {
+    //Extraer la cabecera de la petición
+    //Si contiene el token, en la sección Authorization
+    //$headers=apache_request_headers();   
+    //if(isset($headers["Authorization"]))
+    //{
+    //  $token=explode(" ", $headers["Authorization"]);
+    $request = Request::createFromGlobals();
+    $headers=$request->headers;
+    if($headers->get('authorization'))
+    {
+      $token=explode(" ", $headers->get('authorization'));
+      $tokend=JWT::decode(trim($token[1],'"'));
+      //Si los datos del token son correctos, se guarda la venta
+      if($this->comprobarToken($tokend->id, $tokend->username))
+      { 
+        // Recuperar el json recibido
+        $content = $this->get("request")->getContent();
+        // decodificarlo con json decode
+        $data = json_decode($content, true);
+        // Mandar los datos para persistir
+        if($data['id']!=0){
+          $respuesta=$this->modificaSocio($data['id'], $data['nombre'], $data['direccion'], $data['poblacion'], $data['cp'], $data['provincia'], $data['nif'], $data['fijo'], $data['movil'], $data['email'], $data['activo'], $data['baja']);
+        }
+        else{
+          $respuesta=$this->persisteSocio($data['nombre'], $data['nif'], $data['direccion'], $data['poblacion'], $data['provincia'], $data['cp'], $data['fijo'], $data['movil'], $data['email'],$data['activo']);
+        } 
+        $tokend->iat = time();
+	$tokend->exp = time() + 900;
+	$jwt = JWT::encode($tokend, '');
+        $mandar = new Response(json_encode(array(
+          'code' => 0,
+          'response'=> array(
+            'respuesta'=> $respuesta,
+            'token' => $jwt))));
+        $mandar->headers->set('Content-Type', 'application/json');
+        return $mandar;
+      }
+      else{
+        $mandar = new Response(json_encode(array(
+    	  'code' => 1,
+	  'response'=> array(
+            'respuesta' => "La clave no es correcta"))));
+        $mandar->headers->set('Content-Type', 'application/json');
+        return $mandar; 
+      } 
+    } 
+    else{
+      $mandar = new Response(json_encode(array(
+	'code' => 2,
+	'response'=> array(
+          'respuesta' => "No existe el usuario"))));
+      $mandar->headers->set('Content-Type', 'application/json');
+      return $mandar; 
+    } 
+  }
+  
+  protected function persisteSocio($nombre, $dni, $direccion, $poblacion, $provincia, $cp, $telefijo, $telemovil, $email, $activo, $baja)
+  {
+    $em = $this->getDoctrine()->getEntityManager();
+    $existe = $em->getRepository('i52LTPVFrontendBundle:Socio')->
+      findByNif($nif);
+    if($existe)
+    {
+      return "El socio indicado ya existe";
+    }
+    else  
+    {
+      $socio = new Socio();    
+      $socio->setNombre($nombre);        
+      $socio->setDni($dni);
+      $socio->setDireccion($direccion);
+      $socio->setPoblacion($poblacion);
+      $socio->setProvincia($provincia);
+      $socio->setCp($cp);
+      $socio->setTelefijo($telefijo);       
+      $socio->setTelemovil($telemovil);
+      $socio->setEmail($email);
+      $socio->setActivo($activo);
+  
+      $em->persist($socio);
+      $em->flush();
+      return "El socio se ha guardado correctamente"; 
+    } 
+  }
+
+  protected function modificaSocio($id, $nombre, $nif, $direccion, $poblacion, $provincia, $cp, $telefijo, $telemovil, $email, $activo)
+  {
+    $em = $this->getDoctrine()->getEntityManager();
+    $socio = $em->getRepository('i52LTPVFrontendBundle:Socio')->
+      find($id);
+    
+    $socio->setNombre($nombre);        
+    $socio->setNif($nif);
+    $socio->setDireccion($direccion);
+    $socio->setPoblacion($poblacion);
+    $socio->setProvincia($provincia);
+    $socio->setCp($cp);
+    $socio->setTelefijo($telefijo);       
+    $socio->setTelemovil($telemovil);
+    $socio->setEmail($email);
+    $socio->setActivo($activo);
+    if($baja==true)
+    {
+      $fecha = new \DateTime("now");
+      $socio->setFechainactivo($fecha);
+    }  
+    $em->flush();
+    return "El socio se ha modificado correctamente";
+  }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////

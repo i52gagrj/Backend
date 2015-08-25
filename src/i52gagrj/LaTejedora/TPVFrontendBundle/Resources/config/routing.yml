@@ -218,6 +218,20 @@ i52_ltpv_frontend_apiRecibeProveedor:
          _format: (xml|json)
          _method: POST
 
+i52_ltpv_frontend_apiListadoSocios:
+    path: /datos/listadoSocios.json
+    defaults: { _controller: i52LTPVFrontendBundle:Datos:listadosocios }
+    requirements:
+         _format: (xml|json)
+         _method: GET
+
+i52_ltpv_frontend_apiRecibeSocio:
+    path: /datos/recibeSocio
+    defaults: { _controller: i52LTPVFrontendBundle:Datos:recibesocio }
+    requirements:
+         _format: (xml|json)
+         _method: POST
+
 ################################################################################
 
 api_login_check:
