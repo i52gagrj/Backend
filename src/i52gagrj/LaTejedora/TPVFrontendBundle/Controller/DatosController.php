@@ -1215,13 +1215,13 @@ class DatosController extends Controller
         $em = $this->getDoctrine()->getEntityManager();
         $socios = $em->getRepository('i52LTPVFrontendBundle:Socio')->
           findAll();   
-        foreach($socios as $socio)
+        /*foreach($socios as $socio)
         {
           if($socio->getId()!='1')
           {
             $elemento = array(
               'id' => $socio->getId(),
-              /*'nombre' => $socio->getNombre(),
+              'nombre' => $socio->getNombre(),
               'direccion' => $socio->getDireccion(),
               'poblacion' => $socio->getPoblacion(),
               'cp' => $socio->getCp(),
@@ -1232,10 +1232,10 @@ class DatosController extends Controller
               'movil' => $socio->getTelemovil(),
               'saldo' => $socio->getSaldo(),
               'activo' => $socio->getActivo()
-              'fecha-inactivo' => $socio->getFechainactivo());*/
+              'fecha-inactivo' => $socio->getFechainactivo());
             array_push($respuesta, $elemento);   
           } 
-        }             
+        }*/             
         $tokend->iat = time();
 	$tokend->exp = time() + 900;
 	$jwt = JWT::encode($tokend, '');
@@ -1243,7 +1243,8 @@ class DatosController extends Controller
           'code' => 0,
           'response'=> array(
           'token' => $jwt, 
-          'socios' => $respuesta))));
+          //'socios' => $respuesta
+        ))));
         $mandar->headers->set('Content-Type', 'application/json');
         return $mandar;
       }  
