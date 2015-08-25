@@ -1231,8 +1231,8 @@ class DatosController extends Controller
               'fijo' => $socio->getTelefijo(),
               'movil' => $socio->getTelemovil(),
               'saldo' => $socio->getSaldo(),
-              'activo' => $socio->getActivo()
-              'fecha-inactivo' => $socio->getFechainactivo());
+              'activo' => $socio->getActivo(),
+              'fecha-inactivo' => $socio->getFechainactivo()*/);
             array_push($respuesta, $elemento);   
           } 
         }             
