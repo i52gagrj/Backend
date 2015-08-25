@@ -1333,7 +1333,7 @@ class DatosController extends Controller
   {
     $em = $this->getDoctrine()->getEntityManager();
     $existe = $em->getRepository('i52LTPVFrontendBundle:Socio')->
-      findByDni($dni);
+      findOneByDni($dni);
     if($existe)
     {
       return "El socio indicado ya existe";
