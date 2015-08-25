@@ -1350,8 +1350,8 @@ class DatosController extends Controller
       $socio->setTelefijo($telefijo);       
       $socio->setTelemovil($telemovil);
       $socio->setEmail($email);
-      $socio->setSaldo($saldo); 
       $socio->setActivo($activo);
+      $socio->setSaldo($saldo);
   
       $em->persist($socio);
       $em->flush();
