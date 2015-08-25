@@ -1271,7 +1271,7 @@ class DatosController extends Controller
     }
   }
 
-  /*public function recibesocioAction()
+  public function recibesocioAction()
   {
     ///Extraer la cabecera de la petición
     //Si contiene el token, en la sección Authorization
@@ -1381,7 +1381,7 @@ class DatosController extends Controller
     }  
     $em->flush();
     return "El socio se ha modificado correctamente";
-  }*/
+  }
 
 /////////////////////////////CUOTAS//////////////////////////////
   public function todosclientescuotasAction()
