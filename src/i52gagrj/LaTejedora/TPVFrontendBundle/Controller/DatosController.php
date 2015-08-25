@@ -1332,7 +1332,7 @@ class DatosController extends Controller
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-  /*public function listadosociosAction()
+  public function listadosociosAction()
   {
     //Extraer la cabecera de la petición
     //$headers=apache_request_headers();   
@@ -1410,7 +1410,7 @@ class DatosController extends Controller
 
   public function recibesocioAction()
   {
-    //Extraer la cabecera de la petición
+    *///Extraer la cabecera de la petición
     //Si contiene el token, en la sección Authorization
     //$headers=apache_request_headers();   
     //if(isset($headers["Authorization"]))
@@ -1454,7 +1454,7 @@ class DatosController extends Controller
             'respuesta' => "La clave no es correcta"))));
         $mandar->headers->set('Content-Type', 'application/json');
         return $mandar; 
-      } 
+      } */
     } 
     else{
       $mandar = new Response(json_encode(array(
@@ -1468,7 +1468,7 @@ class DatosController extends Controller
   
   protected function persisteSocio($nombre, $dni, $direccion, $poblacion, $provincia, $cp, $telefijo, $telemovil, $email, $activo, $baja)
   {
-    $em = $this->getDoctrine()->getEntityManager();
+    /*$em = $this->getDoctrine()->getEntityManager();
     $existe = $em->getRepository('i52LTPVFrontendBundle:Socio')->
       findByNif($nif);
     if($existe)
@@ -1492,12 +1492,12 @@ class DatosController extends Controller
       $em->persist($socio);
       $em->flush();
       return "El socio se ha guardado correctamente"; 
-    } 
+    } */
   }
 
   protected function modificaSocio($id, $nombre, $nif, $direccion, $poblacion, $provincia, $cp, $telefijo, $telemovil, $email, $activo)
   {
-    $em = $this->getDoctrine()->getEntityManager();
+   /* $em = $this->getDoctrine()->getEntityManager();
     $socio = $em->getRepository('i52LTPVFrontendBundle:Socio')->
       find($id);
     
@@ -1517,8 +1517,8 @@ class DatosController extends Controller
       $socio->setFechainactivo($fecha);
     }  
     $em->flush();
-    return "El socio se ha modificado correctamente";
-  }*/
+    return "El socio se ha modificado correctamente";*/
+  }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
