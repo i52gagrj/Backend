@@ -1001,190 +1001,7 @@ class DatosController extends Controller
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////PROVEEDORES////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
 
-  public function listadoproveedoresAction()
-  {
-    //Extraer la cabecera de la petición
-    //$headers=apache_request_headers();   
-    //Si contiene el token, en la sección Authorization
-    //if(isset($headers["Authorization"]))
-    //{
-    //  $token=explode(" ", $headers["Authorization"]);
-    $request = Request::createFromGlobals();
-    $headers=$request->headers;
-    if($headers->get('authorization'))
-    {
-      $token=explode(" ", $headers->get('authorization'));
-      $tokend=JWT::decode(trim($token[1],'"'));
-      $respuesta = array();
-      //Si los datos del token son correctos, se cargan los productos
-      if($this->comprobarToken($tokend->id, $tokend->username))
-      {  
-        $em = $this->getDoctrine()->getEntityManager();
-        $proveedores = $em->getRepository('i52LTPVFrontendBundle:Proveedor')->
-          findAll();   
-        foreach($proveedores as $proveedor)
-        {
-          $elemento = array(
-            'id' => $proveedor->getId(),
-            'nombre' => $proveedor->getNombre(),
-            'nif' => $proveedor->getNif(),
-            'direccion' => $proveedor->getDireccion(),
-            'poblacion' => $proveedor->getPoblacion(),
-            'provincia' => $proveedor->getProvincia(),
-            'cp' => $proveedor->getCp(),
-            'fijo' => $proveedor->getTelefijo(),
-            'movil' => $proveedor->getTelemovil(),
-            'email' => $proveedor->getEmail(),
-            'activo' => $proveedor->getActivo());
-          array_push($respuesta, $elemento);    
-        }             
-        $tokend->iat = time();
-	$tokend->exp = time() + 900;
-	$jwt = JWT::encode($tokend, '');
-        $mandar = new Response(json_encode(array(
-          'code' => 0,
-          'response'=> array(
-          'token' => $jwt, 
-          'proveedores' => $respuesta))));
-        $mandar->headers->set('Content-Type', 'application/json');
-        return $mandar;
-      }  
-      //Si los datos del token no son correctos, se manda un codigo de error 1 y un mensaje
-      else
-      {
-        $mandar = new Response(json_encode(array(
-          'code' => 1,
-          'response'=> array( 
-            'respuesta' => "El usuario no se ha identificado correctamente"))));      
-        $mandar->headers->set('Content-Type', 'application/json');
-        return $mandar;        
-      }      
-    }
-    //Si la petición no contiene el token, se manda un codigo de error 2 y un mensaje
-    else
-    {
-      $mandar = new Response(json_encode(array(
-        'code' => 2,
-        'response'=> array( 
-          'respuesta' => "No está autorizado para realizar la consulta"))));      
-      $mandar->headers->set('Content-Type', 'application/json');
-      return $mandar;
-    }
-  }
-
-  public function recibeproveedorAction()
-  {
-    //Extraer la cabecera de la petición
-    //Si contiene el token, en la sección Authorization
-    //$headers=apache_request_headers();   
-    //if(isset($headers["Authorization"]))
-    //{
-    //  $token=explode(" ", $headers["Authorization"]);
-    $request = Request::createFromGlobals();
-    $headers=$request->headers;
-    if($headers->get('authorization'))
-    {
-      $token=explode(" ", $headers->get('authorization'));
-      $tokend=JWT::decode(trim($token[1],'"'));
-      //Si los datos del token son correctos, se guarda la venta
-      if($this->comprobarToken($tokend->id, $tokend->username))
-      { 
-        // Recuperar el json recibido
-        $content = $this->get("request")->getContent();
-        // decodificarlo con json decode
-        $data = json_decode($content, true);
-        // Mandar los datos para persistir
-        if($data['id']!=0){
-          $respuesta=$this->modificaProveedor($data['id'], $data['nombre'], $data['nif'], $data['direccion'], $data['poblacion'], $data['provincia'], $data['cp'], $data['fijo'], $data['movil'], $data['email'], $data['activo']);
-        }
-        else{
-          $respuesta=$this->persisteProveedor($data['nombre'], $data['nif'], $data['direccion'], $data['poblacion'], $data['provincia'], $data['cp'], $data['fijo'], $data['movil'], $data['email'],$data['activo']);
-        } 
-        $tokend->iat = time();
-	$tokend->exp = time() + 900;
-	$jwt = JWT::encode($tokend, '');
-        $mandar = new Response(json_encode(array(
-          'code' => 0,
-          'response'=> array(
-            'respuesta'=> $respuesta,
-            'token' => $jwt))));
-        $mandar->headers->set('Content-Type', 'application/json');
-        return $mandar;
-      }
-      else{
-        $mandar = new Response(json_encode(array(
-    	  'code' => 1,
-	  'response'=> array(
-            'respuesta' => "La clave no es correcta"))));
-        $mandar->headers->set('Content-Type', 'application/json');
-        return $mandar; 
-      } 
-    } 
-    else{
-      $mandar = new Response(json_encode(array(
-	'code' => 2,
-	'response'=> array(
-          'respuesta' => "No existe el usuario"))));
-      $mandar->headers->set('Content-Type', 'application/json');
-      return $mandar; 
-    } 
-  }
-  
-  protected function persisteProveedor($nombre, $nif, $direccion, $poblacion, $provincia, $cp, $telefijo, $telemovil, $email, $activo)
-  {
-    $em = $this->getDoctrine()->getEntityManager();
-    $existe = $em->getRepository('i52LTPVFrontendBundle:Proveedor')->
-      findByNif($nif);
-    if($existe)
-    {
-      return "El proveedor indicado ya existe";
-    }
-    else  
-    {
-      $proveedor = new Proveedor();    
-      $proveedor->setNombre($nombre);        
-      $proveedor->setNif($nif);
-      $proveedor->setDireccion($direccion);
-      $proveedor->setPoblacion($poblacion);
-      $proveedor->setProvincia($provincia);
-      $proveedor->setCp($cp);
-      $proveedor->setTelefijo($telefijo);       
-      $proveedor->setTelemovil($telemovil);
-      $proveedor->setEmail($email);
-      $proveedor->setActivo($activo);
-
-      $em->persist($proveedor);
-      $em->flush();
-      return "El proveedor se ha guardado correctamente"; 
-    } 
-  }
-
-  protected function modificaProveedor($id, $nombre, $nif, $direccion, $poblacion, $provincia, $cp, $telefijo, $telemovil, $email, $activo)
-  {
-    $em = $this->getDoctrine()->getEntityManager();
-    $proveedor = $em->getRepository('i52LTPVFrontendBundle:Proveedor')->
-      find($id);
-    
-    $proveedor->setNombre($nombre);        
-    $proveedor->setNif($nif);
-    $proveedor->setDireccion($direccion);
-    $proveedor->setPoblacion($poblacion);
-    $proveedor->setProvincia($provincia);
-    $proveedor->setCp($cp);
-    $proveedor->setTelefijo($telefijo);       
-    $proveedor->setTelemovil($telemovil);
-    $proveedor->setEmail($email);
-    $proveedor->setActivo($activo);
-      
-    $em->flush();
-    return "El proveedor se ha modificado correctamente";
-  }
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -1390,7 +1207,17 @@ class DatosController extends Controller
     return "El socio se ha modificado correctamente";
   }
 
-/////////////////////////////CUOTAS//////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////FIN SOCIOS//////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////CUOTAS/////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
   public function todosclientescuotasAction()
   {
     //Extraer la cabecera de la petición
@@ -1524,7 +1351,393 @@ class DatosController extends Controller
       $em->flush();         
     }  
   } 
-///////////////////////////FIN CUOTAS////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////FIN CUOTAS////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////TIPOS ARTICULOS//////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+  public function listadotiposAction()
+  {
+    //Extraer la cabecera de la petición
+    //$headers=apache_request_headers();   
+    //Si contiene el token, en la sección Authorization
+    //if(isset($headers["Authorization"]))
+    //{
+    //  $token=explode(" ", $headers["Authorization"]);
+    $request = Request::createFromGlobals();
+    $headers=$request->headers;
+    if($headers->get('authorization'))
+    {
+      $token=explode(" ", $headers->get('authorization'));
+      $tokend=JWT::decode(trim($token[1],'"'));
+      $respuesta = array();
+      //Si los datos del token son correctos, se cargan los productos
+      if($this->comprobarToken($tokend->id, $tokend->username))
+      {  
+        $em = $this->getDoctrine()->getEntityManager();
+        $tipos = $em->getRepository('i52LTPVFrontendBundle:Tipo')->
+          findAll();   
+        foreach($tipos as $tipo)
+        {
+          $elemento = array(
+            'id' => $tipo->getId(),
+            'nombre' => $tipo->getNombre(),
+            'nif' => $tipo->getNif(),
+            'direccion' => $tipo->getDireccion(),
+            'poblacion' => $tipo->getPoblacion(),
+            'provincia' => $tipo->getProvincia(),
+            'cp' => $tipo->getCp(),
+            'fijo' => $tipo->getTelefijo(),
+            'movil' => $tipo->getTelemovil(),
+            'email' => $tipo->getEmail(),
+            'activo' => $tipo->getActivo());
+          array_push($respuesta, $elemento);    
+        }             
+        $tokend->iat = time();
+	$tokend->exp = time() + 900;
+	$jwt = JWT::encode($tokend, '');
+        $mandar = new Response(json_encode(array(
+          'code' => 0,
+          'response'=> array(
+          'token' => $jwt, 
+          'tipos' => $respuesta))));
+        $mandar->headers->set('Content-Type', 'application/json');
+        return $mandar;
+      }  
+      //Si los datos del token no son correctos, se manda un codigo de error 1 y un mensaje
+      else
+      {
+        $mandar = new Response(json_encode(array(
+          'code' => 1,
+          'response'=> array( 
+            'respuesta' => "El usuario no se ha identificado correctamente"))));      
+        $mandar->headers->set('Content-Type', 'application/json');
+        return $mandar;        
+      }      
+    }
+    //Si la petición no contiene el token, se manda un codigo de error 2 y un mensaje
+    else
+    {
+      $mandar = new Response(json_encode(array(
+        'code' => 2,
+        'response'=> array( 
+          'respuesta' => "No está autorizado para realizar la consulta"))));      
+      $mandar->headers->set('Content-Type', 'application/json');
+      return $mandar;
+    }
+  }
+
+  public function recibetipoAction()
+  {
+    //Extraer la cabecera de la petición
+    //Si contiene el token, en la sección Authorization
+    //$headers=apache_request_headers();   
+    //if(isset($headers["Authorization"]))
+    //{
+    //  $token=explode(" ", $headers["Authorization"]);
+    $request = Request::createFromGlobals();
+    $headers=$request->headers;
+    if($headers->get('authorization'))
+    {
+      $token=explode(" ", $headers->get('authorization'));
+      $tokend=JWT::decode(trim($token[1],'"'));
+      //Si los datos del token son correctos, se guarda la venta
+      if($this->comprobarToken($tokend->id, $tokend->username))
+      { 
+        // Recuperar el json recibido
+        $content = $this->get("request")->getContent();
+        // decodificarlo con json decode
+        $data = json_decode($content, true);
+        // Mandar los datos para persistir
+        if($data['id']!=0){
+          $respuesta=$this->modificaTipo($data['id'], $data['nombre'], $data['padre']);
+        }
+        else{
+          $respuesta=$this->persisteTipo($data['nombre'], $data['padre']);
+        } 
+        $tokend->iat = time();
+	$tokend->exp = time() + 900;
+	$jwt = JWT::encode($tokend, '');
+        $mandar = new Response(json_encode(array(
+          'code' => 0,
+          'response'=> array(
+            'respuesta'=> $respuesta,
+            'token' => $jwt))));
+        $mandar->headers->set('Content-Type', 'application/json');
+        return $mandar;
+      }
+      else{
+        $mandar = new Response(json_encode(array(
+    	  'code' => 1,
+	  'response'=> array(
+            'respuesta' => "La clave no es correcta"))));
+        $mandar->headers->set('Content-Type', 'application/json');
+        return $mandar; 
+      } 
+    } 
+    else{
+      $mandar = new Response(json_encode(array(
+	'code' => 2,
+	'response'=> array(
+          'respuesta' => "No existe el usuario"))));
+      $mandar->headers->set('Content-Type', 'application/json');
+      return $mandar; 
+    } 
+  }
+  
+  protected function persisteTipo($nombre, $padre)
+  {
+    $padrerevisado=this->verificaPadre($padre);
+    $em = $this->getDoctrine()->getEntityManager();
+    $existe = $em->getRepository('i52LTPVFrontendBundle:Tipo')->
+      findByNif($nif);
+    if($existe)
+    {
+      return "El tipo indicado ya existe";
+    }
+    else  
+    {
+      $tipo = new Tipo();    
+      $tipo->setNombre($nombre);        
+      $tipo->setPadre($padre);
+
+      $em->persist($tipo);
+      $em->flush();
+      return "El tipo se ha guardado correctamente"; 
+    } 
+  }
+
+  protected function modificaTipo($id, $nombre, $padre)
+  {
+    $padrerevisado=this->verificaPadre($padre);
+    $em = $this->getDoctrine()->getEntityManager();
+    $tipo = $em->getRepository('i52LTPVFrontendBundle:Tipo')->
+      find($id);
+    
+    $tipo->setNombre($nombre);        
+    $tipo->setPadre($padrerevisado);
+      
+    $em->flush();
+    return "El tipo se ha modificado correctamente";
+  }
+
+  protected function verificaPadre($padre)
+  {
+    $em = $this->getDoctrine()->getEntityManager();
+    $tipo = $em->getRepository('i52LTPVFrontendBundle:Tipo')->
+      find($padre);    
+    if($tipo) return $padre;
+    else return 0;    
+  }
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+//////////////////////////FIN TIPOS ARTICULOS///////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////PROVEEDORES////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+  public function listadoproveedoresAction()
+  {
+    //Extraer la cabecera de la petición
+    //$headers=apache_request_headers();   
+    //Si contiene el token, en la sección Authorization
+    //if(isset($headers["Authorization"]))
+    //{
+    //  $token=explode(" ", $headers["Authorization"]);
+    $request = Request::createFromGlobals();
+    $headers=$request->headers;
+    if($headers->get('authorization'))
+    {
+      $token=explode(" ", $headers->get('authorization'));
+      $tokend=JWT::decode(trim($token[1],'"'));
+      $respuesta = array();
+      //Si los datos del token son correctos, se cargan los productos
+      if($this->comprobarToken($tokend->id, $tokend->username))
+      {  
+        $em = $this->getDoctrine()->getEntityManager();
+        $proveedores = $em->getRepository('i52LTPVFrontendBundle:Proveedor')->
+          findAll();   
+        foreach($proveedores as $proveedor)
+        {
+          $elemento = array(
+            'id' => $proveedor->getId(),
+            'nombre' => $proveedor->getNombre(),
+            'nif' => $proveedor->getNif(),
+            'direccion' => $proveedor->getDireccion(),
+            'poblacion' => $proveedor->getPoblacion(),
+            'provincia' => $proveedor->getProvincia(),
+            'cp' => $proveedor->getCp(),
+            'fijo' => $proveedor->getTelefijo(),
+            'movil' => $proveedor->getTelemovil(),
+            'email' => $proveedor->getEmail(),
+            'activo' => $proveedor->getActivo());
+          array_push($respuesta, $elemento);    
+        }             
+        $tokend->iat = time();
+	$tokend->exp = time() + 900;
+	$jwt = JWT::encode($tokend, '');
+        $mandar = new Response(json_encode(array(
+          'code' => 0,
+          'response'=> array(
+          'token' => $jwt, 
+          'proveedores' => $respuesta))));
+        $mandar->headers->set('Content-Type', 'application/json');
+        return $mandar;
+      }  
+      //Si los datos del token no son correctos, se manda un codigo de error 1 y un mensaje
+      else
+      {
+        $mandar = new Response(json_encode(array(
+          'code' => 1,
+          'response'=> array( 
+            'respuesta' => "El usuario no se ha identificado correctamente"))));      
+        $mandar->headers->set('Content-Type', 'application/json');
+        return $mandar;        
+      }      
+    }
+    //Si la petición no contiene el token, se manda un codigo de error 2 y un mensaje
+    else
+    {
+      $mandar = new Response(json_encode(array(
+        'code' => 2,
+        'response'=> array( 
+          'respuesta' => "No está autorizado para realizar la consulta"))));      
+      $mandar->headers->set('Content-Type', 'application/json');
+      return $mandar;
+    }
+  }
+
+  public function recibeproveedorAction()
+  {
+    //Extraer la cabecera de la petición
+    //Si contiene el token, en la sección Authorization
+    //$headers=apache_request_headers();   
+    //if(isset($headers["Authorization"]))
+    //{
+    //  $token=explode(" ", $headers["Authorization"]);
+    $request = Request::createFromGlobals();
+    $headers=$request->headers;
+    if($headers->get('authorization'))
+    {
+      $token=explode(" ", $headers->get('authorization'));
+      $tokend=JWT::decode(trim($token[1],'"'));
+      //Si los datos del token son correctos, se guarda la venta
+      if($this->comprobarToken($tokend->id, $tokend->username))
+      { 
+        // Recuperar el json recibido
+        $content = $this->get("request")->getContent();
+        // decodificarlo con json decode
+        $data = json_decode($content, true);
+        // Mandar los datos para persistir
+        if($data['id']!=0){
+          $respuesta=$this->modificaProveedor($data['id'], $data['nombre'], $data['nif'], $data['direccion'], $data['poblacion'], $data['provincia'], $data['cp'], $data['fijo'], $data['movil'], $data['email'], $data['activo']);
+        }
+        else{
+          $respuesta=$this->persisteProveedor($data['nombre'], $data['nif'], $data['direccion'], $data['poblacion'], $data['provincia'], $data['cp'], $data['fijo'], $data['movil'], $data['email'],$data['activo']);
+        } 
+        $tokend->iat = time();
+	$tokend->exp = time() + 900;
+	$jwt = JWT::encode($tokend, '');
+        $mandar = new Response(json_encode(array(
+          'code' => 0,
+          'response'=> array(
+            'respuesta'=> $respuesta,
+            'token' => $jwt))));
+        $mandar->headers->set('Content-Type', 'application/json');
+        return $mandar;
+      }
+      else{
+        $mandar = new Response(json_encode(array(
+    	  'code' => 1,
+	  'response'=> array(
+            'respuesta' => "La clave no es correcta"))));
+        $mandar->headers->set('Content-Type', 'application/json');
+        return $mandar; 
+      } 
+    } 
+    else{
+      $mandar = new Response(json_encode(array(
+	'code' => 2,
+	'response'=> array(
+          'respuesta' => "No existe el usuario"))));
+      $mandar->headers->set('Content-Type', 'application/json');
+      return $mandar; 
+    } 
+  }
+  
+  protected function persisteProveedor($nombre, $nif, $direccion, $poblacion, $provincia, $cp, $telefijo, $telemovil, $email, $activo)
+  {
+    $em = $this->getDoctrine()->getEntityManager();
+    $existe = $em->getRepository('i52LTPVFrontendBundle:Proveedor')->
+      findByNif($nif);
+    if($existe)
+    {
+      return "El proveedor indicado ya existe";
+    }
+    else  
+    {
+      $proveedor = new Proveedor();    
+      $proveedor->setNombre($nombre);        
+      $proveedor->setNif($nif);
+      $proveedor->setDireccion($direccion);
+      $proveedor->setPoblacion($poblacion);
+      $proveedor->setProvincia($provincia);
+      $proveedor->setCp($cp);
+      $proveedor->setTelefijo($telefijo);       
+      $proveedor->setTelemovil($telemovil);
+      $proveedor->setEmail($email);
+      $proveedor->setActivo($activo);
+
+      $em->persist($proveedor);
+      $em->flush();
+      return "El proveedor se ha guardado correctamente"; 
+    } 
+  }
+
+  protected function modificaProveedor($id, $nombre, $nif, $direccion, $poblacion, $provincia, $cp, $telefijo, $telemovil, $email, $activo)
+  {
+    $em = $this->getDoctrine()->getEntityManager();
+    $proveedor = $em->getRepository('i52LTPVFrontendBundle:Proveedor')->
+      find($id);
+    
+    $proveedor->setNombre($nombre);        
+    $proveedor->setNif($nif);
+    $proveedor->setDireccion($direccion);
+    $proveedor->setPoblacion($poblacion);
+    $proveedor->setProvincia($provincia);
+    $proveedor->setCp($cp);
+    $proveedor->setTelefijo($telefijo);       
+    $proveedor->setTelemovil($telemovil);
+    $proveedor->setEmail($email);
+    $proveedor->setActivo($activo);
+      
+    $em->flush();
+    return "El proveedor se ha modificado correctamente";
+  }
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+/////////////////////////FIN PROVEEDORES////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+
+
 
 
 ////////////////////////////////////////////////////////////////////////////////
