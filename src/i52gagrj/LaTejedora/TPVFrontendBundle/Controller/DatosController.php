@@ -1380,7 +1380,12 @@ class DatosController extends Controller
     {
       $fecha = new \DateTime("now");
       $socio->setFechainactivo($fecha);
-    }  
+    }
+    else
+    {
+      $fecha = new \DateTime("00-00-0000");
+      $socio->setFechainactivo($fecha);
+    }   
     $em->flush();
     return "El socio se ha modificado correctamente";
   }
