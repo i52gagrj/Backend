@@ -1340,7 +1340,7 @@ class DatosController extends Controller
     {
       $socio = new Socio();    
       $socio->setNombre($nombre);        
-      $socio->setDni($dni);
+      /*$socio->setDni($dni);
       $socio->setDireccion($direccion);
       $socio->setPoblacion($poblacion);
       $socio->setProvincia($provincia);
@@ -1349,7 +1349,7 @@ class DatosController extends Controller
       $socio->setTelemovil($telemovil);
       $socio->setEmail($email);
       $socio->setActivo($activo);
-      $socio->setSaldo($saldo);
+      $socio->setSaldo($saldo);*/
   
       $em->persist($socio);
       $em->flush();

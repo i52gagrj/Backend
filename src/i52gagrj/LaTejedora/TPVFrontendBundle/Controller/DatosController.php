@@ -1330,14 +1330,14 @@ class DatosController extends Controller
   protected function persisteSocio($nombre, $dni, $direccion, $poblacion, $provincia, $cp, $telefijo, $telemovil, $email, $activo, $saldo)
   {
     $em = $this->getDoctrine()->getEntityManager();
-    $existe = $em->getRepository('i52LTPVFrontendBundle:Socio')->
+    /*$existe = $em->getRepository('i52LTPVFrontendBundle:Socio')->
       findByDni($dni);
     if($existe)
     {
       return "El socio indicado ya existe";
     }
     else  
-    {
+    {*/
       $socio = new Socio();    
       $socio->setNombre($nombre);        
       $socio->setDni($dni);
@@ -1354,7 +1354,7 @@ class DatosController extends Controller
       $em->persist($socio);
       $em->flush();
       return "El socio se ha guardado correctamente"; 
-    } 
+    //} 
   }
 
   protected function modificaSocio($id, $nombre, $dni, $direccion, $poblacion, $provincia, $cp, $telefijo, $telemovil, $email, $activo, $saldo, $baja)
@@ -1374,11 +1374,11 @@ class DatosController extends Controller
     $socio->setEmail($email);
     $socio->setActivo($activo);
     $socio->setSaldo($saldo);
-    /*if($baja)
+    if($baja)
     {
       $fecha = new \DateTime("now");
       $socio->setFechainactivo($fecha);
-    }*/  
+    }  
     $em->flush();
     return "El socio se ha modificado correctamente";
   }
