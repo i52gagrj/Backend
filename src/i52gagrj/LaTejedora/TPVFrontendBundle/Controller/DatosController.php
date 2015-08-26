@@ -1364,7 +1364,7 @@ class DatosController extends Controller
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-  /*public function listadotiposAction()
+  public function listadotiposAction()
   {
     //Extraer la cabecera de la petición
     //$headers=apache_request_headers();   
@@ -1498,7 +1498,7 @@ class DatosController extends Controller
     $padrerevisado=this->verificaPadre($padre);
     $em = $this->getDoctrine()->getEntityManager();
     $existe = $em->getRepository('i52LTPVFrontendBundle:Tipo')->
-      findByNif($nif);
+      findByNombre($nombre);
     if($existe)
     {
       return "El tipo indicado ya existe";
@@ -1536,7 +1536,7 @@ class DatosController extends Controller
       find($padre);    
     if($tipo) return $padre;
     else return 0;    
-  }*/
+  }
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
