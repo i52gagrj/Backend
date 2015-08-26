@@ -1390,15 +1390,7 @@ class DatosController extends Controller
           $elemento = array(
             'id' => $tipo->getId(),
             'nombre' => $tipo->getNombre(),
-            'nif' => $tipo->getNif(),
-            'direccion' => $tipo->getDireccion(),
-            'poblacion' => $tipo->getPoblacion(),
-            'provincia' => $tipo->getProvincia(),
-            'cp' => $tipo->getCp(),
-            'fijo' => $tipo->getTelefijo(),
-            'movil' => $tipo->getTelemovil(),
-            'email' => $tipo->getEmail(),
-            'activo' => $tipo->getActivo());
+            'padre' => $tipo->getPadre());
           array_push($respuesta, $elemento);    
         }             
         $tokend->iat = time();
