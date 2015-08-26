@@ -1364,7 +1364,7 @@ class DatosController extends Controller
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-  /*public function listadotiposAction()
+  public function listadotiposAction()
   {
     //Extraer la cabecera de la petición
     //$headers=apache_request_headers();   
@@ -1425,9 +1425,9 @@ class DatosController extends Controller
       $mandar->headers->set('Content-Type', 'application/json');
       return $mandar;
     }
-  }*/
+  }
 
-  public function recibetipoAction()
+  /*public function recibetipoAction()
   {
     //Extraer la cabecera de la petición
     //Si contiene el token, en la sección Authorization
@@ -1483,7 +1483,7 @@ class DatosController extends Controller
       $mandar->headers->set('Content-Type', 'application/json');
       return $mandar; 
     } 
-  }
+  }*/
   
   protected function persisteTipo($nombre, $padre)
   {
