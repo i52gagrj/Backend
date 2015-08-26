@@ -1346,15 +1346,15 @@ class DatosController extends Controller
       $socio->setProvincia($provincia);
       $socio->setCp($cp);
       $socio->setTelefijo($telefijo);       
-      //$socio->setTelemovil($telemovil);
-      //$socio->setEmail($email);
-      //$socio->setActivo($activo);
+      $socio->setTelemovil($telemovil);
+      $socio->setEmail($email);
+      $socio->setActivo($activo);
       //$socio->setSaldo($saldo);
   
       //$em->persist($socio);
       //$em->flush();
       return "El socio se ha guardado correctamente"; 
-    //} 
+    } 
   }
 
   protected function modificaSocio($id, $nombre, $dni, $direccion, $poblacion, $provincia, $cp, $telefijo, $telemovil, $email, $activo, $saldo, $baja)
