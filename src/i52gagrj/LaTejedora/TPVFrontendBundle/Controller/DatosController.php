@@ -1350,6 +1350,8 @@ class DatosController extends Controller
       $socio->setEmail($email);
       $socio->setActivo($activo);
       $socio->setSaldo($saldo);
+      $fecha = new \DateTime("00-00-0000");
+      $socio->setFechainactivo($fecha);
   
       $em->persist($socio);
       $em->flush();
