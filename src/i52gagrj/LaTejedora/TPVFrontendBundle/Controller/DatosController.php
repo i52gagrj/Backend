@@ -1374,11 +1374,11 @@ class DatosController extends Controller
     $socio->setEmail($email);
     $socio->setActivo($activo);
     $socio->setSaldo($saldo);
-    if($baja)
+    /*if($baja)
     {
       $fecha = new \DateTime("now");
       $socio->setFechainactivo($fecha);
-    }  
+    }*/  
     $em->flush();
     return "El socio se ha modificado correctamente";
   }

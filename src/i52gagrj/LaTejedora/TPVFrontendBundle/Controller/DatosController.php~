@@ -662,9 +662,7 @@ class DatosController extends Controller
       {    
         $request = $this->getRequest(); 
         $idventa=$request->get('idventa');
-        $venta = $this->devuelveVenta($idventa);  	
-        /////////Aquí: condicional si no existe la venta///////
-        /////////AÑADIR//////////////////    
+        $venta = $this->devuelveVenta($idventa);  	   
         if($venta)
         {
           if($venta->getContado()) 
@@ -1232,7 +1230,7 @@ class DatosController extends Controller
               'movil' => $socio->getTelemovil(),
               'saldo' => $socio->getSaldo(),
               'activo' => $socio->getActivo(),
-              'fechainactivo' => date_format($socio->getFechainactivo(),'Y-m-d'),);
+              'fechainactivo' => date_format($socio->getFechainactivo(),'Y-m-d'));
             array_push($respuesta, $elemento);   
           } 
         }             
