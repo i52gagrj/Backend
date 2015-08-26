@@ -1352,7 +1352,7 @@ class DatosController extends Controller
       $socio->setSaldo($saldo);
   
       $em->persist($socio);
-      //$em->flush();
+      $em->flush();
       return "El socio se ha guardado correctamente"; 
     } 
   }
