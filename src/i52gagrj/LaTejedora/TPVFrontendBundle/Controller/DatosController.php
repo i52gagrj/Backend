@@ -1503,7 +1503,7 @@ class DatosController extends Controller
       $tipo->setPadre($padrerevisado);
 
       $em->persist($tipo);
-      //$em->flush();
+      $em->flush();
       return "El tipo se ha guardado correctamente"; 
     } 
   }
