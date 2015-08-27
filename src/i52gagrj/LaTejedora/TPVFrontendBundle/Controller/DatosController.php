@@ -1487,7 +1487,7 @@ class DatosController extends Controller
   
   protected function persisteTipo($nombre, $padre)
   {
-    //$padrerevisado=$this->verificaPadre($padre);
+    /*$padrerevisado=$this->verificaPadre($padre);
     $em = $this->getDoctrine()->getEntityManager();
     $existe = $em->getRepository('i52LTPVFrontendBundle:Tipo')->
       findByNombre($nombre);
@@ -1499,10 +1499,10 @@ class DatosController extends Controller
     {
       $tipo = new Tipo();    
       $tipo->setNombre($nombre);        
-      $tipo->setPadre($padre);
+      $tipo->setPadre($padrerevisado);
 
       $em->persist($tipo);
-      $em->flush();
+      $em->flush();*/
       return "El tipo se ha guardado correctamente"; 
     } 
   }
