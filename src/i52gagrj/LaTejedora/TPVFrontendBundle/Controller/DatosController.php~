@@ -1832,12 +1832,12 @@ class DatosController extends Controller
         if($data['id']!=0){     
           //confirmar si se ha de modificar la clave: mandar un flag.
           $clave = $data['password']; 
-          if($data['cambioclave']==true) $clave=password_hash($data['password']);    
+          if($data['cambioclave']==true) $clave=crypt($data['password']);    
           $respuesta=$this->modificaUsuario($data['id'], $data['nombre'], $data['dni'], $clave, $data['activo'], $data['username'], $data['baja']);
         }
         else{
           //Codificar la clave antes de insertarla
-          $clave=password_hash($data['password']);
+          $clave=crypt($data['password']);
           $respuesta=$this->persisteUsuario($data['nombre'], $data['dni'], $clave, $data['activo'], $data['username']);
         } 
         $tokend->iat = time();
@@ -1870,7 +1870,7 @@ class DatosController extends Controller
     } 
   }
 
-  protected function persisteUsuario($id, $nombre, $dni, $password, $isactive, $username)
+  protected function persisteUsuario($nombre, $dni, $password, $isactive, $username)
   {
     $em = $this->getDoctrine()->getEntityManager();
     $existe = $em->getRepository('i52LTPVFrontendBundle:Usuario')->
