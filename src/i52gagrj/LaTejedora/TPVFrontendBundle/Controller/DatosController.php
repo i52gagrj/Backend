@@ -1831,13 +1831,13 @@ class DatosController extends Controller
         // Mandar los datos para persistir
         if($data['id']!=0){     
           //confirmar si se ha de modificar la clave: mandar un flag.
-          //Poner aquí un if-else
-          $clave = $data['password'];     
+          $clave = $data['password']; 
+          if($data['cambioclave']==true) $clave=password_hash($data['password']);    
           $respuesta=$this->modificaUsuario($data['id'], $data['nombre'], $data['dni'], $clave, $data['activo'], $data['username'], $data['baja']);
         }
         else{
           //Codificar la clave antes de insertarla
-          $clave = $data['password'];
+          $clave=password_hash($data['password']);
           $respuesta=$this->persisteUsuario($data['nombre'], $data['dni'], $clave, $data['activo'], $data['username']);
         } 
         $tokend->iat = time();
