@@ -1870,7 +1870,7 @@ class DatosController extends Controller
     } 
   }
 
-  protected function persisteUsuario($id, $nombre, $dni, $password, $isactive, $username)
+  protected function persisteUsuario($nombre, $dni, $password, $isactive, $username)
   {
     $em = $this->getDoctrine()->getEntityManager();
     $existe = $em->getRepository('i52LTPVFrontendBundle:Usuario')->
