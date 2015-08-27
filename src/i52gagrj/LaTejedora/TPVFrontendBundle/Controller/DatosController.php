@@ -1489,14 +1489,14 @@ class DatosController extends Controller
   {
     $padrerevisado=$this->verificaPadre($padre);
     $em = $this->getDoctrine()->getEntityManager();
-    $existe = $em->getRepository('i52LTPVFrontendBundle:Tipo')->
+    /*$existe = $em->getRepository('i52LTPVFrontendBundle:Tipo')->
       findByNombre($nombre);
     if($existe)
     {
       return "El tipo indicado ya existe";
     }
     else  
-    {
+    {*/
       $tipo = new Tipo();    
       $tipo->setNombre($nombre);        
       $tipo->setPadre($padre);
@@ -1504,7 +1504,7 @@ class DatosController extends Controller
       $em->persist($tipo);
       $em->flush();
       return "El tipo se ha guardado correctamente"; 
-    } 
+    //} 
   }
 
   protected function modificaTipo($id, $nombre, $padre)

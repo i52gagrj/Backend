@@ -1427,7 +1427,7 @@ class DatosController extends Controller
     }
   }
 
-  /*public function recibetipoAction()
+  public function recibetipoAction()
   {
     //Extraer la cabecera de la petición
     //Si contiene el token, en la sección Authorization
@@ -1483,11 +1483,11 @@ class DatosController extends Controller
       $mandar->headers->set('Content-Type', 'application/json');
       return $mandar; 
     } 
-  }*/
+  }
   
   protected function persisteTipo($nombre, $padre)
   {
-    $padrerevisado=this->verificaPadre($padre);
+    $padrerevisado=$this->verificaPadre($padre);
     $em = $this->getDoctrine()->getEntityManager();
     $existe = $em->getRepository('i52LTPVFrontendBundle:Tipo')->
       findByNombre($nombre);
@@ -1509,7 +1509,7 @@ class DatosController extends Controller
 
   protected function modificaTipo($id, $nombre, $padre)
   {
-    $padrerevisado=this->verificaPadre($padre);
+    $padrerevisado=$this->verificaPadre($padre);
     $em = $this->getDoctrine()->getEntityManager();
     $tipo = $em->getRepository('i52LTPVFrontendBundle:Tipo')->
       find($id);
