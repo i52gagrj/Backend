@@ -327,6 +327,29 @@ class Proveedor
     }
 
     /**
+     * Set activo
+     *
+     * @param boolean $activo
+     * @return Proveedor
+     */
+    public function setActivo($activo)
+    {
+        $this->activo = $activo;
+
+        return $this;
+    }
+
+    /**
+     * Get activo
+     *
+     * @return boolean 
+     */
+    public function getActivo()
+    {
+        return $this->activo;
+    }
+
+    /**
      * Add productos
      *
      * @param \i52gagrj\LaTejedora\TPVFrontendBundle\Entity\Producto $productos
