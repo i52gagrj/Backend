@@ -18,6 +18,7 @@ use i52gagrj\LaTejedora\TPVFrontendBundle\Entity\Lineaventa;
 use i52gagrj\LaTejedora\TPVFrontendBundle\Entity\Producto;
 use i52gagrj\LaTejedora\TPVFrontendBundle\Entity\Diario;
 use i52gagrj\LaTejedora\TPVFrontendBundle\Entity\Usuario;
+use i52gagrj\LaTejedora\TPVFrontendBundle\Entity\Tipo;
 
 class DatosController extends Controller
 {
@@ -1496,13 +1497,13 @@ class DatosController extends Controller
       return "El tipo indicado ya existe";
     }
     else  
-    {/*
+    {
       $tipo = new Tipo();    
       $tipo->setNombre($nombre);        
       $tipo->setPadre($padrerevisado);
 
       $em->persist($tipo);
-      $em->flush();*/
+      $em->flush();
       return "El tipo se ha guardado correctamente"; 
     } 
   }
