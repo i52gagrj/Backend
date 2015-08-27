@@ -1504,7 +1504,7 @@ class DatosController extends Controller
       $em->persist($tipo);
       $em->flush();*/
       return "El tipo se ha guardado correctamente"; 
-    } 
+    //} 
   }
 
   protected function modificaTipo($id, $nombre, $padre)
