@@ -1733,8 +1733,201 @@ class DatosController extends Controller
 ////////////////////////////////////////////////////////////////////////////////
 
 
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////USUARIOS//////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
+  public function listadousuariosAction()
+  {
+    //Extraer la cabecera de la petición
+    //$headers=apache_request_headers();   
+    //Si contiene el token, en la sección Authorization
+    //if(isset($headers["Authorization"]))
+    //{
+    //  $token=explode(" ", $headers["Authorization"]);
+    $request = Request::createFromGlobals();
+    $headers=$request->headers;
+    if($headers->get('authorization'))
+    {
+      $token=explode(" ", $headers->get('authorization'));
+      $tokend=JWT::decode(trim($token[1],'"'));
+      $respuesta = array();
+      //Si los datos del token son correctos, se cargan los productos
+      if($this->comprobarToken($tokend->id, $tokend->username))
+      {  
+        $em = $this->getDoctrine()->getEntityManager();
+        $usuarios = $em->getRepository('i52LTPVFrontendBundle:Usuario')->
+          findAll();   
+        foreach($usuarios as $usuario)
+        {
+          $elemento = array(
+            'id' => $usuario->getId(),
+            'nombre' => $usuario->getNombre(),
+            'dni' => $usuario->getDni(),
+            'password' => $usuario->getPassword(),
+            'activo' => $usuario->getIsActive(),
+            'username' => $usuario->getUsername(),
+            'fechainactivo' => date_format($usuario->getFechainactivo(),'Y-m-d'));
+          array_push($respuesta, $elemento);            
+        }             
+        $tokend->iat = time();
+	$tokend->exp = time() + 900;
+	$jwt = JWT::encode($tokend, '');
+        $mandar = new Response(json_encode(array(
+          'code' => 0,
+          'response'=> array(
+          'token' => $jwt, 
+          'usuarios' => $respuesta
+        ))));
+        $mandar->headers->set('Content-Type', 'application/json');
+        return $mandar;
+      }  
+      //Si los datos del token no son correctos, se manda un codigo de error 1 y un mensaje
+      else
+      {
+        $mandar = new Response(json_encode(array(
+          'code' => 1,
+          'response'=> array( 
+            'respuesta' => "El usuario no se ha identificado correctamente"))));      
+        $mandar->headers->set('Content-Type', 'application/json');
+        return $mandar;        
+      }      
+    }
+    //Si la petición no contiene el token, se manda un codigo de error 2 y un mensaje
+    else
+    {
+      $mandar = new Response(json_encode(array(
+        'code' => 2,
+        'response'=> array( 
+          'respuesta' => "No está autorizado para realizar la consulta"))));      
+      $mandar->headers->set('Content-Type', 'application/json');
+      return $mandar;
+    }
+  }
 
+  public function recibeusuarioAction()
+  {
+    ///Extraer la cabecera de la petición
+    //Si contiene el token, en la sección Authorization
+    //$headers=apache_request_headers();   
+    //if(isset($headers["Authorization"]))
+    //{
+    //  $token=explode(" ", $headers["Authorization"]);
+    $request = Request::createFromGlobals();
+    $headers=$request->headers;
+    if($headers->get('authorization'))
+    {
+      $token=explode(" ", $headers->get('authorization'));
+      $tokend=JWT::decode(trim($token[1],'"'));
+      //Si los datos del token son correctos, se guarda la venta
+      if($this->comprobarToken($tokend->id, $tokend->username))
+      { 
+        // Recuperar el json recibido
+        $content = $this->get("request")->getContent();
+        // decodificarlo con json decode
+        $data = json_decode($content, true);
+        // Mandar los datos para persistir
+        if($data['id']!=0){     
+          //confirmar si se ha de modificar la clave: mandar un flag.
+          //Poner aquí un if-else
+          $clave = $data['password'];     
+          $respuesta=$this->modificaUsuario($data['id'], $data['nombre'], $data['dni'], $clave, $data['isactive'], $data['username'], $data['baja']);
+        }
+        else{
+          //Codificar la clave antes de insertarla
+          $clave = $data['password'];
+          $respuesta=$this->persisteUsuario($data['nombre'], $data['dni'], $clave, $data['isactive'], $data['username']);
+        } 
+        $tokend->iat = time();
+	$tokend->exp = time() + 900;
+	$jwt = JWT::encode($tokend, '');
+        $mandar = new Response(json_encode(array(
+          'code' => 0,
+          'response'=> array(
+            'respuesta'=> $respuesta,
+            'token' => $jwt))));
+        $mandar->headers->set('Content-Type', 'application/json');
+        return $mandar;
+      }
+      else{
+        $mandar = new Response(json_encode(array(
+    	  'code' => 1,
+	  'response'=> array(
+            'respuesta' => "La clave no es correcta"))));
+        $mandar->headers->set('Content-Type', 'application/json');
+        return $mandar; 
+      } 
+    } 
+    else{
+      $mandar = new Response(json_encode(array(
+	'code' => 2,
+	'response'=> array(
+          'respuesta' => "No existe el usuario"))));
+      $mandar->headers->set('Content-Type', 'application/json');
+      return $mandar; 
+    } 
+  }
+
+  protected function persisteUsuario($id, $nombre, $dni, $password, $isactive, $username)
+  {
+    $em = $this->getDoctrine()->getEntityManager();
+    $existe = $em->getRepository('i52LTPVFrontendBundle:Usuario')->
+      findByDni($dni);
+    if($existe)
+    {
+      return "El usuario indicado ya existe";
+    }
+    else  
+    {
+      $usuario = new Usuario();    
+      $usuario->setNombre($nombre);        
+      $usuario->setDni($dni);
+      $usuario->setPassword($password);
+      $usuario->setIsActive($isactive);
+      $usuario->setUsername($username);
+      $fecha = new \DateTime("00-00-0000");
+      $usuario->setFechainactivo($fecha);
+  
+      $em->persist($usuario);
+      $em->flush();
+      return "El usuario se ha guardado correctamente"; 
+    } 
+  }
+
+  protected function modificaUsuario($id, $nombre, $dni, $password, $isactive, $username, $baja)
+  {
+    $em = $this->getDoctrine()->getEntityManager();
+    $usuario = $em->getRepository('i52LTPVFrontendBundle:Usuario')->
+      find($id);
+    
+    $usuario->setNombre($nombre);        
+    $usuario->setDni($dni);
+    $usuario->setPassword($password);
+    $usuario->setIsActive($isactive);
+    $usuario->setUsername($username);
+    $fecha = new \DateTime("00-00-0000");
+    $usuario->setFechainactivo($fecha);
+    if($baja)
+    {
+      $fecha = new \DateTime("now");
+      $usuario->setFechainactivo($fecha);
+    }
+    else
+    {
+      $fecha = new \DateTime("00-00-0000");
+      $usuario->setFechainactivo($fecha);
+    }   
+    $em->flush();
+    return "El usuario se ha modificado correctamente";
+  }
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////FIN USUARIOS////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
