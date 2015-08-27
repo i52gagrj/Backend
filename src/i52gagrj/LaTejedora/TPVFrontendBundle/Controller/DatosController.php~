@@ -1499,7 +1499,7 @@ class DatosController extends Controller
     {*/
       $tipo = new Tipo();    
       $tipo->setNombre($nombre);        
-      $tipo->setPadre($padre);
+      $tipo->setPadre($padrerevisado);
 
       $em->persist($tipo);
       $em->flush();
@@ -1523,11 +1523,14 @@ class DatosController extends Controller
 
   protected function verificaPadre($padre)
   {
-    $em = $this->getDoctrine()->getEntityManager();
-    $tipo = $em->getRepository('i52LTPVFrontendBundle:Tipo')->
-      find($padre);    
-    if($tipo) return $padre;
-    else return 0;    
+    if($padre==0) return $padre;
+    else{ 
+      $em = $this->getDoctrine()->getEntityManager();
+      $tipo = $em->getRepository('i52LTPVFrontendBundle:Tipo')->
+        find($padre);    
+      if($tipo) return $padre;
+      else return 0;    
+    }
   }
 
 ////////////////////////////////////////////////////////////////////////////////

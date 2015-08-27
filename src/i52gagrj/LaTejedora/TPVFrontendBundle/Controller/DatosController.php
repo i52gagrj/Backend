@@ -1499,7 +1499,7 @@ class DatosController extends Controller
     {*/
       $tipo = new Tipo();    
       $tipo->setNombre($nombre);        
-      $tipo->setPadre($padre);
+      $tipo->setPadre($padrerevisado);
 
       $em->persist($tipo);
       $em->flush();
