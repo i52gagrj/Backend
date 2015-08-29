@@ -1510,7 +1510,7 @@ class DatosController extends Controller
         find($id_tipo);*/  
       $producto = new Producto();    
       $producto->setNombre($nombre);        
-      //$producto->setDescripcion($descripcion);
+      $producto->setDescripcion($descripcion);
       $producto->setStock($stock);
       $producto->setPrecio($precio);
       $producto->setIva($iva);
@@ -1536,9 +1536,9 @@ class DatosController extends Controller
     
     $producto->setNombre($nombre);        
     $producto->setDescripcion($descripcion);
-    $producto->setStock($direccion);
-    $producto->setPrecio($poblacion);
-    $producto->setIva($provincia);
+    $producto->setStock($stock);
+    $producto->setPrecio($precio);
+    $producto->setIva($iva);
     $producto->setActivo($activo);
     $producto->setProveedor($proveedor);
     $producto->setTipo($tipo);
