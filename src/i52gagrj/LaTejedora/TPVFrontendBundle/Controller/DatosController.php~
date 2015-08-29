@@ -1497,7 +1497,7 @@ class DatosController extends Controller
   {
     $em = $this->getDoctrine()->getEntityManager();
     $existe = $em->getRepository('i52LTPVFrontendBundle:Producto')->
-      findByNif($nif);
+      findByNombre($nombre);
     if($existe)
     {
       return "El producto indicado ya existe";

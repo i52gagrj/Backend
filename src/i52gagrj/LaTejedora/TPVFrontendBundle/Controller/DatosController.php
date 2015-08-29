@@ -1504,10 +1504,10 @@ class DatosController extends Controller
     }
     else  
     {
-      /*$proveedor = $em->getRepository('i52LTPVFrontendBundle:Proveedor')->
+      $proveedor = $em->getRepository('i52LTPVFrontendBundle:Proveedor')->
         find($id_proveedor);
       $tipo = $em->getRepository('i52LTPVFrontendBundle:Tipo')->
-        find($id_tipo);*/  
+        find($id_tipo);  
       $producto = new Producto();    
       $producto->setNombre($nombre);        
       $producto->setDescripcion($descripcion);
@@ -1515,8 +1515,8 @@ class DatosController extends Controller
       $producto->setPrecio($precio);
       $producto->setIva($iva);
       $producto->setActivo($activo);
-      //$producto->setProveedor($proveedor);
-      //$producto->setTipo($tipo);
+      $producto->setProveedor($proveedor);
+      $producto->setTipo($tipo);
 
       $em->persist($producto);
       $em->flush();
