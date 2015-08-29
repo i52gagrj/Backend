@@ -1396,10 +1396,9 @@ class DatosController extends Controller
             'iva' => $producto->getIva(),
             'stock' => $producto->getStock(),
             'activo' => $producto->getActivo(),
-            'fechainactivo' => $producto->getProducto(),
-            //'proveedor' => $producto->getProveedor()->getId(),
-            //'tipo' => $producto->getTipo()->getId()
-            );
+            'fechainactivo' => $producto->getFechainactivo(),
+            'proveedor' => $producto->getProveedor()->getId(),
+            'tipo' => $producto->getTipo()->getId());
           array_push($respuesta, $elemento);    
         }             
         $tokend->iat = time();
