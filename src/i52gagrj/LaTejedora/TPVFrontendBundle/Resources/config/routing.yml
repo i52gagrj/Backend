@@ -269,7 +269,7 @@ i52_ltpv_frontend_apiListadoProductos:
 
 i52_ltpv_frontend_apiRecibeProducto:
     path: /datos/recibeProducto
-    defaults: { _controller: i52LTPVFrontendBundle:Datos:recibeproductos }
+    defaults: { _controller: i52LTPVFrontendBundle:Datos:recibeproducto }
     requirements:
          _format: (xml|json)
          _method: POST
