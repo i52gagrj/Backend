@@ -2120,7 +2120,7 @@
         </argument>
         <argument type="service">
           <service class="Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider" public="false">
-            <argument>55d8ce6f53b94</argument>
+            <argument>55e18dcb5597e</argument>
           </service>
         </argument>
         <argument type="service">
@@ -2213,7 +2213,7 @@
             </argument>
             <argument key="security.firewall.map.context.api" type="service">
               <service class="Symfony\Component\HttpFoundation\RequestMatcher" public="false">
-                <argument>^/api</argument>
+                <argument>^/caja/(datos|gestion)</argument>
               </service>
             </argument>
           </argument>
@@ -2301,17 +2301,6 @@
         <argument type="service">
           <service class="Symfony\Component\HttpFoundation\RequestMatcher" public="false">
             <argument>^/caja/datos</argument>
-          </service>
-        </argument>
-        <argument type="collection">
-          <argument>IS_AUTHENTICATED_FULLY</argument>
-        </argument>
-        <argument>null</argument>
-      </call>
-      <call method="add">
-        <argument type="service">
-          <service class="Symfony\Component\HttpFoundation\RequestMatcher" public="false">
-            <argument>^/caja/gestion</argument>
           </service>
         </argument>
         <argument type="collection">
@@ -2564,7 +2553,7 @@
         <argument type="service">
           <service class="Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener" public="false">
             <argument type="service" id="security.context"/>
-            <argument>55d8ce6f53b94</argument>
+            <argument>55e18dcb5597e</argument>
             <argument type="service" id="monolog.logger.security" on-invalid="null"/>
             <argument type="service" id="security.authentication.manager"/>
           </service>

@@ -1361,7 +1361,215 @@ class DatosController extends Controller
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////TIPOS ARTICULOS//////////////////////////////////
+//////////////////////////////////PRODUCTOS/////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+  public function listadoproductosAction()
+  {
+    //Extraer la cabecera de la petición
+    //$headers=apache_request_headers();   
+    //Si contiene el token, en la sección Authorization
+    //if(isset($headers["Authorization"]))
+    //{
+    //  $token=explode(" ", $headers["Authorization"]);
+    $request = Request::createFromGlobals();
+    $headers=$request->headers;
+    if($headers->get('authorization'))
+    {
+      $token=explode(" ", $headers->get('authorization'));
+      $tokend=JWT::decode(trim($token[1],'"'));
+      $respuesta = array();
+      //Si los datos del token son correctos, se cargan los productos
+      if($this->comprobarToken($tokend->id, $tokend->username))
+      {  
+        $em = $this->getDoctrine()->getEntityManager();
+        $productos = $em->getRepository('i52LTPVFrontendBundle:Producto')->
+          findAll();   
+        foreach($productos as $producto)
+        {
+          $elemento = array(
+            'id' => $producto->getId(),
+            'nombre' => $producto->getNombre(),
+            'descripcion' => $producto->getDescripcion(),
+            'precio' => $producto->getPrecio(),
+            'iva' => $producto->getIva(),
+            'stock' => $producto->getStock(),
+            'activo' => $producto->getActivo(),
+            'fechainactivo' => $producto->getProducto(),
+            'proveedor' => $producto->getProveedor(),
+            'tipo' => $producto->getTipo());
+          array_push($respuesta, $elemento);    
+        }             
+        $tokend->iat = time();
+	$tokend->exp = time() + 900;
+	$jwt = JWT::encode($tokend, '');
+        $mandar = new Response(json_encode(array(
+          'code' => 0,
+          'response'=> array(
+          'token' => $jwt, 
+          'productos' => $respuesta))));
+        $mandar->headers->set('Content-Type', 'application/json');
+        return $mandar;
+      }  
+      //Si los datos del token no son correctos, se manda un codigo de error 1 y un mensaje
+      else
+      {
+        $mandar = new Response(json_encode(array(
+          'code' => 1,
+          'response'=> array( 
+            'respuesta' => "El usuario no se ha identificado correctamente"))));      
+        $mandar->headers->set('Content-Type', 'application/json');
+        return $mandar;        
+      }      
+    }
+    //Si la petición no contiene el token, se manda un codigo de error 2 y un mensaje
+    else
+    {
+      $mandar = new Response(json_encode(array(
+        'code' => 2,
+        'response'=> array( 
+          'respuesta' => "No está autorizado para realizar la consulta"))));      
+      $mandar->headers->set('Content-Type', 'application/json');
+      return $mandar;
+    }
+  }
+
+  public function recibeproductoAction()
+  {
+    //Extraer la cabecera de la petición
+    //Si contiene el token, en la sección Authorization
+    //$headers=apache_request_headers();   
+    //if(isset($headers["Authorization"]))
+    //{
+    //  $token=explode(" ", $headers["Authorization"]);
+    $request = Request::createFromGlobals();
+    $headers=$request->headers;
+    if($headers->get('authorization'))
+    {
+      $token=explode(" ", $headers->get('authorization'));
+      $tokend=JWT::decode(trim($token[1],'"'));
+      //Si los datos del token son correctos, se guarda la venta
+      if($this->comprobarToken($tokend->id, $tokend->username))
+      { 
+        // Recuperar el json recibido
+        $content = $this->get("request")->getContent();
+        // decodificarlo con json decode
+        $data = json_decode($content, true);
+        // Mandar los datos para persistir
+        if($data['id']!=0){
+          $respuesta=$this->modificaProducto($data['id'], $data['nombre'], $data['tipo'], $data['descripcion'], $data['stock'], $data['precio'], $data['iva'], $data['activo'], $data['proveedor'], $data['baja']);
+        }
+        else{
+          $respuesta=$this->persisteProducto($data['nombre'], $data['tipo'], $data['descripcion'], $data['stock'], $data['precio'], $data['iva'], $data['activo'], $data['proveedor']);
+        } 
+        $tokend->iat = time();
+	$tokend->exp = time() + 900;
+	$jwt = JWT::encode($tokend, '');
+        $mandar = new Response(json_encode(array(
+          'code' => 0,
+          'response'=> array(
+            'respuesta'=> $respuesta,
+            'token' => $jwt))));
+        $mandar->headers->set('Content-Type', 'application/json');
+        return $mandar;
+      }
+      else{
+        $mandar = new Response(json_encode(array(
+    	  'code' => 1,
+	  'response'=> array(
+            'respuesta' => "La clave no es correcta"))));
+        $mandar->headers->set('Content-Type', 'application/json');
+        return $mandar; 
+      } 
+    } 
+    else{
+      $mandar = new Response(json_encode(array(
+	'code' => 2,
+	'response'=> array(
+          'respuesta' => "No existe el usuario"))));
+      $mandar->headers->set('Content-Type', 'application/json');
+      return $mandar; 
+    } 
+  }
+  
+  protected function persisteProducto($nombre, $id_tipo, $descripcion, $stock, $precio, $iva, $activo, $id_proveedor)
+  {
+    $em = $this->getDoctrine()->getEntityManager();
+    $existe = $em->getRepository('i52LTPVFrontendBundle:Producto')->
+      findByNif($nif);
+    if($existe)
+    {
+      return "El producto indicado ya existe";
+    }
+    else  
+    {
+      $proveedor = $em->getRepository('i52LTPVFrontendBundle:Proveedor')->
+        find($id_proveedor);
+      $tipo = $em->getRepository('i52LTPVFrontendBundle:Tipo')->
+        find($id_tipo);  
+      $producto = new Producto();    
+      $producto->setNombre($nombre);        
+      $producto->setDescripcion($descripcion);
+      $producto->setStock($direccion);
+      $producto->setPrecio($poblacion);
+      $producto->setIva($provincia);
+      $producto->setActivo($activo);
+      $producto->setProveedor($proveedor);
+      $producto->setTipo($Tipo);
+
+      $em->persist($producto);
+      $em->flush();
+      return "El producto se ha guardado correctamente"; 
+    } 
+  }
+
+  protected function modificaProducto($id, $nombre, $id_tipo, $descripcion, $stock, $precio, $iva, $activo, $id_proveedor, $baja)
+  {
+    $em = $this->getDoctrine()->getEntityManager();
+    $producto = $em->getRepository('i52LTPVFrontendBundle:Producto')->
+      find($id);
+
+    $proveedor = $em->getRepository('i52LTPVFrontendBundle:Proveedor')->
+        find($id_proveedor);
+    $tipo = $em->getRepository('i52LTPVFrontendBundle:Tipo')->
+        find($id_tipo); 
+    
+    $producto->setNombre($nombre);        
+    $producto->setDescripcion($descripcion);
+    $producto->setStock($direccion);
+    $producto->setPrecio($poblacion);
+    $producto->setIva($provincia);
+    $producto->setActivo($activo);
+    $producto->setProveedor($proveedor);
+    $producto->setTipo($Tipo);
+    if($baja)
+    {
+      $fecha = new \DateTime("now");
+      $producto->setFechainactivo($fecha);
+    }
+    else
+    {
+      $fecha = new \DateTime("00-00-0000");
+      $producto->setFechainactivo($fecha);
+    }
+      
+    $em->flush();
+    return "El producto se ha modificado correctamente";
+  }
+
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////FIN PRODUCTOS//////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////TIPOS PRODUCTOS//////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -1536,7 +1744,7 @@ class DatosController extends Controller
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-//////////////////////////FIN TIPOS ARTICULOS///////////////////////////////////
+//////////////////////////FIN TIPOS PRODUCTOS///////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -1907,8 +2115,6 @@ class DatosController extends Controller
     $usuario->setPassword($password);
     $usuario->setIsActive($isactive);
     $usuario->setUsername($username);
-    $fecha = new \DateTime("00-00-0000");
-    $usuario->setFechainactivo($fecha);
     if($baja)
     {
       $fecha = new \DateTime("now");

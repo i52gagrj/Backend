@@ -260,6 +260,20 @@ i52_ltpv_frontend_apiRecibeUsuario:
          _format: (xml|json)
          _method: POST
 
+i52_ltpv_frontend_apiListadoProductos:
+    path: /datos/listadoProductos.json
+    defaults: { _controller: i52LTPVFrontendBundle:Datos:listadoproductos }
+    requirements:
+         _format: (xml|json)
+         _method: GET
+
+i52_ltpv_frontend_apiRecibeProducto:
+    path: /datos/recibeProducto
+    defaults: { _controller: i52LTPVFrontendBundle:Datos:recibeproductos }
+    requirements:
+         _format: (xml|json)
+         _method: POST
+
 ################################################################################
 
 api_login_check:

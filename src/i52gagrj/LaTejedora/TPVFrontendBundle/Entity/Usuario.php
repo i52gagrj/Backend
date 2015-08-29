@@ -96,6 +96,11 @@ class Usuario implements AdvancedUserInterface
      */
     private $cargos;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Cargo")
+     */
+    private $cargo;
+
     // FIN ASOCIACIONES // 
 
 
@@ -222,6 +227,29 @@ class Usuario implements AdvancedUserInterface
     public function getPassword()
     {
         return $this->password;
+    }
+
+    /**
+     * Set cargo
+     *
+     * @param \i52gagrj\LaTejedora\TPVFrontendBundle\Entity\Cargo $cargo
+     * @return Usuario
+     */
+    public function setCargo(\i52gagrj\LaTejedora\TPVFrontendBundle\Entity\Cargo $cargo = null)
+    {
+        $this->cargo = $cargo;
+
+        return $this;
+    }
+
+    /**
+     * Get cargo
+     *
+     * @return \i52gagrj\LaTejedora\TPVFrontendBundle\Entity\Usuario 
+     */
+    public function getCargo()
+    {
+        return $this->cargo;
     }
 
     /**

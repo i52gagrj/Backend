@@ -96,6 +96,11 @@ class Usuario implements AdvancedUserInterface
      */
     private $cargos;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Cargo")
+     */
+    private $cargo;
+
     // FIN ASOCIACIONES // 
 
 
