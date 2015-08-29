@@ -1511,12 +1511,12 @@ class DatosController extends Controller
       $producto = new Producto();    
       $producto->setNombre($nombre);        
       $producto->setDescripcion($descripcion);
-      $producto->setStock($direccion);
-      $producto->setPrecio($poblacion);
-      $producto->setIva($provincia);
+      $producto->setStock($stock);
+      $producto->setPrecio($precio);
+      $producto->setIva($iva);
       $producto->setActivo($activo);
       $producto->setProveedor($proveedor);
-      $producto->setTipo($Tipo);
+      $producto->setTipo($tipo);
 
       $em->persist($producto);
       $em->flush();
@@ -1529,7 +1529,6 @@ class DatosController extends Controller
     $em = $this->getDoctrine()->getEntityManager();
     $producto = $em->getRepository('i52LTPVFrontendBundle:Producto')->
       find($id);
-
     $proveedor = $em->getRepository('i52LTPVFrontendBundle:Proveedor')->
         find($id_proveedor);
     $tipo = $em->getRepository('i52LTPVFrontendBundle:Tipo')->
@@ -1542,7 +1541,7 @@ class DatosController extends Controller
     $producto->setIva($provincia);
     $producto->setActivo($activo);
     $producto->setProveedor($proveedor);
-    $producto->setTipo($Tipo);
+    $producto->setTipo($tipo);
     if($baja)
     {
       $fecha = new \DateTime("now");
