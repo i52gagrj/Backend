@@ -1397,8 +1397,8 @@ class DatosController extends Controller
             'stock' => $producto->getStock(),
             'activo' => $producto->getActivo(),
             'fechainactivo' => $producto->getProducto(),
-            'proveedor' => $producto->getProveedor(),
-            'tipo' => $producto->getTipo());
+            'proveedor' => $producto->getProveedor()->getId(),
+            'tipo' => $producto->getTipo()->getId());
           array_push($respuesta, $elemento);    
         }             
         $tokend->iat = time();
