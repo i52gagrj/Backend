@@ -1517,6 +1517,8 @@ class DatosController extends Controller
       $producto->setActivo($activo);
       $producto->setProveedor($proveedor);
       $producto->setTipo($tipo);
+      $fecha = new \DateTime("00-00-0000");
+      $producto->setFechainactivo($fecha);
 
       $em->persist($producto);
       $em->flush();
@@ -2147,4 +2149,68 @@ class DatosController extends Controller
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////  
+
+
+  public function buscarlistadoventasAction(){  
+    //Extraer la cabecera de la petición
+    //$headers=apache_request_headers();   
+    //Si contiene el token, en la sección Authorization
+    //if(isset($headers["Authorization"]))
+    //{
+    //  $token=explode(" ", $headers["Authorization"]);
+    $em = $this->getDoctrine()->getEntityManager();
+    $request = Request::createFromGlobals();
+    $headers=$request->headers;
+    if($headers->get('authorization'))
+    {
+      $token=explode(" ", $headers->get('authorization'));
+      $tokend=JWT::decode(trim($token[1],'"'));
+      $respuesta = array();
+      //Si los datos del token son correctos, se cargan los productos
+      if($this->comprobarToken($tokend->id, $tokend->username))
+      {    
+        $request = $this->getRequest(); 
+        //A ver si funciona
+        $fechainicio = new \DateTime($request->get('fechainicio'));
+        $fechafin  = new \DateTime($request->get('fechafin'));
+        $ventas = $this->getEntityManager()->createQuery(
+          'SELECT * FROM i52LTPVFrontendBundle:Venta WHERE fechaventa BETWEEN $fechainicio AND $fechafin';         
+        if($ventas)
+        {
+          //devuelve listado de lineas de venta
+          $mandar = new Response(json_encode(array(
+            'code' => 0,
+            'response'=> array(
+              'token' => $jwt, 
+              'ventas' => $ventas))));
+          $mandar->headers->set('Content-Type', 'application/json');
+          return $mandar;   
+        }
+        else
+        {
+          $tokend->iat = time();
+	  $tokend->exp = time() + 900;
+  	  $jwt = JWT::encode($tokend, '');
+          $mandar = new Response(json_encode(array(
+            'code' => 3,
+            'response'=> array( 
+              'respuesta' => "El número de venta indicado no existe"))));
+          $mandar->headers->set('Content-Type', 'application/json');
+          return $mandar;  
+        } 
+      }  
+
+      //Si los datos del token no son correctos, se manda un codigo de error 1 y un mensaje
+      else
+      {
+        $mandar = new Response(json_encode(array(
+          'code' => 1,
+          'response'=> array( 
+            'respuesta' => "El usuario no se ha identificado correctamente"))));      
+        $mandar->headers->set('Content-Type', 'application/json');
+        return $mandar;        
+      }      
+    }
+
+
 }

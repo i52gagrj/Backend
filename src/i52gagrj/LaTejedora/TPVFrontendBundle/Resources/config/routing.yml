@@ -276,6 +276,16 @@ i52_ltpv_frontend_apiRecibeProducto:
 
 ################################################################################
 
+i52_ltpv_frontend_apiBuscarListadoVentas:
+    path: /datos/buscarListadoVentas.json/{fechainicio}/{fechafin}
+    defaults: { _controller: i52LTPVFrontendBundle:Datos:buscarlistadoventas }
+    requirements:
+         _format: (xml|json)
+         _method: GET
+
+
+################################################################################
+
 api_login_check:
    path: /datos/login_check
 
