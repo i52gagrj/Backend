@@ -2158,7 +2158,7 @@ class DatosController extends Controller
     //if(isset($headers["Authorization"]))
     //{
     //  $token=explode(" ", $headers["Authorization"]);
-    $em = $this->getDoctrine()->getEntityManager();
+    // $em = $this->getDoctrine()->getEntityManager();
     $request = Request::createFromGlobals();
     $headers=$request->headers;
     if($headers->get('authorization'))
@@ -2170,11 +2170,10 @@ class DatosController extends Controller
       if($this->comprobarToken($tokend->id, $tokend->username))
       {    
         $request = $this->getRequest(); 
-        //A ver si funciona
         $fechainicio = new \DateTime($request->get('fechainicio'));
         $fechafin  = new \DateTime($request->get('fechafin'));
         $ventas = $this->getEntityManager()->createQuery(
-          'SELECT * FROM i52LTPVFrontendBundle:Venta WHERE fechaventa BETWEEN $fechainicio AND $fechafin';         
+          'SELECT * FROM i52LTPVFrontendBundle:Venta WHERE fechaventa BETWEEN $fechainicio AND $fechafin');         
         if($ventas)
         {
           //devuelve listado de lineas de venta
@@ -2211,6 +2210,88 @@ class DatosController extends Controller
         return $mandar;        
       }      
     }
+
+
+
+/*  public function buscaventaAction(){  
+
+    $request = Request::createFromGlobals();
+    $headers=$request->headers;
+    if($headers->get('authorization'))
+    {
+      $token=explode(" ", $headers->get('authorization'));
+      $tokend=JWT::decode(trim($token[1],'"'));
+      $respuesta = array();
+      //Si los datos del token son correctos, se cargan los productos
+      if($this->comprobarToken($tokend->id, $tokend->username))
+      {    
+        $request = $this->getRequest(); 
+        $idventa=$request->get('idventa');
+        $venta = $this->devuelveVenta($idventa);  	   
+        if($venta)
+        {
+          if($venta->getContado()) 
+            $contado="Si";
+          else
+            $contado="No";  
+          $elemento = array(
+            'id' => $venta->getId(),
+            'fechaventa' => date_format($venta->getFechaventa(),'Y-m-d'),
+            'horaventa' => date_format($venta->getHoraventa(),'H:i:s'),
+            'socio' => $venta->getSocio()->getNombre(),
+            'dni' => $venta->getSocio()->getDni(),
+            'usuario' => $venta->getUsuario()->getNombre(),
+            'contado' => $contado);     
+          $tokend->iat = time();
+	  $tokend->exp = time() + 900;
+  	  $jwt = JWT::encode($tokend, '');
+          $mandar = new Response(json_encode(array(
+            'code' => 0,
+            'response'=> array(
+              'token' => $jwt, 
+              'venta' => $elemento))));
+          $mandar->headers->set('Content-Type', 'application/json');
+          return $mandar;   
+        }
+        else
+        {
+          $tokend->iat = time();
+	  $tokend->exp = time() + 900;
+  	  $jwt = JWT::encode($tokend, '');
+          $mandar = new Response(json_encode(array(
+            'code' => 3,
+            'response'=> array( 
+              'respuesta' => "El número de venta indicado no existe"))));
+          $mandar->headers->set('Content-Type', 'application/json');
+          return $mandar;  
+        } 
+      }  
+
+      //Si los datos del token no son correctos, se manda un codigo de error 1 y un mensaje
+      else
+      {
+        $mandar = new Response(json_encode(array(
+          'code' => 1,
+          'response'=> array( 
+            'respuesta' => "El usuario no se ha identificado correctamente"))));      
+        $mandar->headers->set('Content-Type', 'application/json');
+        return $mandar;        
+      }      
+    }
+
+    //Si la petición no contiene el token, se manda un codigo de error 2 y un mensaje
+    else
+    {
+      $mandar = new Response(json_encode(array(
+        'code' => 2,
+        'response'=> array( 
+          'respuesta' => "No está autorizado para realizar la consulta"))));      
+      $mandar->headers->set('Content-Type', 'application/json');
+      return $mandar;
+    } 
+  }*/
+
+
 
 
 }
