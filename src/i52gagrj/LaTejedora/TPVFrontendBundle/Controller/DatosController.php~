@@ -2197,8 +2197,8 @@ class DatosController extends Controller
               'respuesta' => "El número de venta indicado no existe"))));
           $mandar->headers->set('Content-Type', 'application/json');
           return $mandar;  
-        } 
-      }*/  
+        }*/ 
+      }  
 
       //Si los datos del token no son correctos, se manda un codigo de error 1 y un mensaje
       else
