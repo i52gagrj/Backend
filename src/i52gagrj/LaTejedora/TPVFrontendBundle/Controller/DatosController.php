@@ -2165,9 +2165,9 @@ class DatosController extends Controller
     {
       $token=explode(" ", $headers->get('authorization'));
       $tokend=JWT::decode(trim($token[1],'"'));
-      //$respuesta = array();
+      $respuesta = array();
       //Si los datos del token son correctos, se cargan los productos
-      /*if($this->comprobarToken($tokend->id, $tokend->username))
+      if($this->comprobarToken($tokend->id, $tokend->username))
       {    
         $request = $this->getRequest(); 
         $fechainicio = new \DateTime($request->get('fechainicio'));
@@ -2176,13 +2176,14 @@ class DatosController extends Controller
           'SELECT * FROM i52LTPVFrontendBundle:Venta WHERE fechaventa BETWEEN $fechainicio AND $fechafin');         
         if($ventas)
         {
-          //devuelve listado de lineas de venta
+          //devuelve listado de ventas
           $mandar = new Response(json_encode(array(
             'code' => 0,
             'response'=> array(
               'token' => $jwt, 
               //'ventas' => $ventas
-               'ventas' => "hasta aquí"))));
+              'ventas' => "hasta aquí"
+              ))));
           $mandar->headers->set('Content-Type', 'application/json');
           return $mandar;   
         }
@@ -2198,18 +2199,18 @@ class DatosController extends Controller
           $mandar->headers->set('Content-Type', 'application/json');
           return $mandar;  
         } 
-      }*/  
+      }  
 
       //Si los datos del token no son correctos, se manda un codigo de error 1 y un mensaje
-      /*else
-      {*/
+      else
+      {
         $mandar = new Response(json_encode(array(
           'code' => 1,
           'response'=> array( 
             'respuesta' => "El usuario no se ha identificado correctamente"))));      
         $mandar->headers->set('Content-Type', 'application/json');
         return $mandar;        
-      //}      
+      }      
     }
   }
 
