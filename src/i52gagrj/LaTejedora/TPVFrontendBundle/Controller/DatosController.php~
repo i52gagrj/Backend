@@ -2165,26 +2165,27 @@ class DatosController extends Controller
     {
       $token=explode(" ", $headers->get('authorization'));
       $tokend=JWT::decode(trim($token[1],'"'));
-      $respuesta = array();
+      //$respuesta = array();
       //Si los datos del token son correctos, se cargan los productos
       if($this->comprobarToken($tokend->id, $tokend->username))
       {    
-        $request = $this->getRequest(); 
+        /*$request = $this->getRequest(); 
         $fechainicio = new \DateTime($request->get('fechainicio'));
         $fechafin  = new \DateTime($request->get('fechafin'));
         $ventas = $this->getEntityManager()->createQuery(
           'SELECT * FROM i52LTPVFrontendBundle:Venta WHERE fechaventa BETWEEN $fechainicio AND $fechafin');         
         if($ventas)
-        {
+        {*/
           //devuelve listado de lineas de venta
           $mandar = new Response(json_encode(array(
             'code' => 0,
             'response'=> array(
               'token' => $jwt, 
-              'ventas' => $ventas))));
+              //'ventas' => $ventas
+               'ventas' => "hasta aquí"))));
           $mandar->headers->set('Content-Type', 'application/json');
           return $mandar;   
-        }
+        /*}
         else
         {
           $tokend->iat = time();
@@ -2197,7 +2198,7 @@ class DatosController extends Controller
           $mandar->headers->set('Content-Type', 'application/json');
           return $mandar;  
         } 
-      }  
+      }*/  
 
       //Si los datos del token no son correctos, se manda un codigo de error 1 y un mensaje
       else
@@ -2213,7 +2214,7 @@ class DatosController extends Controller
 
 
 
-  public function buscaventaAction(){  
+/*  public function buscaventaAction(){  
 
     $request = Request::createFromGlobals();
     $headers=$request->headers;
@@ -2289,7 +2290,7 @@ class DatosController extends Controller
       $mandar->headers->set('Content-Type', 'application/json');
       return $mandar;
     } 
-  }
+  }*/
 
 
 
