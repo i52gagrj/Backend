@@ -2170,8 +2170,8 @@ class DatosController extends Controller
       if($this->comprobarToken($tokend->id, $tokend->username))
       {    
         $request = $this->getRequest(); 
-        $fechainicio = new \DateTime($request->get('fechainicio'));
-        $fechafin  = new \DateTime($request->get('fechafin'));
+        $fechainicio = new \Date($request->get('fechainicio'));
+        $fechafin  = new \Date($request->get('fechafin'));
         $ventas = $this->getEntityManager()->createQuery(
           'SELECT * FROM i52LTPVFrontendBundle:Venta WHERE fechaventa BETWEEN'.$fechainicio.'AND' .$fechafin'.');         
         if($ventas){

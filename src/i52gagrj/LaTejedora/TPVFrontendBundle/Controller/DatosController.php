@@ -2170,10 +2170,11 @@ class DatosController extends Controller
       if($this->comprobarToken($tokend->id, $tokend->username))
       {    
         $request = $this->getRequest(); 
-        $fechainicio = new \Date($request->get('fechainicio'));
-        $fechafin  = new \Date($request->get('fechafin'));
+date_format($venta->getFechaventa(),'Y-m-d'),
+        $fechainicio = date_format(new \DateTime($request->get('fechainicio')),'Y-m-d');
+        $fechafin  = date_format(new \DateTime($request->get('fechafin')),'Y-m-d');
         $ventas = $this->getEntityManager()->createQuery(
-          'SELECT * FROM i52LTPVFrontendBundle:Venta WHERE fechaventa BETWEEN'.$fechainicio.'AND' .$fechafin'.');         
+          'SELECT * FROM i52LTPVFrontendBundle:Venta WHERE fechaventa BETWEEN'.$fechainicio.'AND'.$fechafin'.');         
         if($ventas){
           //devuelve listado de ventas
           $mandar = new Response(json_encode(array(
