@@ -2170,7 +2170,6 @@ class DatosController extends Controller
       if($this->comprobarToken($tokend->id, $tokend->username))
       {    
         $request = $this->getRequest(); 
-date_format($venta->getFechaventa(),'Y-m-d'),
         $fechainicio = date_format(new \DateTime($request->get('fechainicio')),'Y-m-d');
         $fechafin  = date_format(new \DateTime($request->get('fechafin')),'Y-m-d');
         /*$ventas = $this->getEntityManager()->createQuery(
