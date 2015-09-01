@@ -2172,9 +2172,9 @@ class DatosController extends Controller
         $request = $this->getRequest(); 
         $fechainicio = date_format(new \DateTime($request->get('fechainicio')),'Y-m-d');
         $fechafin  = date_format(new \DateTime($request->get('fechafin')),'Y-m-d');
-        /*$ventas = $this->getEntityManager()->createQuery(
-          'SELECT * FROM i52LTPVFrontendBundle:Venta WHERE fechaventa BETWEEN'.$fechainicio.'AND'.$fechafin'.');*/         
-        if(1>0/*$ventas*/){
+        $ventas = $this->getEntityManager()->createQuery(
+          'SELECT * FROM i52LTPVFrontendBundle:Venta WHERE fechaventa BETWEEN'.$fechainicio.'AND'.$fechafin'.');         
+        if($ventas){
           //devuelve listado de ventas
           $mandar = new Response(json_encode(array(
             'code' => 0,
