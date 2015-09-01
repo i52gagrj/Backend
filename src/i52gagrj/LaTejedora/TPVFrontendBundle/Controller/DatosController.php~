@@ -2176,13 +2176,13 @@ class DatosController extends Controller
           'SELECT * FROM i52LTPVFrontendBundle:Venta WHERE fechaventa BETWEEN $fechainicio AND $fechafin');         
         if($ventas)
         {
-          //devuelve listado de lineas de venta
+          //devuelve listado de ventas
           $mandar = new Response(json_encode(array(
             'code' => 0,
             'response'=> array(
               'token' => $jwt, 
-              'ventas' => $ventas
-               //'ventas' => "hasta aquí"
+              //'ventas' => $ventas
+              'ventas' => "hasta aquí"
               ))));
           $mandar->headers->set('Content-Type', 'application/json');
           return $mandar;   
