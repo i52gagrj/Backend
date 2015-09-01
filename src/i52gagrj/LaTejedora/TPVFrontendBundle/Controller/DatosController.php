@@ -2172,21 +2172,22 @@ class DatosController extends Controller
         $request = $this->getRequest(); 
         $fechainicio = new \DateTime($request->get('fechainicio'));
         $fechafin  = new \DateTime($request->get('fechafin'));
-        $ventas = $this->getEntityManager()->createQuery(
+        /*$ventas = $this->getEntityManager()->createQuery(
           'SELECT * FROM i52LTPVFrontendBundle:Venta WHERE fechaventa BETWEEN $fechainicio AND $fechafin');         
-        if($ventas)
-        {
+        if($ventas){*/
           //devuelve listado de ventas
           $mandar = new Response(json_encode(array(
             'code' => 0,
             'response'=> array(
               'token' => $jwt, 
               //'ventas' => $ventas
+              'fechainicio' => $fechainicio,
+	      'fechafin' => $fechafin,	
               'ventas' => "hasta aquí"
               ))));
           $mandar->headers->set('Content-Type', 'application/json');
           return $mandar;   
-        }
+        /*}
         else
         {
           $tokend->iat = time();
@@ -2198,7 +2199,7 @@ class DatosController extends Controller
               'respuesta' => "El número de venta indicado no existe"))));
           $mandar->headers->set('Content-Type', 'application/json');
           return $mandar;  
-        } 
+        }*/ 
       }  
 
       //Si los datos del token no son correctos, se manda un codigo de error 1 y un mensaje
