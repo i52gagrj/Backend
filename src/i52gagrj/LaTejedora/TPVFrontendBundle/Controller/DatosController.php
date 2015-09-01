@@ -2224,8 +2224,7 @@ class DatosController extends Controller
       AND p.fechaventa <= :fechafin'
     )->setParameters(array(
       'fechainicio' => $fechainicio,
-      'fechafin' => $fechafin,
-      'id' => 321,));	
+      'fechafin' => $fechafin,));	
     return $query->getResult();
   }
 
