@@ -1944,7 +1944,7 @@ class DatosController extends Controller
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////USUARIOS//////////////////////////////////////////
+////////////////////////////////USUARIOS////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -2158,7 +2158,7 @@ class DatosController extends Controller
     //if(isset($headers["Authorization"]))
     //{
     //  $token=explode(" ", $headers["Authorization"]);
-    // $em = $this->getDoctrine()->getEntityManager();
+    //$em = $this->getDoctrine()->getEntityManager();
     $request = Request::createFromGlobals();
     $headers=$request->headers;
     if($headers->get('authorization'))
@@ -2172,8 +2172,7 @@ class DatosController extends Controller
         $request = $this->getRequest(); 
         $fechainicio = date_format(new \DateTime($request->get('fechainicio')),'Y-m-d');
         $fechafin  = date_format(new \DateTime($request->get('fechafin')),'Y-m-d');
-        $ventas = $this->getEntityManager()->createQuery(
-          'SELECT * FROM Venta');         
+        $ventas = $this->devuelveListadoVentas($fechainicio, $fechafin);
         if($ventas){
           //devuelve listado de ventas
           $mandar = new Response(json_encode(array(
@@ -2215,7 +2214,20 @@ class DatosController extends Controller
     }
   }
 
-
+  private function devuelveListadoVentas($fechainicio, $fechafin){
+    //Devuelve el listado de todas las ventas realizadas entre las dos fechas.
+    $em = $this->getDoctrine()->getEntityManager();
+    $query = $em->createQuery(
+      'SELECT p
+      FROM i52LTPVFrontendBundle:Venta p
+      WHERE p.fechaventa >= :fechainicio
+      AND p.fechaventa <= :fechafin'
+    )->setParameters(array(
+      'fechainicio' => $fechainicio,
+      'fechafin' => $fechafin,
+      'id' => 321,));	
+    return $query->getResult();
+  }
 
 
 }
