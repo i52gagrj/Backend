@@ -2175,6 +2175,9 @@ class DatosController extends Controller
         $ventas = $this->devuelveListadoVentas($fechainicio, $fechafin);
         if($ventas){
           //devuelve listado de ventas
+          $tokend->iat = time();
+	  $tokend->exp = time() + 900;
+  	  $jwt = JWT::encode($tokend, '');
           $mandar = new Response(json_encode(array(
             'code' => 0,
             'response'=> array(
@@ -2189,13 +2192,10 @@ class DatosController extends Controller
         }
         else
         {
-          $tokend->iat = time();
-	  $tokend->exp = time() + 900;
-  	  $jwt = JWT::encode($tokend, '');
           $mandar = new Response(json_encode(array(
             'code' => 3,
             'response'=> array( 
-              'respuesta' => "El número de venta indicado no existe"))));
+              'respuesta' => "No hay ventas entre las fechas indicadas"))));
           $mandar->headers->set('Content-Type', 'application/json');
           return $mandar;  
         }
