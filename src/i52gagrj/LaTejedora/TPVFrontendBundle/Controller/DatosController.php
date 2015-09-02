@@ -2158,7 +2158,7 @@ class DatosController extends Controller
     //if(isset($headers["Authorization"]))
     //{
     //  $token=explode(" ", $headers["Authorization"]);
-    //$em = $this->getDoctrine()->getEntityManager();
+    $em = $this->getDoctrine()->getEntityManager();
     $request = Request::createFromGlobals();
     $headers=$request->headers;
     if($headers->get('authorization'))
@@ -2176,11 +2176,8 @@ class DatosController extends Controller
         if($ventas){
           //devuelve listado de ventas
           $base21=0;
-          $iva21=0;
           $base10=0;
-          $iva10=0;
           $base4=0;
-          $iva4=0;
           foreach($ventas as $venta)
           {
             $lineas = $em->getRepository('i52LTPVFrontendBundle:Lineaventa')->
@@ -2189,14 +2186,7 @@ class DatosController extends Controller
             {
               if($linea->getIva()==21) $base21=$base21+($linea->getPrecio()*$linea->getCantidad());
               if($linea->getIva()==21) $base10=$base10+($linea->getPrecio()*$linea->getCantidad());  
-              if($linea->getIva()==21) $base4=$base4+($linea->getPrecio()*$linea->getCantidad());    
-              /*$elemento = array(
-                'venta' =>  $linea->getVenta()->getId(),
-                'nombre' => $linea->getProducto()->getNombre(),
-                'precio' => $linea->getPrecio(),
-                'iva' => $linea->getIva(),
-                'cantidad' => $linea->getCantidad());
-              array_push($respuesta, $elemento);*/    
+              if($linea->getIva()==21) $base4=$base4+($linea->getPrecio()*$linea->getCantidad());     
             }       
             $elemento = array(
               'id' => $venta->getId(), 
