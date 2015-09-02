@@ -2175,6 +2175,40 @@ class DatosController extends Controller
         $ventas = $this->devuelveListadoVentas($fechainicio, $fechafin);
         if($ventas){
           //devuelve listado de ventas
+          $base21=0;
+          $iva21=0;
+          $base10=0;
+          $iva10=0;
+          $base4=0;
+          $iva4=0;
+          foreach($ventas as $venta)
+          {
+            $lineas = $em->getRepository('i52LTPVFrontendBundle:Lineaventa')->
+              findByVenta($venta->getId());
+            foreach($lineas as $linea)
+            {
+              if($linea->getIva()==21) $base21=$base21+($linea->getPrecio()*$linea->getCantidad());
+              if($linea->getIva()==21) $base10=$base10+($linea->getPrecio()*$linea->getCantidad());  
+              if($linea->getIva()==21) $base4=$base4+($linea->getPrecio()*$linea->getCantidad());    
+              /*$elemento = array(
+                'venta' =>  $linea->getVenta()->getId(),
+                'nombre' => $linea->getProducto()->getNombre(),
+                'precio' => $linea->getPrecio(),
+                'iva' => $linea->getIva(),
+                'cantidad' => $linea->getCantidad());
+              array_push($respuesta, $elemento);*/    
+            }       
+            $elemento = array(
+              'id' => $venta->getId(), 
+              'base21' =>  $base21,
+              'base10' =>  $base10,
+              'base4' =>  $base4,
+              'fechaventa' => date_format($venta->getFechaventa(),'Y-m-d'),
+              'horaventa' => date_format($venta->getHoraventa(),'H:i:s'),
+              'socio' => $venta->getSocio()->getNombre(),
+              'contado' => $contado);
+              array_push($respuesta, $elemento);*/       
+          }
           $tokend->iat = time();
 	  $tokend->exp = time() + 900;
   	  $jwt = JWT::encode($tokend, '');
@@ -2182,10 +2216,9 @@ class DatosController extends Controller
             'code' => 0,
             'response'=> array(
               'token' => $jwt, 
-              //'ventas' => $ventas
               'fechainicio' => $fechainicio,
 	      'fechafin' => $fechafin,	
-              'ventas' => "hasta aquí"
+              'ventas' => $respuesta
               ))));
           $mandar->headers->set('Content-Type', 'application/json');
           return $mandar;   
