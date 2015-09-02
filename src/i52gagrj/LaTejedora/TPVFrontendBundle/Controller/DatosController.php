@@ -2200,14 +2200,14 @@ class DatosController extends Controller
             }       
             $elemento = array(
               'id' => $venta->getId(), 
-              'base21' =>  $base21,
-              'base10' =>  $base10,
+              'base21' => $base21,
+              'base10' => $base10,
               'base4' =>  $base4,
               'fechaventa' => date_format($venta->getFechaventa(),'Y-m-d'),
               'horaventa' => date_format($venta->getHoraventa(),'H:i:s'),
               'socio' => $venta->getSocio()->getNombre(),
               'contado' => $contado);
-              array_push($respuesta, $elemento);*/       
+            array_push($respuesta, $elemento);       
           }
           $tokend->iat = time();
 	  $tokend->exp = time() + 900;
