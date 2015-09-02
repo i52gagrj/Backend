@@ -2175,11 +2175,12 @@ class DatosController extends Controller
         $ventas = $this->devuelveListadoVentas($fechainicio, $fechafin);
         if($ventas){
           //devuelve listado de ventas
-          $base21=0;
-          $base10=0;
-          $base4=0;
+
           foreach($ventas as $venta)
           {
+            $base21=0;
+            $base10=0;
+            $base4=0;
             $lineas = $em->getRepository('i52LTPVFrontendBundle:Lineaventa')->
               findByVenta($venta->getId());
             foreach($lineas as $linea)
