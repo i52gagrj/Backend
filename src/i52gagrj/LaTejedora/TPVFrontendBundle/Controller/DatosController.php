@@ -2186,8 +2186,8 @@ class DatosController extends Controller
             foreach($lineas as $linea)
             {
               if($linea->getIva()==21) $base21=$base21+($linea->getPrecio()*$linea->getCantidad());
-              if($linea->getIva()==21) $base10=$base10+($linea->getPrecio()*$linea->getCantidad());  
-              if($linea->getIva()==21) $base4=$base4+($linea->getPrecio()*$linea->getCantidad());     
+              if($linea->getIva()==10) $base10=$base10+($linea->getPrecio()*$linea->getCantidad());  
+              if($linea->getIva()==4) $base4=$base4+($linea->getPrecio()*$linea->getCantidad());     
             }       
             $elemento = array(
               'id' => $venta->getId(), 
