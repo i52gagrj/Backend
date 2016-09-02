@@ -619,6 +619,8 @@ class DatosController extends Controller
           $mandar = new Response(json_encode(array(
             'code' => 0,
             'response'=> array(
+              'fechaultima' => $ultimoDiario,
+              'fechahoy' => $fechahoy,              
               'respuesta' => 'Cierre realizado correctamente',
               'token' => $jwt))));
           $mandar->headers->set('Content-Type', 'application/json');
@@ -629,9 +631,12 @@ class DatosController extends Controller
           $tokend->iat = time();
           $tokend->exp = time() + 900;
           $mandar = new Response(json_encode(array(
-            'code' => 1,
+            'code' => 0,
             'response'=> array(
-              'respuesta' => "El proceso de cierre ya se ha realizado"))));
+              'fechaultima' => $ultimoDiario,
+              'fechahoy' => $fechahoy,
+              'respuesta' => "El proceso de cierre ya se ha realizado",
+              'token' => $jwt))));
           $mandar->headers->set('Content-Type', 'application/json');
           return $mandar; 
         }     
