@@ -247,6 +247,7 @@ class DatosController extends Controller
       { 
         $tokend->iat = time();
         $tokend->exp = time() + 900;
+        $jwt = JWT::encode($tokend, ''); 
         $fechahoy = date_format(new \DateTime("now"),'Y-m-d');
         $ultimafecha = date_format($this->devuelveUltimaFecha(),'Y-m-d');
         if($ultimafecha!=$fechahoy)
@@ -258,7 +259,6 @@ class DatosController extends Controller
           // Mandar los datos para persistir
           $this->persisteCompra($data['cliente'], $data['contado'], $data['cesta'], $tokend->id);
 
-  	      $jwt = JWT::encode($tokend, '');
           $mandar = new Response(json_encode(array(
             'code' => 0,
             'response'=> array(
@@ -268,7 +268,7 @@ class DatosController extends Controller
           return $mandar;
         }
         else
-        {
+        {          
           $mandar = new Response(json_encode(array(
             'code' => 0,
             'response'=> array(
@@ -602,6 +602,9 @@ class DatosController extends Controller
       {
         $ultimoDiario=date_format($this->devuelveUltimaFecha(),'Y-m-d');
         $fechahoy = date_format(new \DateTime("now"),'Y-m-d');
+        $tokend->iat = time();
+        $tokend->exp = time() + 900;
+        $jwt = JWT::encode($tokend, '');        
         if($ultimoDiario!=$fechahoy)
         {   
           // Recuperar el json recibido
@@ -610,9 +613,6 @@ class DatosController extends Controller
           $data = json_decode($content, true);
           // Mandar los datos para persistir
           $this->persisteCierre($data['dejado']);
-          $tokend->iat = time();
-  	      $tokend->exp = time() + 900;
-  	      $jwt = JWT::encode($tokend, '');
           $mandar = new Response(json_encode(array(
             'code' => 0,
             'response'=> array(
@@ -625,8 +625,6 @@ class DatosController extends Controller
         }
         else
         {
-          $tokend->iat = time();
-          $tokend->exp = time() + 900;
           $mandar = new Response(json_encode(array(
             'code' => 0,
             'response'=> array(
