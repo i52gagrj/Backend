@@ -389,12 +389,12 @@ class DatosController extends Controller
       //Si los datos del token son correctos, se cargan los productos
       if($this->comprobarToken($tokend->id, $tokend->username))
       { 
+        $ultimoDiario=$this->devuelveUltimaFecha();
         $fechahoy = date_format(new \DateTime("now"),'Y-m-d');
-        if($this->devuelveUltimaFecha()<$fechahoy)
+        /*if($ultimoDiario<$fechahoy)
         {          
           //Primero buscar la fecha del último cierre
-          //Después pedir las ventas desde esa fecha   
-          $ultimoDiario=$this->devuelveUltimaFecha();    
+          //Después pedir las ventas desde esa fecha                 */
           $ventas = $this->devuelveVentas($ultimoDiario);
           foreach($ventas as $venta)
           {
@@ -420,7 +420,7 @@ class DatosController extends Controller
             'ventas' => $respuesta))));
           $mandar->headers->set('Content-Type', 'application/json');
           return $mandar;
-        }
+        /*}
         else
         {
           $tokend->iat = time();
@@ -431,7 +431,7 @@ class DatosController extends Controller
               'respuesta' => "El proceso de cierre ya se ha realizado"))));
           $mandar->headers->set('Content-Type', 'application/json');
           return $mandar; 
-        }        
+        }*/        
       }  
       //Si los datos del token no son correctos, se manda un codigo de error 1 y un mensaje
       else
