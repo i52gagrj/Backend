@@ -245,7 +245,7 @@ class DatosController extends Controller
       //Si los datos del token son correctos, se guarda la venta
       if($this->comprobarToken($tokend->id, $tokend->username))
       { 
-        $fechahoy = date_format(new \DateTime("now"));
+        $fechahoy = new \DateTime("now");
         if($this->devuelveUltimaFecha()<$fechahoy)
         {  
           // Recuperar el json recibido
@@ -626,8 +626,8 @@ class DatosController extends Controller
         // Mandar los datos para persistir
         $this->persisteCierre($data['dejado']);
         $tokend->iat = time();
-	$tokend->exp = time() + 900;
-	$jwt = JWT::encode($tokend, '');
+	      $tokend->exp = time() + 900;
+	      $jwt = JWT::encode($tokend, '');
         $mandar = new Response(json_encode(array(
           'code' => 0,
           'response'=> array(
@@ -639,7 +639,7 @@ class DatosController extends Controller
       else{
         $mandar = new Response(json_encode(array(
     	  'code' => 1,
-	  'response'=> array(
+	      'response'=> array(
             'respuesta' => "La clave no es correcta"))));
         $mandar->headers->set('Content-Type', 'application/json');
         return $mandar; 
