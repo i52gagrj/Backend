@@ -245,8 +245,10 @@ class DatosController extends Controller
       //Si los datos del token son correctos, se guarda la venta
       if($this->comprobarToken($tokend->id, $tokend->username))
       { 
-        $fechahoy = date_format(new \DateTime("now"),'Y-m-d');
-        if($this->date_format(devuelveUltimaFecha(),'Y-m-d')!=$fechahoy)
+        $tokend->iat = time();
+        $tokend->exp = time() + 900;
+        $fechahoy = new \DateTime("now");
+        if($this->devuelveUltimaFecha()!=$fechahoy)
         {  
           // Recuperar el json recibido
           $content = $this->get("request")->getContent();
@@ -254,8 +256,7 @@ class DatosController extends Controller
           $data = json_decode($content, true);
           // Mandar los datos para persistir
           $this->persisteCompra($data['cliente'], $data['contado'], $data['cesta'], $tokend->id);
-          $tokend->iat = time();
-  	      $tokend->exp = time() + 900;
+
   	      $jwt = JWT::encode($tokend, '');
           $mandar = new Response(json_encode(array(
             'code' => 0,
@@ -267,12 +268,11 @@ class DatosController extends Controller
         }
         else
         {
-          $tokend->iat = time();
-          $tokend->exp = time() + 900;
           $mandar = new Response(json_encode(array(
             'code' => 1,
             'response'=> array(
-              'respuesta' => "La venta no se almaceno, la caja por hoy ya está cerrada"))));
+              'respuesta' => "La venta no se almaceno, la caja por hoy ya está cerrada",
+              'token' => $jwt))));
           $mandar->headers->set('Content-Type', 'application/json');
           return $mandar; 
         }
