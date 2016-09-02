@@ -391,6 +391,7 @@ class DatosController extends Controller
       {        
         //Primero buscar la fecha del último cierre
         //Después pedir las ventas desde esa fecha                 */
+        $ultimoDiario=$this->devuelveUltimaFecha();
         $ventas = $this->devuelveVentas($ultimoDiario);
         foreach($ventas as $venta)
         {
