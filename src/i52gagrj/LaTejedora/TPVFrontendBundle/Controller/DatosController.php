@@ -247,7 +247,7 @@ class DatosController extends Controller
       { 
         $tokend->iat = time();
         $tokend->exp = time() + 900;
-        $fechahoy = new \DateTime("now");
+        $fechahoy = date_format(new \DateTime("now"),'Y-m-d');
         if($this->devuelveUltimaFecha()!=$fechahoy)
         {  
           // Recuperar el json recibido
@@ -262,6 +262,8 @@ class DatosController extends Controller
             'code' => 0,
             'response'=> array(
               'respuesta'=> "Venta almacenada correctamente",
+              'fechahoy' => $fechahoy,
+              'fechacierre' =>  $this->devuelveUltimaFecha(),
               'token' => $jwt))));
           $mandar->headers->set('Content-Type', 'application/json');
           return $mandar;
@@ -272,6 +274,8 @@ class DatosController extends Controller
             'code' => 1,
             'response'=> array(
               'respuesta' => "La venta no se almaceno, la caja por hoy ya está cerrada",
+              'fechahoy' => $fechahoy,
+              'fechacierre' =>  $this->devuelveUltimaFecha(),              
               'token' => $jwt))));
           $mandar->headers->set('Content-Type', 'application/json');
           return $mandar; 
