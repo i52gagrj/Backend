@@ -245,7 +245,7 @@ class DatosController extends Controller
       //Si los datos del token son correctos, se guarda la venta
       if($this->comprobarToken($tokend->id, $tokend->username))
       { 
-        $fechahoy = new \DateTime("now");
+        $fechahoy = date_format(new \DateTime("now"),'Y-m-d');
         if($this->devuelveUltimaFecha()<$fechahoy)
         {  
           // Recuperar el json recibido
@@ -385,7 +385,7 @@ class DatosController extends Controller
       //Si los datos del token son correctos, se cargan los productos
       if($this->comprobarToken($tokend->id, $tokend->username))
       { 
-        $fechahoy = date_format(new \DateTime("now"));
+        $fechahoy = date_format(new \DateTime("now"),'Y-m-d');
         if($this->devuelveUltimaFecha()<$fechahoy)
         {          
           //Primero buscar la fecha del último cierre
@@ -709,8 +709,8 @@ class DatosController extends Controller
             'usuario' => $venta->getUsuario()->getNombre(),
             'contado' => $contado);     
           $tokend->iat = time();
-	  $tokend->exp = time() + 900;
-  	  $jwt = JWT::encode($tokend, '');
+	        $tokend->exp = time() + 900;
+  	      $jwt = JWT::encode($tokend, '');
           $mandar = new Response(json_encode(array(
             'code' => 0,
             'response'=> array(
