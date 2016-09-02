@@ -605,7 +605,7 @@ class DatosController extends Controller
       {
         $ultimoDiario=date_format($this->devuelveUltimaFecha(),'Y-m-d');
         $fechahoy = date_format(new \DateTime("now"),'Y-m-d');
-        if($ultimoDiario<$fechahoy)
+        if($ultimoDiario!=$fechahoy)
         {   
           // Recuperar el json recibido
           $content = $this->get("request")->getContent();
