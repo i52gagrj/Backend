@@ -587,7 +587,7 @@ class DatosController extends Controller
       FROM i52LTPVFrontendBundle:Diario p
       WHERE p.fecha=(SELECT MAX(q.fecha) 
       from i52LTPVFrontendBundle:Diario q)'
-    );  	
+    );  	   
     return $query->getResult()[0]->getFecha();
   }
 
@@ -603,8 +603,8 @@ class DatosController extends Controller
       //Si los datos del token son correctos, se guarda la venta
       if($this->comprobarToken($tokend->id, $tokend->username))
       {
-        $ultimoDiario=$this->devuelveUltimaFecha();
-        $fechahoy = new \DateTime("now");
+        $ultimoDiario=date_format($this->devuelveUltimaFecha(),'Y-m-d');
+        $fechahoy = date_format(new \DateTime("now"),'Y-m-d');
         if($ultimoDiario<$fechahoy)
         {   
           // Recuperar el json recibido
