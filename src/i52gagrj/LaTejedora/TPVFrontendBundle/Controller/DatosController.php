@@ -248,7 +248,8 @@ class DatosController extends Controller
         $tokend->iat = time();
         $tokend->exp = time() + 900;
         $fechahoy = date_format(new \DateTime("now"),'Y-m-d');
-        if($this->devuelveUltimaFecha()!=$fechahoy)
+        $ultimafecha = date_format($this->devuelveUltimaFecha(),'Y-m-d');
+        if($ultimafecha!=$fechahoy)
         {  
           // Recuperar el json recibido
           $content = $this->get("request")->getContent();
@@ -262,8 +263,6 @@ class DatosController extends Controller
             'code' => 0,
             'response'=> array(
               'respuesta'=> "La venta se ha almacenada correctamente",
-              'fechahoy' => $fechahoy,
-              'fechacierre' =>  $this->devuelveUltimaFecha(),
               'token' => $jwt))));
           $mandar->headers->set('Content-Type', 'application/json');
           return $mandar;
@@ -271,11 +270,9 @@ class DatosController extends Controller
         else
         {
           $mandar = new Response(json_encode(array(
-            'code' => 1,
+            'code' => 0,
             'response'=> array(
-              'respuesta' => "La venta no se almaceno, la caja por hoy ya está cerrada",
-              'fechahoy' => $fechahoy,
-              'fechacierre' =>  $this->devuelveUltimaFecha(),              
+              'respuesta' => "La venta no se almaceno, la caja por hoy ya está cerrada",             
               'token' => $jwt))));
           $mandar->headers->set('Content-Type', 'application/json');
           return $mandar; 
@@ -635,7 +632,7 @@ class DatosController extends Controller
             'response'=> array(
               'fechaultima' => $ultimoDiario,
               'fechahoy' => $fechahoy,
-              'respuesta' => "El proceso de cierre ya se ha realizado",
+              'respuesta' => "El proceso de cierre ya se ha realizado anteriormente",
               'token' => $jwt))));
           $mandar->headers->set('Content-Type', 'application/json');
           return $mandar; 
