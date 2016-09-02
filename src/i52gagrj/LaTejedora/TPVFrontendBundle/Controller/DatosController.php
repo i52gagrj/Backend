@@ -604,7 +604,7 @@ class DatosController extends Controller
       if($this->comprobarToken($tokend->id, $tokend->username))
       {
         $ultimoDiario=$this->devuelveUltimaFecha();
-        $fechahoy = date_format(new \DateTime("now"),'Y-m-d');
+        $fechahoy = new \DateTime("now");
         if($ultimoDiario!=$fechahoy)
         {   
           // Recuperar el json recibido
