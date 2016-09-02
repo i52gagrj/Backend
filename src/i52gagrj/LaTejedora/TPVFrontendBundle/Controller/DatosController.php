@@ -245,28 +245,43 @@ class DatosController extends Controller
       //Si los datos del token son correctos, se guarda la venta
       if($this->comprobarToken($tokend->id, $tokend->username))
       { 
-        // Recuperar el json recibido
-        $content = $this->get("request")->getContent();
-        // decodificarlo con json decode
-        $data = json_decode($content, true);
-        // Mandar los datos para persistir
-        $this->persisteCompra($data['cliente'], $data['contado'], $data['cesta'], $tokend->id);
-        $tokend->iat = time();
-	$tokend->exp = time() + 900;
-	$jwt = JWT::encode($tokend, '');
-        $mandar = new Response(json_encode(array(
-          'code' => 0,
-          'response'=> array(
-            'respuesta'=> "Venta almacenada correctamente",
-            'token' => $jwt))));
-        $mandar->headers->set('Content-Type', 'application/json');
-        return $mandar;
+        $fechahoy = date_format(new \DateTime("now"));
+        if($this->devuelveUltimaFecha()==$fechahoy)
+        {  
+          // Recuperar el json recibido
+          $content = $this->get("request")->getContent();
+          // decodificarlo con json decode
+          $data = json_decode($content, true);
+          // Mandar los datos para persistir
+          $this->persisteCompra($data['cliente'], $data['contado'], $data['cesta'], $tokend->id);
+          $tokend->iat = time();
+  	      $tokend->exp = time() + 900;
+  	      $jwt = JWT::encode($tokend, '');
+          $mandar = new Response(json_encode(array(
+            'code' => 0,
+            'response'=> array(
+              'respuesta'=> "Venta almacenada correctamente",
+              'token' => $jwt))));
+          $mandar->headers->set('Content-Type', 'application/json');
+          return $mandar;
+        }
+        else
+        {
+          $tokend->iat = time();
+          $tokend->exp = time() + 900;
+          $mandar = new Response(json_encode(array(
+            'code' => 1,
+            'response'=> array(
+              'respuesta' => "La venta no se almaceno, la caja por hoy ya está cerrada"))));
+          $mandar->headers->set('Content-Type', 'application/json');
+          return $mandar; 
+        }
         //return $this->render('i52LTPVFrontendBundle:Data:Data.html.twig');
       }
       else{
         $mandar = new Response(json_encode(array(
-    	  'code' => 1,
-	  'response'=> array(
+    	    'code' => 1,
+	        'response'=> array(
             'respuesta' => "La clave no es correcta"))));
         $mandar->headers->set('Content-Type', 'application/json');
         return $mandar; 
@@ -274,8 +289,8 @@ class DatosController extends Controller
     } 
     else{
       $mandar = new Response(json_encode(array(
-	'code' => 2,
-	'response'=> array(
+	      'code' => 2,
+	      'response'=> array(
           'respuesta' => "No existe el usuario"))));
       $mandar->headers->set('Content-Type', 'application/json');
       return $mandar; 
@@ -389,8 +404,8 @@ class DatosController extends Controller
           array_push($respuesta, $elemento);        
         }    
         $tokend->iat = time();
-	$tokend->exp = time() + 900;
-	$jwt = JWT::encode($tokend, '');
+	      $tokend->exp = time() + 900;
+	      $jwt = JWT::encode($tokend, '');
         $mandar = new Response(json_encode(array(
           'code' => 0,
           'response'=> array(
@@ -458,8 +473,8 @@ class DatosController extends Controller
           }          
         } 
         $tokend->iat = time();
-	$tokend->exp = time() + 900;
-	$jwt = JWT::encode($tokend, '');
+	      $tokend->exp = time() + 900;
+	      $jwt = JWT::encode($tokend, '');
         $mandar = new Response(json_encode(array(
           'code' => 0,
           'response'=> array(
@@ -515,8 +530,8 @@ class DatosController extends Controller
         $cierre = $em->getRepository('i52LTPVFrontendBundle:Diario')->
           findOneByFecha($ultimocierre);  	
         $tokend->iat = time();
-	$tokend->exp = time() + 900;
-	$jwt = JWT::encode($tokend, '');
+	      $tokend->exp = time() + 900;
+	      $jwt = JWT::encode($tokend, '');
         $mandar = new Response(json_encode(array(
           'code' => 0,
           'response'=> array(

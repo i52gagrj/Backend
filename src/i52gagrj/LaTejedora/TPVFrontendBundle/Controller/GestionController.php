@@ -61,8 +61,8 @@ class GestionController extends Controller
           array_push($respuesta, $elemento);    
         }             
         $tokend->iat = time();
-	$tokend->exp = time() + 900;
-	$jwt = JWT::encode($tokend, '');
+	      $tokend->exp = time() + 900;
+	      $jwt = JWT::encode($tokend, '');
         $mandar = new Response(json_encode(array(
           'code' => 0,
           'response'=> array(
