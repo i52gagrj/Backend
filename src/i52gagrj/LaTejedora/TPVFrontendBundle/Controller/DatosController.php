@@ -261,7 +261,7 @@ class DatosController extends Controller
           $mandar = new Response(json_encode(array(
             'code' => 0,
             'response'=> array(
-              'respuesta'=> "Venta almacenada correctamente",
+              'respuesta'=> "La venta se ha almacenada correctamente",
               'fechahoy' => $fechahoy,
               'fechacierre' =>  $this->devuelveUltimaFecha(),
               'token' => $jwt))));
