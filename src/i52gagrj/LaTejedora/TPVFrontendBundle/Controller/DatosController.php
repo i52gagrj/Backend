@@ -66,8 +66,8 @@ class DatosController extends Controller
           }
         }     
         $tokend->iat = time();
-	$tokend->exp = time() + 900;
-	$jwt = JWT::encode($tokend, '');
+	      $tokend->exp = time() + 900;
+	      $jwt = JWT::encode($tokend, '');
         $mandar = new Response(json_encode(array(
           'code' => 0,
           'response'=> array(
@@ -132,8 +132,8 @@ class DatosController extends Controller
           array_push($respuesta, $elemento);    
         }     
         $tokend->iat = time();
-	$tokend->exp = time() + 900;
-	$jwt = JWT::encode($tokend, '');
+	      $tokend->exp = time() + 900;
+	      $jwt = JWT::encode($tokend, '');
         $mandar = new Response(json_encode(array(
           'code' => 0,
           'response'=> array(
@@ -195,8 +195,8 @@ class DatosController extends Controller
           array_push($respuesta, $elemento);    
         }     
         $tokend->iat = time();
-	$tokend->exp = time() + 900;
-	$jwt = JWT::encode($tokend, '');
+	      $tokend->exp = time() + 900;
+	      $jwt = JWT::encode($tokend, '');
         $mandar = new Response(json_encode(array(
           'code' => 0,
           'response'=> array(
@@ -246,7 +246,7 @@ class DatosController extends Controller
       if($this->comprobarToken($tokend->id, $tokend->username))
       { 
         $fechahoy = date_format(new \DateTime("now"),'Y-m-d');
-        if($this->devuelveUltimaFecha()<$fechahoy)
+        if($this->date_format(devuelveUltimaFecha(),'Y-m-d')!=$fechahoy)
         {  
           // Recuperar el json recibido
           $content = $this->get("request")->getContent();
