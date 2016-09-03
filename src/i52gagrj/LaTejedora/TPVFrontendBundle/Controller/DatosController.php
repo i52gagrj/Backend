@@ -696,34 +696,50 @@ class DatosController extends Controller
         $venta = $this->devuelveVenta($idventa);  	   
         if($venta)
         {
-          if($venta->getContado()) 
-            $contado="Si";
-          else
-            $contado="No";  
-          $elemento = array(
-            'id' => $venta->getId(),
-            'fechaventa' => date_format($venta->getFechaventa(),'Y-m-d'),
-            'horaventa' => date_format($venta->getHoraventa(),'H:i:s'),
-            'socio' => $venta->getSocio()->getNombre(),
-            'dni' => $venta->getSocio()->getDni(),
-            'usuario' => $venta->getUsuario()->getNombre(),
-            'contado' => $contado);     
           $tokend->iat = time();
-	        $tokend->exp = time() + 900;
-  	      $jwt = JWT::encode($tokend, '');
-          $mandar = new Response(json_encode(array(
-            'code' => 0,
-            'response'=> array(
-              'token' => $jwt, 
-              'venta' => $elemento))));
-          $mandar->headers->set('Content-Type', 'application/json');
-          return $mandar;   
+          $tokend->exp = time() + 900;
+          $jwt = JWT::encode($tokend, '');          
+          $fechaventa = date_format($venta->getFechaventa(),'Y-m-d');
+          $fechacierre =  date_format($this->devuelveUltimaFecha(),'Y-m-d');
+          $fechahoy = date_format(new \DateTime("now"),'Y-m-d');
+          if(($fechaventa == $fechacierre) || ($fechaventa < $fechahoy))
+          {
+            $mandar = new Response(json_encode(array(
+              'code' => 4,
+              'response'=> array( 
+                'respuesta' => "La venta no se corresponde con la fecha de hoy"))));
+            $mandar->headers->set('Content-Type', 'application/json');
+            return $mandar;     
+          } 
+          else 
+          {  
+            if($venta->getContado()) 
+              $contado="Si";
+            else
+              $contado="No";  
+            $elemento = array(
+              'id' => $venta->getId(),
+              'fechaventa' => date_format($venta->getFechaventa(),'Y-m-d'),
+              'horaventa' => date_format($venta->getHoraventa(),'H:i:s'),
+              'socio' => $venta->getSocio()->getNombre(),
+              'dni' => $venta->getSocio()->getDni(),
+              'usuario' => $venta->getUsuario()->getNombre(),
+              'contado' => $contado);     
+
+            $mandar = new Response(json_encode(array(
+              'code' => 0,
+              'response'=> array(
+                'token' => $jwt, 
+                'venta' => $elemento))));
+            $mandar->headers->set('Content-Type', 'application/json');
+            return $mandar;   
+          }
         }
         else
         {
           $tokend->iat = time();
-	  $tokend->exp = time() + 900;
-  	  $jwt = JWT::encode($tokend, '');
+	        $tokend->exp = time() + 900;
+  	      $jwt = JWT::encode($tokend, '');
           $mandar = new Response(json_encode(array(
             'code' => 3,
             'response'=> array( 
