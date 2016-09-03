@@ -2217,9 +2217,11 @@ class DatosController extends Controller
         $fechainicio = date_format(new \DateTime($request->get('fechainicio')),'Y-m-d');
         $fechafin  = date_format(new \DateTime($request->get('fechafin')),'Y-m-d');
         $ventas = $this->devuelveListadoVentas($fechainicio, $fechafin);
+        $tokend->iat = time();
+        $tokend->exp = time() + 900;
+        $jwt = JWT::encode($tokend, '');        
         if($ventas){
           //devuelve listado de ventas
-
           foreach($ventas as $venta)
           {
             $base21=0;
@@ -2244,17 +2246,14 @@ class DatosController extends Controller
               'contado' => $contado);
             array_push($respuesta, $elemento);       
           }
-          $tokend->iat = time();
-	  $tokend->exp = time() + 900;
-  	  $jwt = JWT::encode($tokend, '');
           $mandar = new Response(json_encode(array(
             'code' => 0,
             'response'=> array(
               'token' => $jwt, 
               'fechainicio' => $fechainicio,
-	      'fechafin' => $fechafin,	
+	            'fechafin' => $fechafin,	
               'ventas' => $respuesta
-              ))));
+          ))));
           $mandar->headers->set('Content-Type', 'application/json');
           return $mandar;   
         }
@@ -2263,6 +2262,7 @@ class DatosController extends Controller
           $mandar = new Response(json_encode(array(
             'code' => 3,
             'response'=> array( 
+              'token' => $jwt,
               'respuesta' => "No hay ventas entre las fechas indicadas"))));
           $mandar->headers->set('Content-Type', 'application/json');
           return $mandar;  
