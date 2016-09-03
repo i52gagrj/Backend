@@ -262,7 +262,7 @@ class DatosController extends Controller
           $mandar = new Response(json_encode(array(
             'code' => 0,
             'response'=> array(
-              'respuesta'=> "La venta se ha almacenada correctamente",
+              'respuesta'=> "La venta se ha almacenado correctamente",
               'token' => $jwt))));
           $mandar->headers->set('Content-Type', 'application/json');
           return $mandar;
@@ -313,12 +313,10 @@ class DatosController extends Controller
     $venta->setHoraventa($hora);    
     $venta->setUsuario($usuario);    
     $venta->setSocio($socio);
-    if($contado=="true")
-    { 
+    if($contado=="true"){ 
       $venta->setContado(true);  
     }
-    else
-    { 
+    else{ 
       $venta->setContado(false);
     } 
 
@@ -629,7 +627,9 @@ class DatosController extends Controller
         {
           $mandar = new Response(json_encode(array(
             'code' => 0,
-            'response'=> array(              
+            'response'=> array(
+              'fechaultima' => $ultimoDiario,
+              'fechahoy' => $fechahoy,
               'respuesta' => "El proceso de cierre ya se ha realizado anteriormente",
               'token' => $jwt))));
           $mandar->headers->set('Content-Type', 'application/json');
@@ -668,47 +668,11 @@ class DatosController extends Controller
     $em->flush();
   }
 
-/////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////
 ///////////////////////////FIN CIERRE////////////////////////////
-/////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////
 
 
 
-
-
-
-
-
-
-/////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////
 ///////////////////////////DEVOLUCIÓN////////////////////////////
-/////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////  
 
   public function buscaventaAction(){  
     //Extraer la cabecera de la petición
@@ -732,49 +696,34 @@ class DatosController extends Controller
         $venta = $this->devuelveVenta($idventa);  	   
         if($venta)
         {
-          if((date_format($venta->getFechaventa(),'Y-m-d')==date_format(new \DateTime("now"),'Y-m-d')) 
-          {  
-            if($venta->getContado()) 
-              $contado="Si";
-            else
-              $contado="No";  
-            $elemento = array(
-              'id' => $venta->getId(),
-              'fechaventa' => date_format($venta->getFechaventa(),'Y-m-d'),
-              'horaventa' => date_format($venta->getHoraventa(),'H:i:s'),
-              'socio' => $venta->getSocio()->getNombre(),
-              'dni' => $venta->getSocio()->getDni(),
-              'usuario' => $venta->getUsuario()->getNombre(),
-              'contado' => $contado);     
-            $tokend->iat = time();
-  	        $tokend->exp = time() + 900;
-    	      $jwt = JWT::encode($tokend, '');
-            $mandar = new Response(json_encode(array(
-              'code' => 0,
-              'response'=> array(
-                'token' => $jwt, 
-                'venta' => $elemento))));
-            $mandar->headers->set('Content-Type', 'application/json');
-            return $mandar;  
-          }
+          if($venta->getContado()) 
+            $contado="Si";
           else
-          {
-            $tokend->iat = time();
-            $tokend->exp = time() + 900;
-            $jwt = JWT::encode($tokend, '');
-            $mandar = new Response(json_encode(array(
-              'code' => 4,
-              'response'=> array( 
-                'respuesta' => "La venta no corresponde al dia de hoy"))));
-            $mandar->headers->set('Content-Type', 'application/json');
-            return $mandar; 
-          } 
+            $contado="No";  
+          $elemento = array(
+            'id' => $venta->getId(),
+            'fechaventa' => date_format($venta->getFechaventa(),'Y-m-d'),
+            'horaventa' => date_format($venta->getHoraventa(),'H:i:s'),
+            'socio' => $venta->getSocio()->getNombre(),
+            'dni' => $venta->getSocio()->getDni(),
+            'usuario' => $venta->getUsuario()->getNombre(),
+            'contado' => $contado);     
+          $tokend->iat = time();
+	        $tokend->exp = time() + 900;
+  	      $jwt = JWT::encode($tokend, '');
+          $mandar = new Response(json_encode(array(
+            'code' => 0,
+            'response'=> array(
+              'token' => $jwt, 
+              'venta' => $elemento))));
+          $mandar->headers->set('Content-Type', 'application/json');
+          return $mandar;   
         }
         else
         {
           $tokend->iat = time();
-	        $tokend->exp = time() + 900;
-  	      $jwt = JWT::encode($tokend, '');
+	  $tokend->exp = time() + 900;
+  	  $jwt = JWT::encode($tokend, '');
           $mandar = new Response(json_encode(array(
             'code' => 3,
             'response'=> array( 
@@ -904,54 +853,35 @@ class DatosController extends Controller
       //Si los datos del token son correctos, se guarda la venta
       if($this->comprobarToken($tokend->id, $tokend->username))
       {
-        $ultimoDiario=date_format($this->devuelveUltimaFecha(),'Y-m-d');
-        $fechahoy = date_format(new \DateTime("now"),'Y-m-d');
+        // Recuperar el json recibido
+        $content = $this->get("request")->getContent();
+        // decodificarlo con json decode
+        $data = json_decode($content, true);
+        // Mandar los datos para persistir
+        $this->persisteModificada($data['modificada'], $data['diferencia'], $data['socio'], $data['contado']);
         $tokend->iat = time();
-        $tokend->exp = time() + 900;
-        $jwt = JWT::encode($tokend, '');        
-        if($ultimoDiario!=$fechahoy)
-        {           
-          // Recuperar el json recibido
-          $content = $this->get("request")->getContent();
-          // decodificarlo con json decode
-          $data = json_decode($content, true);
-          // Mandar los datos para persistir
-          $this->persisteModificada($data['modificada'], $data['diferencia'], $data['socio'], $data['contado']);
-
-          $mandar = new Response(json_encode(array(
-            'code' => 0,
-            'response'=> array(
-              'respuesta' => 'Modificación realizada correctamente',
-              'token' => $jwt))));
-          $mandar->headers->set('Content-Type', 'application/json');
-          return $mandar;
-        }
-        else
-        {
-          $mandar = new Response(json_encode(array(
-            'code' => 0,
-            'response'=> array(              
-              'respuesta' => "No se puede realizar la modificación al haberse cerrado la caja",
-              'token' => $jwt))));
-          $mandar->headers->set('Content-Type', 'application/json');
-          return $mandar; 
-        }
-      }  
-      else
-      {
+	      $tokend->exp = time() + 900;
+	      $jwt = JWT::encode($tokend, '');
+        $mandar = new Response(json_encode(array(
+          'code' => 0,
+          'response'=> array(
+            'respuesta' => 'Modificación realizada correctamente',
+            'token' => $jwt))));
+        $mandar->headers->set('Content-Type', 'application/json');
+        return $mandar;
+      }
+      else{
         $mandar = new Response(json_encode(array(
     	    'code' => 1,
-	        'response'=> array(
-            'respuesta' => "La clave no es correcta"))));
+	        'response'=> array('respuesta' => "La clave no es correcta"))));
         $mandar->headers->set('Content-Type', 'application/json');
         return $mandar; 
       } 
     } 
     else{
       $mandar = new Response(json_encode(array(
-	'code' => 2,
-	'response'=> array(
-          'respuesta' => "No existe el usuario"))));
+	    'code' => 2,
+	   'response'=> array('respuesta' => "No existe el usuario"))));
       $mandar->headers->set('Content-Type', 'application/json');
       return $mandar; 
     } 
@@ -1030,10 +960,8 @@ class DatosController extends Controller
     $pass=$data['password'];
     $usuario=$this->devuelveUsuario($user);
 
-    if($usuario)
-    { 
-      if(password_verify($pass, $usuario->getPassword()))
-      {
+    if($usuario){ 
+      if(password_verify($pass, $usuario->getPassword())){
         //$key = $request->get('password');
         $elemento = array(
           'id' => $usuario->getId(),
@@ -1044,24 +972,27 @@ class DatosController extends Controller
           'username' => $usuario->getUsername()); 
         $jwt = JWT::encode($elemento, '');
 
-	      $mandar = new Response(json_encode(array(
-	        'code' => 0,
-	        'response'=> array('token' => $jwt))));
+	$mandar = new Response(json_encode(array(
+	  'code' => 0,
+	  'response'=> array( 
+            'token' => $jwt))));
         $mandar->headers->set('Content-Type', 'application/json');
         return $mandar;
       }  
       else{
         $mandar = new Response(json_encode(array(
-    	    'code' => 1,
-	        'response'=> array('respuesta' => "La clave no es correcta"))));
+    	  'code' => 1,
+	  'response'=> array(
+            'respuesta' => "La clave no es correcta"))));
         $mandar->headers->set('Content-Type', 'application/json');
         return $mandar; 
       } 
     } 
     else{
       $mandar = new Response(json_encode(array(
-	      'code' => 2,
-	      'response'=> array('respuesta' => "No existe el usuario"))));
+	'code' => 2,
+	'response'=> array(
+          'respuesta' => "No existe el usuario"))));
       $mandar->headers->set('Content-Type', 'application/json');
       return $mandar; 
     }
@@ -1072,7 +1003,8 @@ class DatosController extends Controller
   {
     //Comprueba la validez del token, y devuelve true o false
     $em = $this->getDoctrine()->getEntityManager();
-    $usuario = $em->getRepository('i52LTPVFrontendBundle:Usuario')->find($id);
+    $usuario = $em->getRepository('i52LTPVFrontendBundle:Usuario')->
+      find($id);
     if($usuario->getUsername()==$username) return true;
     else return false;
   }
