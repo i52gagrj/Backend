@@ -931,7 +931,7 @@ class DatosController extends Controller
           $mandar = new Response(json_encode(array(
             'code' => 0,
             'response'=> array(              
-              'respuesta' => "El proceso de cierre ya se ha realizado anteriormente",
+              'respuesta' => "No se puede realizar la modificación al haberse cerrado la caja",
               'token' => $jwt))));
           $mandar->headers->set('Content-Type', 'application/json');
           return $mandar; 
@@ -1030,8 +1030,10 @@ class DatosController extends Controller
     $pass=$data['password'];
     $usuario=$this->devuelveUsuario($user);
 
-    if($usuario){ 
-      if(password_verify($pass, $usuario->getPassword())){
+    if($usuario)
+    { 
+      if(password_verify($pass, $usuario->getPassword()))
+      {
         //$key = $request->get('password');
         $elemento = array(
           'id' => $usuario->getId(),
@@ -1042,27 +1044,24 @@ class DatosController extends Controller
           'username' => $usuario->getUsername()); 
         $jwt = JWT::encode($elemento, '');
 
-	$mandar = new Response(json_encode(array(
-	  'code' => 0,
-	  'response'=> array( 
-            'token' => $jwt))));
+	      $mandar = new Response(json_encode(array(
+	        'code' => 0,
+	        'response'=> array('token' => $jwt))));
         $mandar->headers->set('Content-Type', 'application/json');
         return $mandar;
       }  
       else{
         $mandar = new Response(json_encode(array(
-    	  'code' => 1,
-	  'response'=> array(
-            'respuesta' => "La clave no es correcta"))));
+    	    'code' => 1,
+	        'response'=> array('respuesta' => "La clave no es correcta"))));
         $mandar->headers->set('Content-Type', 'application/json');
         return $mandar; 
       } 
     } 
     else{
       $mandar = new Response(json_encode(array(
-	'code' => 2,
-	'response'=> array(
-          'respuesta' => "No existe el usuario"))));
+	      'code' => 2,
+	      'response'=> array('respuesta' => "No existe el usuario"))));
       $mandar->headers->set('Content-Type', 'application/json');
       return $mandar; 
     }
@@ -1073,8 +1072,7 @@ class DatosController extends Controller
   {
     //Comprueba la validez del token, y devuelve true o false
     $em = $this->getDoctrine()->getEntityManager();
-    $usuario = $em->getRepository('i52LTPVFrontendBundle:Usuario')->
-      find($id);
+    $usuario = $em->getRepository('i52LTPVFrontendBundle:Usuario')->find($id);
     if($usuario->getUsername()==$username) return true;
     else return false;
   }
