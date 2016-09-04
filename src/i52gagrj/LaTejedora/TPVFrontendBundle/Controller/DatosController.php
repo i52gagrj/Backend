@@ -301,7 +301,7 @@ class DatosController extends Controller
   }
   
   protected function persisteCompra($cliente, $contado, $cesta, $vendedor)
-  {
+  {     
     $em = $this->getDoctrine()->getEntityManager();
     $usuario = $em->getRepository('i52LTPVFrontendBundle:Usuario')->
       find($vendedor);
@@ -323,6 +323,15 @@ class DatosController extends Controller
     } 
 
     $em->persist($venta);
+        
+    $query = $em->createQuery(
+      'SELECT p
+      FROM i52LTPVFrontendBundle:Venta p
+      WHERE p.id=(SELECT MAX(q.id) 
+      from i52LTPVFrontendBundle:Venta q)'
+    ); 
+
+    $ultimaventa = $query->getResult()[0]->getId();
 
     foreach($cesta as $linea)
     {      
@@ -344,7 +353,7 @@ class DatosController extends Controller
       $em->persist($lineaventa);       
       $em->flush();
     }
-    return $venta->getId();
+    return $ultimaventa;
   }
 
   protected function devuelveProducto($idpro)
