@@ -257,12 +257,13 @@ class DatosController extends Controller
           // decodificarlo con json decode
           $data = json_decode($content, true);
           // Mandar los datos para persistir
-          $this->persisteCompra($data['cliente'], $data['contado'], $data['cesta'], $tokend->id);
+          $idventa=$this->persisteCompra($data['cliente'], $data['contado'], $data['cesta'], $tokend->id);
 
           $mandar = new Response(json_encode(array(
             'code' => 0,
             'response'=> array(
               'respuesta'=> "La venta se ha almacenado correctamente",
+              'venta' => $idventa,
               'token' => $jwt))));
           $mandar->headers->set('Content-Type', 'application/json');
           return $mandar;
@@ -272,7 +273,8 @@ class DatosController extends Controller
           $mandar = new Response(json_encode(array(
             'code' => 0,
             'response'=> array(
-              'respuesta' => "La venta no se almaceno, la caja por hoy ya está cerrada",             
+              'respuesta' => "La venta no se almaceno, la caja por hoy ya está cerrada",
+              'venta' => $idventa,             
               'token' => $jwt))));
           $mandar->headers->set('Content-Type', 'application/json');
           return $mandar; 
@@ -342,6 +344,7 @@ class DatosController extends Controller
       $em->persist($lineaventa);       
       $em->flush();
     }
+    return $venta->getId();
   }
 
   protected function devuelveProducto($idpro)
@@ -1838,8 +1841,8 @@ class DatosController extends Controller
           array_push($respuesta, $elemento);    
         }             
         $tokend->iat = time();
-	$tokend->exp = time() + 900;
-	$jwt = JWT::encode($tokend, '');
+	      $tokend->exp = time() + 900;
+	      $jwt = JWT::encode($tokend, '');
         $mandar = new Response(json_encode(array(
           'code' => 0,
           'response'=> array(
