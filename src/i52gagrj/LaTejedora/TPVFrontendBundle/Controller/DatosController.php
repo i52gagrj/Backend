@@ -49,32 +49,48 @@ class DatosController extends Controller
       //Si los datos del token son correctos, se cargan los productos
       if($this->comprobarToken($tokend->id, $tokend->username))
       {  
-        $em = $this->getDoctrine()->getEntityManager();
-        $productos = $em->getRepository('i52LTPVFrontendBundle:Producto')->
-          findAll();
-        foreach($productos as $producto)
-        {
-          if($producto->getActivo())
-          { 
-            $elemento = array(
-              'id' => $producto->getId(),
-              'nombre' => $producto->getNombre(),
-              'precio' => $producto->getPrecio(),
-              'iva' => $producto->getIva(),
-              'tipo' => $producto->getTipo()->getNombre());
-            array_push($respuesta, $elemento);    
-          }
-        }     
         $tokend->iat = time();
-	      $tokend->exp = time() + 900;
-	      $jwt = JWT::encode($tokend, '');
-        $mandar = new Response(json_encode(array(
-          'code' => 0,
-          'response'=> array(
-          'token' => $jwt, 
-          'productos' => $respuesta))));
-        $mandar->headers->set('Content-Type', 'application/json');
-        return $mandar;
+        $tokend->exp = time() + 900;
+        $jwt = JWT::encode($tokend, '');        
+        $fechahoy = date_format(new \DateTime("now"),'Y-m-d');
+        $ultimafecha = date_format($this->devuelveUltimaFecha(),'Y-m-d');
+        if($ultimafecha!=$fechahoy)
+        {   
+          $em = $this->getDoctrine()->getEntityManager();
+          $productos = $em->getRepository('i52LTPVFrontendBundle:Producto')->
+            findAll();
+          foreach($productos as $producto)
+          {
+            if($producto->getActivo())
+            { 
+              $elemento = array(
+                'id' => $producto->getId(),
+                'nombre' => $producto->getNombre(),
+                'precio' => $producto->getPrecio(),
+                'iva' => $producto->getIva(),
+                'tipo' => $producto->getTipo()->getNombre());
+              array_push($respuesta, $elemento);    
+            }
+          }     
+
+          $mandar = new Response(json_encode(array(
+            'code' => 0,
+            'response'=> array(
+            'token' => $jwt, 
+            'productos' => $respuesta))));
+          $mandar->headers->set('Content-Type', 'application/json');
+          return $mandar;
+        }
+        else
+        {
+          $mandar = new Response(json_encode(array(
+            'code' => 3,
+            'response'=> array(
+            'token' => $jwt, 
+            'respuesta' => "Caja Cerrada"))));
+          $mandar->headers->set('Content-Type', 'application/json');
+          return $mandar;          
+        }  
       }  
       //Si los datos del token no son correctos, se manda un codigo de error 1 y un mensaje
       else
@@ -718,9 +734,9 @@ class DatosController extends Controller
           if(($fechaventa == $fechacierre) || ($fechaventa < $fechahoy))
           {
             $mandar = new Response(json_encode(array(
-              'code' => 4,
+              'code' => 3,
               'response'=> array( 
-                'respuesta' => "La venta no se corresponde con la fecha de hoy"))));
+                'respuesta' => "Caja cerrada"))));
             $mandar->headers->set('Content-Type', 'application/json');
             return $mandar;     
           } 
@@ -736,6 +752,8 @@ class DatosController extends Controller
               'horaventa' => date_format($venta->getHoraventa(),'H:i:s'),
               'socio' => $venta->getSocio()->getNombre(),
               'dni' => $venta->getSocio()->getDni(),
+              'direccion' => getSocio()->getDireccion(),
+              'poblacion' => getSocio()->getPoblacion(),
               'usuario' => $venta->getUsuario()->getNombre(),
               'contado' => $contado);     
 
@@ -754,7 +772,7 @@ class DatosController extends Controller
 	        $tokend->exp = time() + 900;
   	      $jwt = JWT::encode($tokend, '');
           $mandar = new Response(json_encode(array(
-            'code' => 3,
+            'code' => 4,
             'response'=> array( 
               'respuesta' => "El número de venta indicado no existe"))));
           $mandar->headers->set('Content-Type', 'application/json');
