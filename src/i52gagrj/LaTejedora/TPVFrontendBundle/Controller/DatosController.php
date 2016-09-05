@@ -398,34 +398,55 @@ class DatosController extends Controller
       //Si los datos del token son correctos, se cargan los productos
       if($this->comprobarToken($tokend->id, $tokend->username))
       {        
+        $ultimoDiario=date_format($this->devuelveUltimaFecha(),'Y-m-d');
+        $fechahoy = date_format(new \DateTime("now"),'Y-m-d');
+        $tokend->iat = time();
+        $tokend->exp = time() + 900;
+        $jwt = JWT::encode($tokend, '');        
+        if($ultimoDiario!=$fechahoy)
+        {
         //Primero buscar la fecha del último cierre
         //Después pedir las ventas desde esa fecha                 */
-        $ultimoDiario=$this->devuelveUltimaFecha();
-        $ventas = $this->devuelveVentas($ultimoDiario);
-        foreach($ventas as $venta)
+          $ultimoDiario=$this->devuelveUltimaFecha();
+          $ventas = $this->devuelveVentas($ultimoDiario);
+          foreach($ventas as $venta)
+          {
+            if($venta->getContado()) 
+              $contado="Si";
+            else
+              $contado="No";  
+            $elemento = array(
+              'id' => $venta->getId(),
+              'fechaventa' => date_format($venta->getFechaventa(),'Y-m-d'),
+              'horaventa' => date_format($venta->getHoraventa(),'H:i:s'),
+              'socio' => $venta->getSocio()->getNombre(),
+              'contado' => $contado);
+            array_push($respuesta, $elemento);        
+          }    
+          $tokend->iat = time();
+  	      $tokend->exp = time() + 900;
+  	      $jwt = JWT::encode($tokend, '');
+          $mandar = new Response(json_encode(array(
+            'code' => 0,
+            'response'=> array(
+            'token' => $jwt, 
+            'ventas' => $respuesta))));
+          $mandar->headers->set('Content-Type', 'application/json');
+          return $mandar;
+        }
+        else
         {
-          if($venta->getContado()) 
-            $contado="Si";
-          else
-            $contado="No";  
-          $elemento = array(
-            'id' => $venta->getId(),
-            'fechaventa' => date_format($venta->getFechaventa(),'Y-m-d'),
-            'horaventa' => date_format($venta->getHoraventa(),'H:i:s'),
-            'socio' => $venta->getSocio()->getNombre(),
-            'contado' => $contado);
-          array_push($respuesta, $elemento);        
-        }    
-        $tokend->iat = time();
-	      $tokend->exp = time() + 900;
-	      $jwt = JWT::encode($tokend, '');
-        $mandar = new Response(json_encode(array(
-          'code' => 0,
-          'response'=> array(
-          'token' => $jwt, 
-          'ventas' => $respuesta))));
-        $mandar->headers->set('Content-Type', 'application/json');
-        return $mandar;  
+          $mandar = new Response(json_encode(array(
+            'code' => 3,
+            'response'=> array(
+              'fechaultima' => $ultimoDiario,
+              'fechahoy' => $fechahoy,
+              'respuesta' => "El proceso de cierre ya se ha realizado anteriormente",
+              'token' => $jwt))));
+          $mandar->headers->set('Content-Type', 'application/json');
+          return $mandar; 
+        }  
+
       }  
       //Si los datos del token no son correctos, se manda un codigo de error 1 y un mensaje
       else
