@@ -736,7 +736,7 @@ class DatosController extends Controller
             $mandar = new Response(json_encode(array(
               'code' => 3,
               'response'=> array( 
-                'respuesta' => "Caja cerrada"))));
+                'respuesta' => "La venta no pertenece al dia de hoy, no se puede realizar devolución"))));
             $mandar->headers->set('Content-Type', 'application/json');
             return $mandar;     
           } 
