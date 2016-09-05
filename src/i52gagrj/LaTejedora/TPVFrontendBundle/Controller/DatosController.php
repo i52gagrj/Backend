@@ -439,8 +439,6 @@ class DatosController extends Controller
           $mandar = new Response(json_encode(array(
             'code' => 3,
             'response'=> array(
-              'fechaultima' => $ultimoDiario,
-              'fechahoy' => $fechahoy,
               'respuesta' => "El proceso de cierre ya se ha realizado anteriormente",
               'token' => $jwt))));
           $mandar->headers->set('Content-Type', 'application/json');
@@ -648,9 +646,7 @@ class DatosController extends Controller
           $this->persisteCierre($data['dejado']);
           $mandar = new Response(json_encode(array(
             'code' => 0,
-            'response'=> array(
-              'fechaultima' => $ultimoDiario,
-              'fechahoy' => $fechahoy,              
+            'response'=> array(             
               'respuesta' => 'Cierre realizado correctamente',
               'token' => $jwt))));
           $mandar->headers->set('Content-Type', 'application/json');
