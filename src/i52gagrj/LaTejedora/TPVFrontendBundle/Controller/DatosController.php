@@ -752,8 +752,8 @@ class DatosController extends Controller
               'horaventa' => date_format($venta->getHoraventa(),'H:i:s'),
               'socio' => $venta->getSocio()->getNombre(),
               'dni' => $venta->getSocio()->getDni(),
-              'direccion' => getSocio()->getDireccion(),
-              'poblacion' => getSocio()->getPoblacion(),
+              'direccion' => $venta->getSocio()->getDireccion(),
+              'poblacion' => $venta->getSocio()->getPoblacion(),
               'usuario' => $venta->getUsuario()->getNombre(),
               'contado' => $contado);     
 
