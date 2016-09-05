@@ -631,53 +631,36 @@ class DatosController extends Controller
       //Si los datos del token son correctos, se guarda la venta
       if($this->comprobarToken($tokend->id, $tokend->username))
       {
-        $ultimoDiario=date_format($this->devuelveUltimaFecha(),'Y-m-d');
-        $fechahoy = date_format(new \DateTime("now"),'Y-m-d');
         $tokend->iat = time();
         $tokend->exp = time() + 900;
         $jwt = JWT::encode($tokend, '');        
-        if($ultimoDiario!=$fechahoy)
-        {   
-          // Recuperar el json recibido
-          $content = $this->get("request")->getContent();
-          // decodificarlo con json decode
-          $data = json_decode($content, true);
-          // Mandar los datos para persistir
-          $this->persisteCierre($data['dejado']);
-          $mandar = new Response(json_encode(array(
-            'code' => 0,
-            'response'=> array(             
-              'respuesta' => 'Cierre realizado correctamente',
-              'token' => $jwt))));
-          $mandar->headers->set('Content-Type', 'application/json');
-          return $mandar;
-        }
-        else
-        {
-          $mandar = new Response(json_encode(array(
-            'code' => 3,
-            'response'=> array(
-              'fechaultima' => $ultimoDiario,
-              'fechahoy' => $fechahoy,
-              'respuesta' => "El proceso de cierre ya se ha realizado anteriormente",
-              'token' => $jwt))));
-          $mandar->headers->set('Content-Type', 'application/json');
-          return $mandar; 
-        }     
+        // Recuperar el json recibido
+        $content = $this->get("request")->getContent();
+        // decodificarlo con json decode
+        $data = json_decode($content, true);
+        // Mandar los datos para persistir
+        $this->persisteCierre($data['dejado']);
+        $mandar = new Response(json_encode(array(
+          'code' => 0,
+          'response'=> array(             
+            'respuesta' => 'Cierre realizado correctamente',
+            'token' => $jwt))));
+        $mandar->headers->set('Content-Type', 'application/json');
+        return $mandar;
       }
       else{
         $mandar = new Response(json_encode(array(
     	  'code' => 1,
 	      'response'=> array(
-            'respuesta' => "La clave no es correcta"))));
+          'respuesta' => "La clave no es correcta"))));
         $mandar->headers->set('Content-Type', 'application/json');
         return $mandar; 
       } 
     } 
     else{
       $mandar = new Response(json_encode(array(
-	'code' => 2,
-	'response'=> array(
+	      'code' => 2,
+	      'response'=> array(
           'respuesta' => "No existe el usuario"))));
       $mandar->headers->set('Content-Type', 'application/json');
       return $mandar; 
