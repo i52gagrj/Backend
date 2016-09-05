@@ -323,6 +323,7 @@ class DatosController extends Controller
     } 
 
     $em->persist($venta);
+    $em->flush();
         
     $query = $em->createQuery(
       'SELECT p
