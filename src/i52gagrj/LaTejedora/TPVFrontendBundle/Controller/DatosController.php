@@ -638,7 +638,7 @@ class DatosController extends Controller
         else
         {
           $mandar = new Response(json_encode(array(
-            'code' => 0,
+            'code' => 3,
             'response'=> array(
               'fechaultima' => $ultimoDiario,
               'fechahoy' => $fechahoy,
