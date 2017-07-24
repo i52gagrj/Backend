@@ -1041,7 +1041,8 @@ class DatosController extends Controller
 	$mandar = new Response(json_encode(array(
 	  'code' => 0,
 	  'response'=> array( 
-            'token' => $jwt))));
+            'token' => $jwt,
+            'prueba' => "Esto es una prueba"))));
         $mandar->headers->set('Content-Type', 'application/json');
         return $mandar;
       }  
@@ -1049,7 +1050,8 @@ class DatosController extends Controller
         $mandar = new Response(json_encode(array(
     	  'code' => 1,
 	  'response'=> array(
-            'respuesta' => "La clave no es correcta"))));
+            'respuesta' => "La clave no es correcta",
+            'prueba' => "Esto es una prueba"))));
         $mandar->headers->set('Content-Type', 'application/json');
         return $mandar; 
       } 
@@ -1058,7 +1060,8 @@ class DatosController extends Controller
       $mandar = new Response(json_encode(array(
 	'code' => 2,
 	'response'=> array(
-          'respuesta' => "No existe el usuario"))));
+          'respuesta' => "No existe el usuario",
+            'prueba' => "Esto es una prueba"))));
       $mandar->headers->set('Content-Type', 'application/json');
       return $mandar; 
     }
@@ -1348,8 +1351,8 @@ class DatosController extends Controller
           }       
         }    
         $tokend->iat = time();
-	$tokend->exp = time() + 900;
-	$jwt = JWT::encode($tokend, '');
+	      $tokend->exp = time() + 900;
+	      $jwt = JWT::encode($tokend, '');
         $mandar = new Response(json_encode(array(
           'code' => 0,
           'response'=> array(
